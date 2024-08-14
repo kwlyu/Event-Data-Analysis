@@ -1,0 +1,45 @@
+WK,VENUE,DATE,WHAT,DEPARTMENT,DAYS COMMITTED,AV STAFF,PAC STAFF,"SUPPORT 
+LEVEL","AUDIO 
+NEEDS",STAGE NEEDS,LIGHTING NEEDS,PROJECTION,"VIDEO
+RECORDING",LIVESTREAM,AUDIENCE COUNT,POSTER,PROGRAM,RECEPTION
+2,Kracum,  2023/04/06,Office of Student Fellowships Presentation,Office of Fellowships,1,1,0,L,L,L,L,NA,NA,N,NA,N,N,N
+2,Kracum,  2023/04/07,GUEST: Sara Davis Buechner - Concert,MUSC,1,3,5,L,L,L,L,N,Y,N,112,Y,Y,N
+2,Kracum,  2023/04/08,GUEST: Sara Davis Buechner - Masterclass,MUSC,1,2,4,L,L,L,L,N,N,N,NA,N,N,N
+3,Kracum,  2023/04/11,Employee Recognition Event,Pres. Office,1,1,0,L,L,L,L,NA,NA,N,NA,N,N,N
+3,Kracum,  2023/04/12,GUEST: Leonard Jacome - Masterclass,MUSC,1,1,1,L,L,L,L,NA,NA,N,NA,N,N,N
+3,Kracum,  2023/04/14,Admitted Student Experience,Admissions,1,1,0,L,L,L,L,NA,NA,N,NA,N,N,N
+3,Applebaum,  2023/04/15,Music Comps Festival ,MUSC,2,3,4,H,H,H,M,Y,N,N,100,Y,Y,Y
+3,Kracum,  2023/04/15,GUEST: Leonard Jacome - Concert,MUSC,1,4,4,M,H,M,M,N,Y,N,96,Y,Y,N
+4,Kracum,  2023/04/22,ACA Night Performance,CSA,2,5,6,H,H,H,H,Y,Y,N,275,N,Y,N
+5,Kracum,  2023/04/28,GUEST: Emery Stephens - Concert,MUSC,3,4,6,H,M,M,H,Y,Y,N,54,N,Y,N
+6,Applebaum,  2023/05/06,Ron Rodman - Symposium,MUSC,2,3,4,L,L,L,L,Y,Y,Y,26,Y,Y,Y
+6,Kracum,  2023/05/07,"Rodman Electric Theater, 1923 - Concert",MUSC,2,4,6,L,L,L,M,Y,Y,N,67,Y,Y,N
+7,Kracum,  2023/05/11,Carleton & St Olaf Chamber Choir Concert,MUSC,1,2,5,M,L,M,L,N,Y,Y,180,Y,Y,N
+7,Kracum,  2023/05/13,Chinese & Global Music Concert,MUSC,1,3,3,H,H,H,L,N,Y,N,74,Y,Y,N
+7,Kracum,  2023/05/13,Voice Showcase Recital,MUSC,2,3,4,L,L,L,L,Y,Y,Y,55,Y,Y,N
+7,Applebaum,  2023/05/14,GUEST: Bamako Foli Masterclass ,MUSC,1,4,6,L,L,L,L,N ,N,N,NA,N,N,N
+7,Kracum,  2023/05/14,GUEST:  Bamako Foli Concert,MUSC,2,4,6,M,L,L,L,N,Y,N,135,Y,N,N
+8,Kracum,  2023/05/17,Presidents Quartly Meeting,Pres. Office,1,1,0,L,L,L,L,NA,NA,N,NA,N,N,N
+8,Applebaum,  2023/05/18,Rainer Polak Lecture,MUSC,1,0,1,L,L,L,L,NA,NA,NA,NA,N,N,N
+8,Kracum,  2023/05/18,Jazz Concert,MUSC,2,5,5,H,H,H,L,N,Y,Y,198,Y,Y,N
+8,Kracum,  2023/05/19,Choir Concert,MUSC,1,4,5,M,L,M,L,N,Y,Y,251,Y,Y,N
+8,Applebaum,  2023/05/21,Ben Chao - Student Recital (Jazz Chamber),MUSC,1,2,3,M,M,M,L,N,Y,N,20,N,N,N
+8,Applebaum,  2023/05/21,Jazz Chamber Recital #1,MUSC,1,2,3,M,M,M,L,N,N,N,18,Y,Y,N
+8,Applebaum,  2023/05/21,Helen Jin-Lee - Student Recital (Piano),MUSC,1,1,2,L,L,L,L,N,Y,N,35,N,Y,N
+8,Kracum,  2023/05/21,Symphony Concert,MUSC,1,3,5,H,H,H,L,N,Y,Y,109,Y,Y,Y
+9,Kracum,  2023/05/24,Piano Studio Recital ,MUSC,1,1,5,L,L,L,L,N,Y,Y,44,Y,Y,N
+9,Applebaum,  2023/05/25,Jazz Chamber Recital #2,MUSC,1,2,5,M,L,M,L,N,N, N,73,Y,Y,N
+9,Applebaum,  2023/05/26,Eleanor Chen - Student Recital,MUSC,1,1,2,L,L,L,L,N,Y,N,27,N,Y,N
+9,Kracum,  2023/05/26,Orchestra Concert,MUSC,1,3,5,H,L,H,L,N,Y,Y,220,Y,Y,N
+9,Applebaum,  2023/05/27,Wenlai Han - Student Recital,MUSC,1,1,2,L,L,L,L,Y,Y,N,29,N,Y,N
+9,Applebaum,  2023/05/27,Adela D & Ammy L - Joint Student Recital,MUSC,1,2,2,L,L,L,L,Y,Y,N,32,N,Y,N
+9,Applebaum,  2023/05/28,Nora Caballero - Student Recital,MUSC,1,2,3,L,L,L,L,N,Y,N,31,N,Y,N
+9,Kracum,  2023/05/28,Chamber Music Recital,MUSC,1,2,5,M,L,M,L,N,Y,Y,62,Y,N,N
+9,Kracum,  2023/05/28,Shannon Liu & Helen Hu - Joint Student Recital,MUSC,1,2,4,M,M,M,L,N,Y,Y,33,N,Y,N
+10,Kracum,  2023/05/29,Tate Russel - Student Recital/Prodcution,MUSC/THD,1,4,4,H,M,M,H,N,Y,N,50,N,Y,N
+10,Skinner Chapel,  2023/05/30,Jaclyn Appel - Student Organ Recital,MUSC,1,1,2,L,L,L,L,Y,Y,N,53,Y,N,N
+10,Kracum,  2023/05/30,Composition Showcase Recital ,MUSC,1,3,5,M,M,M,L,N,Y,N,47,Y,Y,N
+10,Kracum,  2023/05/31,Strings Recital,MUSC,1,2,5,L,L,L,L,N,Y,N,42,Y,Y,N
+10,Applebaum,  2023/05/31,Chinese Music Studio Recital,MUSC,1,2,2,L,L,L,L,N,N,N,11,Y,Y,N
+10,Applebaum,  2023/05/31,Lily Li - Student Recital (Voice w/ Piano),MUSC,1,2,3,L,L,L,L,N,Y,N,10,N,Y,N
+10,Kracum,  2023/05/31,Exit 69 - CSA Concert,CSA,1,4,2,M,M,L,H,N,Y,N,66,N,N,N
