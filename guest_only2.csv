@@ -1,0 +1,86 @@
+venue,date,what,genre,sponsor,department,audience_count,days_committed,av_staff,pac_staff,support_level,audio_needs,stage_needs,lighting_needs,projection,video_recording,live_stream,poster,program,reception,term,livestream,department_type,event_type,year,term_category
+Concert Hall,2014-10-10,GUEST: Lake Wobegon Brass Band,Brass Band,"Anoka-Ramsey Community College & Anoka Brass Band Association, Inc.",MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,F14,NA,MUSC,Guest,2014-2015,Fall
+Concert Hall,2014-10-12,GUEST: Lucas Concert - JazzAx,Saxophone Quartet,Lucas Concert,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,F14,NA,MUSC,Guest,2014-2015,Fall
+Concert Hall,2014-10-26,GUEST: Linda Chatterton Flute Recital,Flute and Piano Duo,Faculty: Matthew McCright,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,F14,NA,MUSC,Guest,2014-2015,Fall
+Concert Hall,2014-11-02,GUEST: Red Baraat Concert,Jazz Ensemble,Concert Series,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,F14,NA,MUSC,Guest,2014-2015,Fall
+Concert Hall,2015-02-06,GUEST: Woodward Concert - Haas & Anoki,Violin and Piano,Woodward Concert,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,W15,NA,MUSC,Guest,2014-2015,Winter
+Concert Hall,2015-02-08,"GUEST: Anderson, Martin, & Hagedorn","Horn, Double Bass, and Xylosynth Trio",Faculty: Gwen Anderson & Faculty: Connie Martin,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,W15,NA,MUSC,Guest,2014-2015,Winter
+Concert Hall,2015-04-04,GUEST: Ysaÿe Barnwell,Voice Solo,Laudie D. Porter Performing and Creative Artists,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2015-04-12,GUEST: Jon Nakamastsu,Piano Solo,Concert Series,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2015-04-26,"GUEST: Songs of War - R Penning, S Penning, Anderson, Anderegg, Rosenberg, & Melville",Chamber Group,Concert Series,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2015-05-08,GUEST: Light Lectureship - Polygraph Lounge,Quartet,Light Lectureship & Carleton Arts & Technology Initiative,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2015-05-09,GUEST: Light Lectureship - Polygraph Lounge Chamber,Quartet + Chamber,Light Lectureship & Carleton Arts & Technology Initiative,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2015-05-16,GUEST: Martha Jamsa Flute Recital,Chamber Group,Faculty: Mark Krusemeyer,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2015-05-17,SPCO Concert,Chamber Orchestra,SPCO & Redleaf Family Chair & HRK Family,MUSC & SPCO,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,Collab,Guest,2014-2015,Spring
+Concert Hall,2015-05-22,GUEST: Haydn Orchestra & Carleton Singers,Orchestra + Choir,Concert Series,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2016-01-15,GUEST: Greenman & Carleto World Music Chamber Ensemble,Violin and Pipa Duo,Faculty: Gao Hong,MUSC,137,NA,NA,NA,M,M,M,NA,N,Y,NA,NA,Y,Y,W16,NA,MUSC,Guest,2015-2016,Winter
+Concert Hall,2016-01-29,GUEST: Mark Kreitzer Band,Blugrass Quartet,Faculty: Mark Kreitzer,MUSC,83,NA,NA,NA,L,L,L,NA,N,Y,NA,NA,Y,Y,W16,NA,MUSC,Guest,2015-2016,Winter
+Concert Hall,2016-01-30,GUEST: Christopher Light Lectureship,NA,Light Lectureship,MUSC,116,NA,NA,NA,M,M,M,NA,N,N,NA,NA,N,Y,W16,NA,MUSC,Guest,2015-2016,Winter
+Great Hall,2016-02-26,GUEST: Niramala of Friends,South Indian Quartet,Laudie D. Porter Performing and Creative Artists,MUSC,139,NA,NA,NA,H,M,H,NA,NA,N,NA,NA,Y,Y,W16,NA,MUSC,Guest,2015-2016,Winter
+Concert Hall,2016-04-08,GUEST: Light Lectureship w/ Dan Trueman,Percussion Solo,Light Lectureship,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Y,NA,S16,NA,MUSC,Guest,2015-2016,Spring
+Concert Hall,2016-05-08,Voyage of the Seasons,Voice + Piano Duo,Faculty: Roderick Phipps-Kettlewell,MUSC,18,NA,NA,NA,L,L,L,NA,N,N,NA,NA,Y,Y,S16,NA,MUSC,Guest,2015-2016,Spring
+Concert Hall,2016-05-22,GUEST: Burnett & Campbell,NA,NA,MUSC,105,NA,NA,NA,L,L,L,NA,NA,NA,NA,NA,Y,NA,S16,NA,MUSC,Guest,2015-2016,Spring
+Concert Hall,2016-09-16,GUEST: Mobius Percussion,Composition,Light Lectureship,MUSC,101,NA,NA,NA,M,H,L,NA,N,Y,NA,NA,Y,Y,F16,NA,MUSC,Guest,2016-2017,Fall
+Concert Hall,2016-09-30,GUEST: Duo Mistral,Piano Duo,Concert Series,MUSC,62,NA,NA,NA,L,L,L,NA,N,L,NA,NA,Y,Y,F16,NA,MUSC,Guest,2016-2017,Fall
+Concert Hall,2016-10-14,Arts + Culture Fest,NA,NA,MUSC,350,NA,NA,NA,NA,L,NA,NA,NA,Y,NA,NA,NA,NA,F16,NA,MUSC,Guest,2016-2017,Fall
+Concert Hall,2016-10-16,Woodward Concert Series: Larence Colloquium and Concert,Organ + Voice,Woodward Concert,MUSC,93,NA,NA,NA,L,L,L,NA,N,Y,NA,NA,Y,Y,F16,NA,MUSC,Guest,2016-2017,Fall
+Basilica of St. Mary,2016-11-05,"Men's Choir, Bella, Jubilet",Choir + Ballet,NA,MUSC,12,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Y,NA,F16,NA,MUSC,Guest,2016-2017,Fall
+Concert Hall,2017-01-15,GUEST: Contemporary Voices from Latin America,Violin and Piano Duo,Faculty: Matthew McCright,MUSC,64,NA,NA,NA,L,L,L,NA,N,Y,NA,NA,Y,Y,W17,NA,MUSC,Guest,2016-2017,Winter
+Chapel,2017-01-20,SPCO Concert,Chamber Orchestra,SPCO & Redleaf Family Chair & HRK Family,MUSC,388,NA,NA,NA,H,L,H,NA,N,N,NA,NA,Y,N,W17,NA,MUSC,Guest,2016-2017,Winter
+Concert Hall,2017-02-01,GUEST: Beijing Bamboo Orchestra,Chinese Music Ensemble,NA,MUSC,NA,NA,NA,NA,L,L,L,NA,Y,Y,NA,NA,N,N,W17,NA,MUSC,Guest,2016-2017,Winter
+Weitz Cinema,2017-02-09,Laudie Porter Concert Series: Montage - Gloria Cheng,Piano Solo,Laudie D. Porter Performing and Creative Artists,MUSC,NA,NA,NA,NA,L,L,L,NA,Y,N,NA,NA,Y,Y,W17,NA,MUSC,Guest,2016-2017,Winter
+Concert Hall,2017-04-28,GUEST: Malcol Bilson,Keyboard Solo,Concert Series,MUSC,102,NA,NA,NA,L,L,L,NA,N,N,NA,NA,Y,Y,S17,NA,MUSC,Guest,2016-2017,Spring
+Kracum,2017-10-13,GUEST: MONK! - Laura Caviani,Voice + Jazz Trio,Laudie D. Porter Performing and Creative Artists,MUSC,NA,NA,NA,NA,M,M,M,L,N,N,NA,NA,Y,Y,F17,NA,MUSC,Guest,2017-2018,Fall
+Kracum,2017-10-25,"GUEST: Still, Amber Mackey",NA,NA,MUSC,NA,NA,NA,NA,H,L,H,L,N,N,NA,NA,Y,NA,F17,NA,MUSC,Guest,2017-2018,Fall
+Kracum,2018-02-09,GUEST: Anna Meredith Concert,Composition,Light Lectureship,MUSC,160,NA,NA,NA,M,M,M,L,Y,N,NA,NA,N,Y,W18,NA,MUSC,Guest,2017-2018,Winter
+Kracum,2018-04-07,GUEST: The Singers Concert,Choir,Concert Series,MUSC,190,NA,NA,NA,M,L,M,L,N,Y,NA,NA,N,N,S18,NA,MUSC,Guest,2017-2018,Spring
+Kracum,2018-02-22,GUEST: Music for Two Pianos,Piano Duo,Faculty: Nicola Melville,MUSC,78,NA,NA,NA,L,L,L,L,N,Y,NA,NA,Y,N,S18,NA,MUSC,Guest,2017-2018,Spring
+Kracum,2018-04-28,GUEST: Issam Rafea Concert,Oud and Pipa Duo,Faculty: Gao Hong,MUSC,116,NA,NA,NA,L,L,L,L,N,Y,NA,NA,N,Y,S18,NA,MUSC,Guest,2017-2018,Spring
+Kracum,2018-05-02,GUEST: SPCO Concert,Chamber Orchestra,SPCO & Redleaf Family Chair & HRK Family,MUSC,374,NA,NA,NA,H,L,H,H,N,N,NA,NA,Y,Y,S18,NA,MUSC,Guest,2017-2018,Spring
+Kracum,2018-05-09,GUEST: Jonathan Kreisberg Trio,Guitar + Bass + Drums TIo,Concert Series,MUSC,90,NA,NA,NA,L,L,L,L,N,Y,NA,NA,Y,N,S18,NA,MUSC,Guest,2017-2018,Spring
+Kracum,2018-05-15,GUEST: Bhairav Se Bhairavi Tak,Indian Classical Music Duo,Concert Series,MUSC,90,NA,NA,NA,M,M,M,L,N,N,NA,NA,N,Y,S18,NA,MUSC,Guest,2017-2018,Spring
+Kracum,2018-11-02,GUEST: New Zealand String Quartet,String Quartet + Piano,Concert Series,MUSC,214,NA,NA,NA,L,L,L,L,N,N,NA,NA,Y,Y,F18,NA,MUSC,Guest,2018-2019,Fall
+Kracum,2019-02-01,GUEST: Cipher,Voice + Violin Duo,Laudie D. Porter Performing and Creative Artists,MUSC,78,NA,1,2,L,L,L,L,N,Y,NA,NA,N,N,W19,NA,MUSC,Guest,2018-2019,Winter
+Kracum,2019-02-26,Choir Concert & GUEST: Newcomer,Choir + Guitar + Piano,Concert Series,MUSC,225,NA,1,2,M,M,M,L,N,Y,NA,NA,Y,N,W19,NA,MUSC,Guest,2018-2019,Winter
+Kracum,2019-03-02,SPCO,Chamber Orchestra,SPCO & Redleaf Family Chair & HRK Family,MUSC & SPCO,351,NA,1,7,M,L,H,L,N,N,NA,NA,Y,N,W19,NA,Collab,Guest,2018-2019,Winter
+Kracum,2019-03-23,GUEST: Macalester Choir Concert,Choir,NA,MUSC,24,NA,1,2,M,L,M,L,N,N,NA,NA,N,N,S19,NA,MUSC,Guest,2018-2019,Spring
+Kracum,2019-04-06,GUEST: Minnesota Dance Theater,Dance,Concert Series,MUSC,396,NA,1,5,H,L,H,H,Y,Y,NA,NA,Y,N,S19,NA,MUSC,Guest,2018-2019,Spring
+Kracum,2019-04-12,Light Lectureship: Caroline Shaw,Composition + String Quartet,Light Lectureship,MUSC,145,NA,1,5,M,M,M,L,N,N,NA,NA,Y,N,S19,NA,MUSC,Guest,2018-2019,Spring
+Kracum,2019-05-11,GUEST: Yair Dalal and Dror Sinai,Middle Eastern Music Duo,ODOA,MUSC,95,NA,1,1,M,M,L,L,N,Y,NA,NA,N,N,S19,NA,MUSC,Guest,2018-2019,Spring
+Kracum,2019-09-27,GUEST: William Chapman Nyaho Concert,African Piano Solo,ODOA,MUSC,76,NA,1,3,L,L,L,L,N,N,NA,NA,Y,N,F19,NA,MUSC,Guest,2019-2020,Fall
+Applebaum,2019-10-11,Light Lectureship: Michael Mizrahi,Piano Solo,Light Lectureship,MUSC,57,NA,2,3,L,L,L,L,N,N,NA,NA,Y,N,F19,NA,MUSC,Guest,2019-2020,Fall
+Kracum,2019-10-25,GUEST: Atlantis Quartet,Jazz Quartet,Concert Series,MUSC,80,NA,2,2,M,M,L,L,N,Y,NA,NA,N,N,F19,NA,MUSC,Guest,2019-2020,Fall
+Kracum,2019-10-31,SPCO Concert,Chamber Orchestra,SPCO & Redleaf Family Chair & HRK Family,MUSC & SPCO,400,NA,1,7,H,L,H,L,N,N,NA,NA,N,N,F19,NA,Collab,Guest,2019-2020,Fall
+Applebaum,2019-11-11,GUEST: Pete McCann Quartet,Jazz Quartet,Concert Series,MUSC,40,NA,1,2,M,M,M,L,N,Y,NA,NA,Y,N,F19,NA,MUSC,Guest,2019-2020,Fall
+Applebaum,2020-02-20,GUEST: Folk Music Society,Folk Music Solo,BIll Staines,MUSC,86,NA,1,1,L,L,L,L,N,Y,NA,NA,N,Y,W20,NA,MUSC,Guest,2019-2020,Winter
+Kracum,2021-10-15,GUEST: Randall Scarlata & Nikki Melville,Voice and Piano Duo,Concert Series,MUSC,120,1,2,3,L,L,L,L,Y,Y,Y,NA,N,N,F21,NA,MUSC,Guest,2021-2022,Fall
+Kracum,2021-10-08,GUEST: Issam Rafea & Gao,Oud and Pipa Duo,Faculty: Gao Hong,MUSC,81,1,2,4,L,L,L,L,N,Y,N,NA,N,Y,F21,NA,MUSC,Guest,2021-2022,Fall
+Kracum,2022-04-08,GUEST: Alexander Kobrin,Piano Solo,Concert Series,MUSC,250,1,3,6,L,L,L,L,N,Y,N,NA,Y,N,S22,NA,MUSC,Guest,2021-2022,Spring
+Kracum,2022-04-22,Light Lectureship: Jason Trueting,Composition + Percussion,Light Lectureship,MUSC,58,1,2,4,M,M,M,M,Y,Y,N,NA,Y,N,S22,NA,MUSC,Guest,2021-2022,Spring
+Kracum,2022-04-23,GUEST: Mark Stewart,Electric Guitar Solo,Concert Series,MUSC,66,1,2,5,L,M,L,L,N,N,N,NA,Y,N,S22,NA,MUSC,Guest,2021-2022,Spring
+Kracum,2022-04-29,GUEST: Nakamatsu & Manasse Duo,Clarinet + Piano Duo,Concert Series,MUSC,64,1,1,4,L,L,L,L,N,N,N,NA,Y,N,S22,NA,MUSC,Guest,2021-2022,Spring
+Kracum,2022-05-01,GUEST: Isles Ensemble,Chamber Ensemble,Concert Series,MUSC,45,1,1,5,L,L,M,L,N,Y,N,NA,Y,N,S22,NA,MUSC,Guest,2021-2022,Spring
+Kracum,2022-05-07,GUEST: The Singers,Choir,Concert Series,MUSC,121,1,2,4,H,M,H,L,Y,N,N,NA,Y,N,S22,NA,MUSC,Guest,2021-2022,Spring
+Kracum,2022-10-13,GUEST: SPCO,Chamber Orchestra,SPCO & Redleaf Family Chair & HRK Family,MUSC,226,1,1,4,H,L,H,L,N,N,N,Y,N,N,F22,NA,MUSC,Guest,2022-2023,Fall
+Kracum,2023-01-15,GUEST: Erin Keefe Concert,Violin + Piano Duo,Concert Series,MUSC,99,2,1,5,L,L,L,L,N,Y,NA,Y,Y,N,W23,N,MUSC,Guest,2022-2023,Winter
+Kracum,2023-02-04,EDN Concert,Experimental Chamber Music,Concert Series,MUSC,NA,1,3,5,H,H,H,M,N,Y,NA,Y,Y,N,W23,N,MUSC,Guest,2022-2023,Winter
+Applebaum,2023-02-11,GUEST: Joan Griffith,Guitar + Mandolin Solo,Concert Series,MUSC,40,1,2,4,L,L,L,L,N,Y,NA,Y,Y,N,W23,N,MUSC,Guest,2022-2023,Winter
+Kracum,2023-02-17,Symphony & GUEST: CSB Concert,Brass Chamber Ensemble,Southeastern Minnesota Arts Council,MUSC,130,2,4,6,H,M,H,M,N,Y,NA,Y,Y,N,W23,Y,MUSC,Guest,2022-2023,Winter
+Kracum,2023-04-07,GUEST: Sara Davis Buechner - Concert,Piano Solo,Concert Series,MUSC,112,1,3,5,L,L,L,L,N,Y,NA,Y,Y,N,S23,N,MUSC,Guest,2022-2023,Spring
+Kracum,2023-04-15,GUEST: Leonard Jacome - Concert,Venezuelan Electric Harp,Concert Series,MUSC,96,1,4,4,M,H,M,M,N,Y,NA,Y,Y,N,S23,N,MUSC,Guest,2022-2023,Spring
+Kracum,2023-04-28,GUEST: Emery Stephens - Concert,African American Spirit Music,Concert Series,MUSC,54,3,4,6,H,M,M,H,Y,Y,NA,N,Y,N,S23,N,MUSC,Guest,2022-2023,Spring
+Kracum,2023-05-07,"Rodman Electric Theater, 1923 - Concert",Theater Orchestra,Office of the Provost,MUSC,67,2,4,6,L,L,L,M,Y,Y,NA,Y,Y,N,S23,N,MUSC,Guest,2022-2023,Spring
+Kracum,2023-05-14,GUEST:  Bamako Foli Concert,Djembe Music and Dance,Concert Series,MUSC,135,2,4,6,M,L,L,L,N,Y,NA,Y,N,N,S23,N,MUSC,Guest,2022-2023,Spring
+Kracum,2023-09-29,GUEST: Laura Viers - Concert (guitar & voice),Voice Solo,Concert Series,MUSC,50,1,3,5,L,M,L,M,N,Y,NA,Y,Y,Y,F23,N,MUSC,Guest,2023-2024,Fall
+Kracum,2023-10-06,GUEST: Sequentia - Concert (voice),Medieval Voice Ensemble,Concert Series,HIST & ODOA & MUSC,187,2,3,6,L,L,L,L,Y,Y,NA,Y,Y,N,F23,N,Collab,Guest,2023-2024,Fall
+Kracum,2023-10-08,"GUEST: Helen Chang Concert (violin, piano, cello)",Violin + Piano + Cello Trio,Concert Series,MUSC,43,2,2,6,L,L,L,L,N,Y,NA,Y,Y,Y,F23,N,MUSC,Guest,2023-2024,Fall
+Kracum,2023-10-19,GUEST: SPCO - Concert,Chamber Orchestra,SPCO & Redleaf Family Chair & HRK Family,MUSC,260,1,2,5,M,L,H,L,N,N,NA,Y,N,N,F23,N,MUSC,Guest,2023-2024,Fall
+Kracum,2023-10-29,GUEST: Voces8 - Concert,Choir,Concert Series,MUSC,277,1,2,9,H,L,H,H,N,Y,NA,Y,Y,Y,F23,N,MUSC,Guest,2023-2024,Fall
+Kracum,2024-01-18,GUEST: Vijay Iyer Trio - Concert,Jazz Trio - Piano + Bass + Percussion,2024 Ward Lucas Lectureship in the Arts,MUSC,200,2,2,7,M,H,M,L,N,N,NA,Y,Y,Y,W24,N,MUSC,Guest,2023-2024,Winter
+Kracum,2024-02-01,GUEST: Adam Levy Trio - Concert,Jazz Trio - Electric Guitar + Drums + Duoble Bass,Concert Series,MUSC,95,1,5,4,M,H,M,L,N,Y,NA,Y,Y,N,W24,N,MUSC,Guest,2023-2024,Winter
+Kracum,2024-02-18,"Chinese Music Concert w/ GUESTS (erhu, guzheng)",Chinese Music Ensemble,Elizabeth Nason Distinguished Women Visitors Fund + Lam Family,MUSC,196,2,4,4,H,H,H,L,N,Y,NA,Y,Y,N,W24,Y,MUSC,Guest,2023-2024,Winter
+Kracum,2024-02-23,GUEST: fivebyfive,Chamber Quintet,Concert Series,MUSC,130,1,4,5,H,M,H,M,Y,Y,NA,Y,Y,N,W24,N,MUSC,Guest,2023-2024,Winter
+Kracum,2024-04-05,GUEST: Susanne Farrin & EDN - Concert,Composition + Chamber,Elizabeth Nason Distinguished Women Visitors Fund + Light Lectureship,MUSC,50,3,4,6,H,H,M,H,N,Y,NA,N,N,Y,S24,N,MUSC,Guest,2023-2024,Spring
+Kracum,2024-04-12,GUEST: Christopher Taylor - Concert (piano),Piano Solo,Concert Series,MUSC,133,2,3,5,L,L,M,L,N,Y,NA,Y,Y,N,S24,N,MUSC,Guest,2023-2024,Spring
+Kracum,2024-04-20,GUEST: Les Arrivants,Bandoneon + Tombak + Oud Trio,Concert Series,MUSC,55,1,3,6,M,H,M,L,N,Y,NA,Y,Y,N,S24,N,MUSC,Guest,2023-2024,Spring
+Kracum,2024-05-11,GUEST: Charlie Parr,Voice + Guitar Solo,Concert Series,MUSC,27,1,3,4,M,M,M,L,N,N,NA,N,N,Y,S24,N,MUSC,Guest,2023-2024,Spring

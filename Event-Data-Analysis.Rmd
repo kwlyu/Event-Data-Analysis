@@ -379,3 +379,51 @@ write_csv(guest_only, file = "guest_only.csv")
 
 ```
 
+```{r}
+music_guest_only <- read_csv(file = "guest_only2.csv")
+
+print_guest_dat <- music_guest_only %>% 
+  select(date, what, genre, sponsor, year, term_category) %>% 
+  mutate(what = str_replace_all(what, "GUEST: ", ""))
+
+write_tsv(print_guest_dat, "print_guest.tsv")
+glimpse(print_guest_dat)
+
+print_guest_fn <- function(data) {
+  # Extract unique years
+  years <- unique(data$year)
+  
+  for (year in years) {
+    cat("\n---------------------------\n")  # Divider between years
+    cat(year, "\n", sep = "")
+    
+    # Extract term categories for the current year
+    terms <- unique(data$term_category[data$year == year])
+    
+    for (term in terms) {
+      cat("\n", term, "\n", sep = "")
+      
+      # Extract rows corresponding to the current term and year
+      term_data <- data[data$year == year & data$term_category == term, ]
+      
+      if (nrow(term_data) == 0) {
+        cat("No guests\n")
+      } else {
+        for (i in 1:nrow(term_data)) {
+          event <- term_data$what[i]
+          genre <- term_data$genre[i]
+          sponsor <- term_data$sponsor[i]
+          cat(event, " | ", genre, " | ", sponsor, "\n", sep = "")
+        }
+      }
+    }
+  }
+  
+  cat("\n---------------------------\n")  # Final divider
+}
+
+
+print_guest_fn(print_guest_dat)
+
+```
+
