@@ -352,7 +352,7 @@ event_tables_melted
 ```{r}
 combined_data_filtered %>% filter(event_type == "Guest",
                                   str_detect(department, "MUSC")) %>% 
-  filter(!str_detect(what, "Masterclass|Lecture")) -> guest_only
+  filter(!str_detect(what, "Masterclass")) -> guest_only
 
 write_csv(guest_only, file = "guest_only.csv")
 
