@@ -320,13 +320,33 @@ event_tables <- map_dfr(years, summarize_and_pivot_event)  # Combine into a sing
 event_tables_melted <- event_tables %>%
   pivot_longer(cols = -c(term_category, year), names_to = "event_type", values_to = "EventCount")
 
-# Ensure the term_category and event_type are factors with the correct order
+library(dplyr)
+
+# Check the data types and unique values
+str(event_tables_melted)
+unique(event_tables_melted$term_category)
+unique(event_tables_melted$event_type)
+
+# Inspect the structure of the dataset
+summary(event_tables_melted)
+
+# Ensure term_category and event_type are characters before converting to factors
 event_tables_melted <- event_tables_melted %>%
-  mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
-         event_type = factor(event_type, levels = c("Ensemble Concert", "Student Activity", "Studio Recital",
-                                                    "Guest", "Faculty Recital", "Student Recital",
-                                                    "Special Events", "Presentation", "Masterclass"),
-                            ordered = TRUE))
+  mutate(
+    term_category = as.character(term_category),
+    event_type = as.character(event_type)
+  )
+
+# Apply the factor conversion with ordering
+event_tables_melted <- event_tables_melted %>%
+  mutate(
+    term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+    event_type = factor(event_type, levels = c("Ensemble Concert", "Student Activity", "Studio Recital",
+                                               "Guest", "Faculty Recital", "Student Recital",
+                                               "Special Events", "Presentation", "Masterclass"),
+                        ordered = TRUE)
+  )
+
 
 # Calculate percentages for each segment
 event_tables_melted <- event_tables_melted %>%

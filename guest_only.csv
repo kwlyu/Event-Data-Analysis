@@ -8,12 +8,16 @@ Concert Hall,2015-02-08,"GUEST: Anderson, Martin, & Hagedorn",MUSC,NA,NA,NA,NA,N
 Concert Hall,2015-04-04,GUEST: Ysaÿe Barnwell,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
 Concert Hall,2015-04-12,GUEST: Jon Nakamastsu,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
 Concert Hall,2015-04-26,"GUEST: Songs of War - R Penning, S Penning, Anderson, Anderegg, Rosenberg, & Melville",MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2015-05-08,GUEST: Light Lectureship - Polygraph Lounge,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
+Concert Hall,2015-05-09,GUEST: Light Lectureship - Polygraph Lounge Chamber,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
 Concert Hall,2015-05-16,GUEST: Martha Jamsa Flute Recital,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
 Concert Hall,2015-05-17,SPCO Concert,MUSC & SPCO,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,Collab,Guest,2014-2015,Spring
 Concert Hall,2015-05-22,GUEST: Haydn Orchestra & Carleton Singers,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,S15,NA,MUSC,Guest,2014-2015,Spring
 Concert Hall,2016-01-15,GUEST: Greenman & Carleto World Music Chamber Ensemble,MUSC,NA,NA,NA,M,M,M,NA,N,Y,NA,137,NA,Y,Y,W16,NA,MUSC,Guest,2015-2016,Winter
 Concert Hall,2016-01-29,GUEST: Mark Kreitzer Band,MUSC,NA,NA,NA,L,L,L,NA,N,Y,NA,83,NA,Y,Y,W16,NA,MUSC,Guest,2015-2016,Winter
+Concert Hall,2016-01-30,GUEST: Christopher Light Lectureship,MUSC,NA,NA,NA,M,M,M,NA,N,N,NA,116,NA,N,Y,W16,NA,MUSC,Guest,2015-2016,Winter
 Great Hall,2016-02-26,GUEST: Niramala of Friends,MUSC,NA,NA,NA,H,M,H,NA,NA,N,NA,139,NA,Y,Y,W16,NA,MUSC,Guest,2015-2016,Winter
+Concert Hall,2016-04-08,GUEST: Light Lectureship w/ Dan Trueman,MUSC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Y,NA,S16,NA,MUSC,Guest,2015-2016,Spring
 Concert Hall,2016-05-05,GUEST: Diawara,MUSC,NA,NA,NA,H,H,H,NA,N,N,NA,270,NA,N,Y,S16,NA,MUSC,Guest,2015-2016,Spring
 Concert Hall,2016-05-08,Voyage of the Seasons,MUSC,NA,NA,NA,L,L,L,NA,N,N,NA,18,NA,Y,Y,S16,NA,MUSC,Guest,2015-2016,Spring
 Concert Hall,2016-05-22,GUEST: Burnett & Campbell,MUSC,NA,NA,NA,L,L,L,NA,NA,NA,NA,105,NA,Y,NA,S16,NA,MUSC,Guest,2015-2016,Spring
@@ -74,7 +78,9 @@ Kracum,2023-10-31,GUEST: Sophie Lukacs Concert (kora),MUSC & ODOA,1,0,1,L,L,L,L,
 Kracum,2024-01-18,GUEST: Vijay Iyer Trio - Concert,MUSC,2,2,7,M,H,M,L,N,N,NA,200,Y,Y,Y,W24,N,MUSC,Guest,2023-2024,Winter
 Kracum,2024-02-01,GUEST: Adam Levy Trio - Concert,MUSC,1,5,4,M,H,M,L,N,Y,NA,95,Y,Y,N,W24,N,MUSC,Guest,2023-2024,Winter
 Kracum,2024-02-18,"Chinese Music Concert w/ GUESTS (erhu, guzheng)",MUSC,2,4,4,H,H,H,L,N,Y,NA,196,Y,Y,N,W24,Y,MUSC,Guest,2023-2024,Winter
+Applebaum,2024-02-22,GUEST: fivebyfive - Lecture,MUSC,1,0,1,L,L,L,L,Y,N,NA,NA,N,N,NA,W24,N,MUSC,Guest,2023-2024,Winter
 Kracum,2024-02-23,GUEST: fivebyfive,MUSC,1,4,5,H,M,H,M,Y,Y,NA,130,Y,Y,N,W24,N,MUSC,Guest,2023-2024,Winter
+Weitz Cinema,2024-04-03,GUEST: Susanne Farrin Lecture,MUSC,1,1,2,L,L,L,L,Y,N,NA,11,Y,Y,N,S24,N,MUSC,Guest,2023-2024,Spring
 Kracum,2024-04-05,GUEST: Susanne Farrin & EDN - Concert,MUSC,3,4,6,H,H,M,H,N,Y,NA,50,N,N,Y,S24,N,MUSC,Guest,2023-2024,Spring
 Kracum,2024-04-12,GUEST: Christopher Taylor - Concert (piano),MUSC,2,3,5,L,L,M,L,N,Y,NA,133,Y,Y,N,S24,N,MUSC,Guest,2023-2024,Spring
 Kracum,2024-04-20,GUEST: Les Arrivants,MUSC,1,3,6,M,H,M,L,N,Y,NA,55,Y,Y,N,S24,N,MUSC,Guest,2023-2024,Spring
