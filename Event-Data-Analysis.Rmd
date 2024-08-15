@@ -427,3 +427,50 @@ print_guest_fn(print_guest_dat)
 
 ```
 
+```{r}
+library(lubridate)
+library(dplyr)
+
+# Example mapping of term to start dates
+term_start_dates <- data.frame(
+  term = c("F14", "W15", "S15", 
+           "F15", "W16", "S16", 
+           "F16", "W17", "S17", 
+           "F17", "W18", "S18", 
+           "F18", "W19", "S19", 
+           "F19", "W20", "S20", 
+           "F20", "W21", "S21", 
+           "F21", "W22", "S22", 
+           "F22", "W23", "S23", 
+           "F23", "W24", "S24"),  # Add all relevant terms
+  start_date = as.Date(c("2014-09-15", "2015-01-05", "2015-03-30",
+                         "2015-09-14", "2016-01-04", "2016-03-28",
+                         "2016-09-12", "2017-01-04", "2017-03-27",
+                         "2017-09-11", "2018-01-03", "2018-03-26",
+                         "2018-09-10", "2019-01-07", "2019-04-01",
+                         "2019-09-16", "2020-01-06", "2020-03-30",
+                         "2020-09-14", "2021-01-04", "2021-03-29",
+                         "2021-09-15", "2022-01-05", "2022-03-28",
+                         "2022-09-12", "2023-01-04", "2023-03-27",
+                         "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
+)
+
+# Join the start dates to the main data and calculate week_of_term
+combined_data_filtered <- combined_data_filtered %>%
+  left_join(term_start_dates, by = c("term" = "term")) %>%
+  mutate(
+    # Calculate the week of the term based on Monday as the first day of the week
+    week_of_term = as.integer((floor_date(date, unit = "week", week_start = 1) - 
+                               floor_date(start_date, unit = "week", week_start = 1)) / 7) + 1
+  )
+
+# Reorder columns to make week_of_term the third column
+combined_data_filtered <- combined_data_filtered %>%
+  select(venue, date, week_of_term, everything())
+
+# Clean up by removing the start_date column if needed
+combined_data_filtered <- combined_data_filtered %>%
+  select(-start_date)
+
+```
+
