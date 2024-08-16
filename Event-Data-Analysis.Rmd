@@ -42,7 +42,7 @@ library(plotly)
 
 ```{r}
 # Define the directory containing the files
-data_dir <- "data_2/"
+data_dir <- "data"
 
 # Define the file codes
 file_codes <- c("F14", "W15", "S15", "F15", "W16", "S16", "F16", "W17", "S17", 
