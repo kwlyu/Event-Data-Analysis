@@ -92,9 +92,9 @@ ui <- function(request) {
       tabItems(
         tabItem(
           tabName = "analysis",
-          h3('Exploratory Data Analysis'),
+          h3('Upload and Check Data Here'),
           tabsetPanel(id = "tabs",
-                      tabPanel("Life Expectancy by Countries", 
+                      tabPanel("Upload New Term Data", 
                                fluidRow(
                                  column(
                                    width = 8,
@@ -125,7 +125,7 @@ ui <- function(request) {
                                  )
                                )
                       ),
-                      tabPanel("Life Expectancy vs. Something",
+                      tabPanel("Check Processed Data Here",
                                fluidRow(
                                  column(
                                    width = 8,
@@ -161,7 +161,7 @@ ui <- function(request) {
         ),
         tabItem(
           tabName = "results",
-          h3('Machine Learning Results'),
+          h3('Visualizations'),
           tabsetPanel(id = "tabs2",
                       tabPanel("K-Means Classification", 
                                fluidRow(
@@ -298,9 +298,11 @@ ui <- function(request) {
         tabItem(
           tabName = "readme",
           div(
-            h1("Welcome to Life Expectancy Analysis", align = "center", style = "font-weight:bold"),
+            h1("Welcome to the PAC Office Event Data Analyzer", align = "center", style = "font-weight:bold"),
             br(),
-            h4("Navigate to the Data tab to see the visualizations and the trends we found!"),
+            h4("Navigate to the Data tab to upload and check the new term data!"),
+            br(),
+            h4("Navigate to the Results tab to see visualizations and trends across the past years"),
             br(),
             h4("For optimal viewing, collapse the menu on the top left corner."),
             br(),
