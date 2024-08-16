@@ -188,7 +188,7 @@ ui <- function(request) {
     options = list(sidebarExpandOnHover = TRUE),
     header = dashboardHeader(title = tagList(
       span(class = "logo-lg", "PAC Event Data Analysis"), 
-      icon("violin")),
+      icon("heart")),
       dropdownMenuOutput("logoutbtn"),
       controlbarIcon = icon("gear")
     ),
@@ -304,7 +304,7 @@ ui <- function(request) {
                                fluidRow(
                                  column(
                                    width = 8,
-                                   shinycssloaders::withSpinner(imageOutput("kmeans_plot_init"))
+                                   shinycssloaders::withSpinner(plotlyOutput("Plot1"))
                                  ),
                                  column(
                                    width = 4,
@@ -334,7 +334,7 @@ ui <- function(request) {
                                fluidRow(
                                  column(
                                    width = 8,
-                                   shinycssloaders::withSpinner(imageOutput("importance_plot_init"))
+                                   shinycssloaders::withSpinner(plotlyOutput("Plot2"))
                                  ),
                                  column(
                                    width = 4,
@@ -364,7 +364,7 @@ ui <- function(request) {
                                fluidRow(
                                  column(
                                    width = 8,
-                                   shinycssloaders::withSpinner(imageOutput("tree_plot_init"))
+                                   shinycssloaders::withSpinner(plotlyOutput("Plot3"))
                                  ),
                                  column(
                                    width = 4,
@@ -392,7 +392,7 @@ ui <- function(request) {
                                fluidRow(
                                  column(
                                    width = 8,
-                                   shinycssloaders::withSpinner(imageOutput("tree_plot_init"))
+                                   shinycssloaders::withSpinner(plotlyOutput("Plot4"))
                                  ),
                                  column(
                                    width = 4,
@@ -478,54 +478,71 @@ server <- function(input, output, session) {
   
   ############################## Plot 1 Overview ###############################
   
-  # Function to render by country plot
-  accumulate_by <- function(dat, var) {
-    var <- lazyeval::f_eval(var, dat)
-    lvls <- plotly:::getLevels(var)
-    dats <- lapply(seq_along(lvls), function(x) {
-      cbind(dat[var %in% lvls[seq(1, x)], ], frame = lvls[[x]])
-    })
-    dplyr::bind_rows(dats)
+  # Function to get sheet names from Google Sheets
+  get_sheet_names <- function(sheet_url) {
+    sheet_names <- sheets_sheets(sheet_url)
+    return(sheet_names)
   }
   
-  renderCountriesPlot <- function(countries) {
-    fig <- life_expect_cleaned %>%
-      filter(country %in% countries) %>% 
-      accumulate_by(~year) %>%
-      plot_ly(
-        x = ~ year, 
-        y = ~ life_expectancy,
-        split = ~ country,
-        frame = ~ frame, 
-        type = 'scatter',
-        mode = 'lines+markers', 
-        line = list(simplyfy = FALSE)
-      ) %>% 
-      layout(
-        xaxis = list(
-          title = "Year",
-          zeroline = FALSE
-        ),
-        yaxis = list(
-          title = "Life Expectancy",
-          zeroline = FALSE
-        )
-      ) %>% 
-      animation_opts(
-        frame = 500, 
-        transition = 1, 
-        redraw = FALSE
-      ) %>% 
-      animation_slider(
-        hide = FALSE
-      ) %>% animation_button(
-        x = 1, xanchor = "right", y = 0, yanchor = "bottom"
-      )
+  # Function to extract term from sheet name
+  extract_term <- function(sheet_name) {
+    # Extract term from sheet name assuming format "F14 - Event Data", "W15 - Event Data", etc.
+    term_match <- str_extract(sheet_name, "^[FWS]\\d{2}")
+    return(term_match)
   }
+  
+  # Function to process and sort event summary based on dynamic term levels
+  process_event_summary <- function(event_summary, sheet_names) {
+    # Extract terms from sheet names
+    terms <- unique(sapply(sheet_names, extract_term))
+    
+    # Define term levels based on sheet names
+    term_levels <- c()
+    for (season in c("F", "W", "S")) {
+      term_levels <- c(term_levels, sort(terms[str_detect(terms, paste0("^", season))]))
+    }
+    
+    event_summary %>%
+      mutate(term = factor(term, levels = term_levels, ordered = TRUE)) %>%
+      arrange(year, term) %>%
+      mutate(
+        term_category = case_when(
+          str_detect(term, "^F") ~ "Fall",
+          str_detect(term, "^W") ~ "Winter",
+          str_detect(term, "^S") ~ "Spring"
+        )
+      ) %>%
+      mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE))
+  }
+  
+  # URL of the Google Sheets
+  sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit?gid=265403245"
+  
+  # Fetch sheet names
+  sheet_names <- sheet_names(sheet_url)
+  
+  # Assuming event_summary is already loaded
+  # Process the event summary data frame
+  event_summary_processed <- process_event_summary(event_summary, sheet_names)
+  
+  # Create the stacked bar chart using ggplot2
+  ggplot_event_summary <- ggplot(event_summary_processed, aes(x = year, y = term_total, fill = term_category)) +
+    geom_bar(stat = "identity") +
+    geom_text(aes(label = term_total), 
+              position = position_stack(vjust = 0.5), 
+              size = 3, 
+              color = "black") +
+    scale_fill_manual(values = c("Fall" = "#FF9999", "Winter" = "#99CCFF", "Spring" = "#99FF99")) +
+    labs(x = "Year", y = "Total Events", fill = "Term") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  # Convert the ggplot object to a plotly object for interactivity
+  plotly_event_summary <- ggplotly(ggplot_event_summary)
   
   # Initial rendering of the countries plot
   output$Plot1 <- renderPlotly({
-    renderCountriesPlot(c("Afghanistan", "Belgium"))
+    plotly_event_summary
   })
   
   # UI for controlling countries parameters.
@@ -558,73 +575,56 @@ server <- function(input, output, session) {
   
   ############################### Plot 2 Overview ##############################
   
-  renderContinentPlot <- function(compare, log_scale) {
-    # Debugging: Print the inputs received
-    print(paste("compare:", compare))
-    print(paste("log_scale:", log_scale))
-    
-    # Get the label corresponding to the selected variable
-    x_axis_label <- switch(compare,
-                           status = "Status",
-                           adult_mortality = "Adult Mortality",
-                           infant_deaths = "Infant Deaths",
-                           alcohol = "Alcohol",
-                           percentage_expenditure = "Percentage Expenditure",
-                           hepatitis_b = "Hepatitis B",
-                           measles = "Measles",
-                           bmi = "BMI",
-                           under_five_deaths = "Under Five Deaths per 1000",
-                           polio = "Polio",
-                           total_expenditure = "Total Expenditure",
-                           diphtheria = "Diphtheria",
-                           hiv_aids = "HIV and AIDS",
-                           population = "Population",
-                           thinness_1_19_years = "Thinness 1-19 Years",
-                           thinness_5_9_years = "Thinness 5-9 Years",
-                           income_composition_of_resources = "Income Composition of Resources",
-                           schooling = "Schooling",
-                           gdp_pcap = "GDP per Capita")
-    
-    # Determine the x-axis scale based on the log_scale argument
-    x_scale <- if (log_scale) "log" else "linear"
-    
-    # Subset the data based on the selected variable
-    data <- life_expect_cleaned %>%
-      select(year, country, gdp_pcap, life_expectancy, population, continent, !!sym(compare))
-    
-    # Create the plotly animation
-    p <- data %>% 
-      plot_ly(
-        x = ~get(compare), 
-        y = ~life_expectancy, 
-        size = ~population, 
-        color = ~continent, 
-        frame = ~year, 
-        text = ~country, 
-        hoverinfo = "text",
-        type = 'scatter',
-        mode = 'markers'
-      ) %>%
-      layout(
-        xaxis = list(
-          title = x_axis_label,  # Set the x-axis label dynamically
-          type = x_scale
-        ),
-        yaxis = list(
-          title = "Life Expectancy"
-        )
-      ) %>% animation_slider(
-        hide = FALSE
-      ) %>% animation_button(
-        x = 1, xanchor = "right", y = 0, yanchor = "bottom"
-      )
-    
-    return(p)
+  # Function to summarize and pivot data for each year
+  summarize_and_pivot <- function(current_year) {
+    combined_data_filtered %>%
+      filter(year == current_year) %>%
+      group_by(term_category, support_level) %>%
+      summarize(Support = n(), .groups = 'drop') %>%
+      pivot_wider(names_from = support_level, values_from = Support, values_fill = list(Support = 0)) %>%
+      mutate(year = current_year)  # Add a year column to identify the table
   }
+  
+  # List of years to iterate over
+  years <- unique(combined_data_filtered$year)
+  
+  # Use purrr::map to apply summarize_and_pivot function for each year
+  support_tables <- map_dfr(years, summarize_and_pivot)  # Combine into a single data frame
+  
+  # Melt the data for ggplot
+  support_tables_melted <- support_tables %>%
+    pivot_longer(cols = -c(term_category, year), names_to = "support_level", values_to = "Support")
+  
+  # Ensure the term_category and support_level are factors with the correct order
+  support_tables_melted <- support_tables_melted %>%
+    filter(support_level != "NA") %>% 
+    mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+           support_level = factor(support_level, levels = c("NA", "H", "M", "L"), ordered = TRUE))
+  
+  # Calculate percentages for each segment
+  support_tables_melted <- support_tables_melted %>%
+    group_by(year, term_category) %>%
+    mutate(total_support = sum(Support),
+           percentage = (Support / total_support) * 100)
+  
+  # Create the ggplot chart
+  ggplot_support_summary <- ggplot(support_tables_melted, aes(x = term_category, y = Support, fill = support_level)) +
+    geom_bar(stat = "identity", position = "stack") +
+    geom_text(aes(label = paste0(Support, " (", round(percentage, 1), "%)")),
+              position = position_stack(vjust = 0.5), size = 2, color = "black") +
+    facet_wrap(~ year) +
+    labs(x = "Term", y = "Support Count", fill = "Support Level") +
+    scale_fill_manual(values = c("H" = "#FF9999", "M" = "#99CCFF", "L" = "#99FF99", "NA" = "black")) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  # Convert to a plotly object
+  plotly_support_summary <- ggplotly(ggplot_support_summary)
   
   # Initial rendering of the plot
   output$Plot2 <- renderPlotly({
-    renderContinentPlot(compare = "gdp_pcap", log_scale = TRUE)
+    # Display the plotly chart
+    plotly_support_summary
   })
   
   # Render control bar UI elements
@@ -685,6 +685,243 @@ server <- function(input, output, session) {
     })
   })
   
+  ############################### Plot 3 Overview ##############################
+  # Function to summarize and pivot data for each year
+  summarize_and_pivot_department <- function(current_year) {
+    combined_data_filtered %>%
+      filter(year == current_year) %>%
+      group_by(term_category, department_type) %>%
+      summarize(DepartmentCount = n(), .groups = 'drop') %>%
+      pivot_wider(names_from = department_type, values_from = DepartmentCount, values_fill = list(DepartmentCount = 0)) %>%
+      mutate(year = current_year)  # Add a year column to identify the table
+  }
+  
+  # List of years to iterate over
+  years <- unique(combined_data_filtered$year)
+  
+  # Use purrr::map to apply summarize_and_pivot function for each year
+  department_tables <- map_dfr(years, summarize_and_pivot_department)  # Combine into a single data frame
+  
+  # Melt the data for ggplot
+  department_tables_melted <- department_tables %>%
+    pivot_longer(cols = -c(term_category, year), names_to = "department_type", values_to = "DepartmentCount")
+  
+  # Ensure the term_category and department_type are factors with the correct order
+  department_tables_melted <- department_tables_melted %>%
+    mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+           department_type = factor(department_type, levels = c("MUSC", "ODOA", "CSA", "Collab", "Others"), ordered = TRUE))
+  
+  # Filter out NA department types (if any)
+  department_tables_melted <- department_tables_melted %>%
+    filter(department_type != "NA")
+  
+  # Calculate percentages for each segment
+  department_tables_melted <- department_tables_melted %>%
+    group_by(year, term_category) %>%
+    mutate(total_count = sum(DepartmentCount, na.rm = TRUE),
+           percentage = (DepartmentCount / total_count) * 100)
+  
+  # Create the ggplot chart
+  ggplot_department_summary <- ggplot(department_tables_melted, aes(x = term_category, y = DepartmentCount, fill = department_type)) +
+    geom_bar(stat = "identity", position = "stack") +
+    geom_text(aes(label = paste0(DepartmentCount, " (", round(percentage, 1), "%)")),
+              position = position_stack(vjust = 0.5), size = 2, color = "black",
+              check_overlap = TRUE) +
+    facet_wrap(~ year) +
+    labs(x = "Term", y = "Department Count", fill = "Department Type") +
+    scale_fill_manual(values = c("MUSC" = "#FF9999", "ODOA" = "#99CCFF", "CSA" = "#99FF99", "Collab" = "#FFD700", "Others" = "#FFA500")) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  # Convert to a plotly object
+  plotly_department_summary <- ggplotly(ggplot_department_summary)
+  
+  # Initial rendering of the plot
+  output$Plot3 <- renderPlotly({
+    # Display the plotly chart
+    plotly_department_summary
+  })
+  
+  # Render control bar UI elements
+  output$plot3Control <- renderUI({
+    conditionalPanel(condition = 'input.tabs == "Life Expectancy vs. Something"',
+                     selectInput("compare_var", 
+                                 "Compare Life Expectancy with:", 
+                                 choices = c(Status = "status", 
+                                             `Adult Mortality` = "adult_mortality", 
+                                             `Infant Deaths` = "infant_deaths",
+                                             Alcohol = "alcohol", 
+                                             `Percentage Expenditure` = "percentage_expenditure", 
+                                             `Hepatitis B` = "hepatitis_b",
+                                             Measles = "measles", 
+                                             BMI = "bmi",
+                                             `Under Five Deaths per 1000` = "under_five_deaths", 
+                                             Polio = "polio",
+                                             `Total Expenditure` = "total_expenditure", 
+                                             Diphtheria = "diphtheria",
+                                             `HIV and AIDS` = "hiv_aids",
+                                             `Population` = "population",
+                                             `Thinness 1-19 Years` = "thinness_1_19_years",
+                                             `Thinness 5-9 Years` = "thinness_5_9_years",
+                                             `Income Composition of Resources` = "income_composition_of_resources",
+                                             `Schooling` = "schooling",
+                                             `GDP per Capita` = "gdp_pcap"),
+                                 selected = "gdp_pcap",
+                                 multiple = FALSE),
+                     prettyToggle(inputId = "log_scale", 
+                                  label_on = "Log Scaled",
+                                  label_off = "Linear Scaled", 
+                                  icon_on = icon("check-square"), 
+                                  icon_off = icon("square"),
+                                  status_on = "info", 
+                                  status_off = "warning",
+                                  value = TRUE),
+                     actionButton("updatePlot2", "Update"),
+                     actionButton("resetPlot2", "Reset!")
+    )
+  })
+  
+  # Update plot based on selected variable
+  observeEvent(input$updatePlot3, {
+    req(input$compare_var, input$log_scale)
+    output$Plot2 <- renderPlotly({
+      isolate({
+        renderContinentPlot(input$compare_var, input$log_scale)
+      })
+    })
+  })
+  
+  # Reset the plot to default variable
+  observeEvent(input$resetPlot3, {
+    updateSelectInput(session, "compare_var", selected = "gdp_pcap")
+    updatePrettyToggle(session, "log_scale", value = TRUE)
+    output$Plot2 <- renderPlotly({
+      renderContinentPlot(compare = "gdp_pcap", TRUE)
+    })
+  })
+  
+  ############################### Plot 4 Overview ##############################
+  # Function to summarize and pivot data for each year
+  summarize_and_pivot_event <- function(current_year) {
+    combined_data_filtered %>%
+      filter(year == current_year) %>%
+      group_by(term_category, event_type) %>%
+      summarize(EventCount = n(), .groups = 'drop') %>%
+      pivot_wider(names_from = event_type, values_from = EventCount, values_fill = list(EventCount = 0)) %>%
+      mutate(year = current_year)  # Add a year column to identify the table
+  }
+  
+  # List of years to iterate over
+  years <- unique(combined_data_filtered$year)
+  
+  # Use purrr::map to apply summarize_and_pivot function for each year
+  event_tables <- map_dfr(years, summarize_and_pivot_event)  # Combine into a single data frame
+  
+  # Melt the data for ggplot
+  event_tables_melted <- event_tables %>%
+    pivot_longer(cols = -c(term_category, year), names_to = "event_type", values_to = "EventCount")
+  
+  # Ensure term_category and event_type are characters before converting to factors
+  event_tables_melted <- event_tables_melted %>%
+    mutate(
+      term_category = as.character(term_category),
+      event_type = as.character(event_type)
+    )
+  
+  # Apply the factor conversion with ordering
+  event_tables_melted <- event_tables_melted %>%
+    mutate(
+      term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+      event_type = factor(event_type, levels = c("Ensemble Concert", "Student Activity", "Studio Recital",
+                                                 "Guest", "Faculty Recital", "Student Recital",
+                                                 "Special Events", "Presentation", "Masterclass"),
+                          ordered = TRUE)
+    )
+  
+  # Calculate percentages for each segment
+  event_tables_melted <- event_tables_melted %>%
+    group_by(year, term_category) %>%
+    mutate(total_count = sum(EventCount, na.rm = TRUE),
+           percentage = (EventCount / total_count) * 100)
+  
+  # Create the ggplot chart
+  ggplot_event_summary <- ggplot(event_tables_melted, aes(x = term_category, y = EventCount, fill = event_type)) +
+    geom_bar(stat = "identity", position = "stack") +
+    geom_text(aes(label = paste0(EventCount, " (", round(percentage, 1), "%)")),
+              position = position_stack(vjust = 0.5), size = 2, color = "black",
+              check_overlap = TRUE) +
+    facet_wrap(~ year) +
+    labs(x = "Term", y = "Event Count", fill = "Event Type") +
+    scale_fill_brewer(palette = "Set2") +  # Using a Brewer palette for default colors
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  # Convert to a plotly object
+  plotly_event_summary <- ggplotly(ggplot_event_summary)
+  
+  # Initial rendering of the plot
+  output$Plot4 <- renderPlotly({
+    # Display the plotly chart
+    plotly_event_summary
+  })
+  
+  # Render control bar UI elements
+  output$plot4Control <- renderUI({
+    conditionalPanel(condition = 'input.tabs == "Life Expectancy vs. Something"',
+                     selectInput("compare_var", 
+                                 "Compare Life Expectancy with:", 
+                                 choices = c(Status = "status", 
+                                             `Adult Mortality` = "adult_mortality", 
+                                             `Infant Deaths` = "infant_deaths",
+                                             Alcohol = "alcohol", 
+                                             `Percentage Expenditure` = "percentage_expenditure", 
+                                             `Hepatitis B` = "hepatitis_b",
+                                             Measles = "measles", 
+                                             BMI = "bmi",
+                                             `Under Five Deaths per 1000` = "under_five_deaths", 
+                                             Polio = "polio",
+                                             `Total Expenditure` = "total_expenditure", 
+                                             Diphtheria = "diphtheria",
+                                             `HIV and AIDS` = "hiv_aids",
+                                             `Population` = "population",
+                                             `Thinness 1-19 Years` = "thinness_1_19_years",
+                                             `Thinness 5-9 Years` = "thinness_5_9_years",
+                                             `Income Composition of Resources` = "income_composition_of_resources",
+                                             `Schooling` = "schooling",
+                                             `GDP per Capita` = "gdp_pcap"),
+                                 selected = "gdp_pcap",
+                                 multiple = FALSE),
+                     prettyToggle(inputId = "log_scale", 
+                                  label_on = "Log Scaled",
+                                  label_off = "Linear Scaled", 
+                                  icon_on = icon("check-square"), 
+                                  icon_off = icon("square"),
+                                  status_on = "info", 
+                                  status_off = "warning",
+                                  value = TRUE),
+                     actionButton("updatePlot2", "Update"),
+                     actionButton("resetPlot2", "Reset!")
+    )
+  })
+  
+  # Update plot based on selected variable
+  observeEvent(input$updatePlot4, {
+    req(input$compare_var, input$log_scale)
+    output$Plot2 <- renderPlotly({
+      isolate({
+        renderContinentPlot(input$compare_var, input$log_scale)
+      })
+    })
+  })
+  
+  # Reset the plot to default variable
+  observeEvent(input$resetPlot4, {
+    updateSelectInput(session, "compare_var", selected = "gdp_pcap")
+    updatePrettyToggle(session, "log_scale", value = TRUE)
+    output$Plot2 <- renderPlotly({
+      renderContinentPlot(compare = "gdp_pcap", TRUE)
+    })
+  })
   
   ################################## Refresh page ##############################
   output$logoutbtn <- renderUI({
