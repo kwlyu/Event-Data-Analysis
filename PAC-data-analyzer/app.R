@@ -33,13 +33,153 @@ library(vip)
 library(rpart.plot)
 library(ranger)
 library(broom)
+library(googlesheets4)
 remotes::install_github("timelyportfolio/dataui")
+gs4_auth(email = "lyuk@carleton.edu", cache = ".secrets")
 
 ################################ DATA WRANGLING ################################
 
+# Define the Google Sheet URL
+sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit#gid=265403245"
 
+# Get the list of sheet names from the Google Sheet
+sheet_names_list <- sheet_names(sheet_url)
 
+# Extract the terms from the sheet names dynamically
+extracted_terms <- sheet_names_list %>%
+  str_extract("^[A-Z]\\d{2}") %>%
+  na.omit()  # Remove any NA values in case some sheet names do not follow the pattern
 
+# Ensure unique and sorted terms
+unique_terms <- sort(unique(extracted_terms))
+
+# Create a function to read and clean a sheet
+read_and_clean_event_file <- function(sheet_name) {
+  # Read the sheet using googlesheets4
+  data <- read_sheet(sheet_url, sheet = sheet_name)
+  
+  # Clean column names and ensure all columns are character type
+  clean_names(data) %>%
+    mutate(across(everything(), as.character)) %>%
+    mutate(term = str_sub(sheet_name, 1, 3)) # Extract the term from the sheet name
+}
+
+# Use purrr to read all sheets and store them in a named list
+event_data_list <- set_names(map(sheet_names_list, read_and_clean_event_file), sheet_names_list)
+
+# Combine all the data frames into one
+combined_data <- reduce(event_data_list, full_join)
+
+# Define the term start dates (hardcoded as per the original logic)
+term_start_dates <- data.frame(
+  term = c("F14", "W15", "S15", 
+           "F15", "W16", "S16", 
+           "F16", "W17", "S17", 
+           "F17", "W18", "S18", 
+           "F18", "W19", "S19", 
+           "F19", "W20", "S20", 
+           "F20", "W21", "S21", 
+           "F21", "W22", "S22", 
+           "F22", "W23", "S23", 
+           "F23", "W24", "S24"),  # Add all relevant terms
+  start_date = as.Date(c("2014-09-15", "2015-01-05", "2015-03-30",
+                         "2015-09-14", "2016-01-04", "2016-03-28",
+                         "2016-09-12", "2017-01-04", "2017-03-27",
+                         "2017-09-11", "2018-01-03", "2018-03-26",
+                         "2018-09-10", "2019-01-07", "2019-04-01",
+                         "2019-09-16", "2020-01-06", "2020-03-30",
+                         "2020-09-14", "2021-01-04", "2021-03-29",
+                         "2021-09-15", "2022-01-05", "2022-03-28",
+                         "2022-09-12", "2023-01-04", "2023-03-27",
+                         "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
+)
+
+# Function to calculate the week of term
+calculate_week_of_term <- function(event_date, term) {
+  start_date <- term_start_dates %>%
+    filter(term == !!term) %>%
+    pull(start_date)
+  
+  if(length(start_date) == 0) return(NA_integer_)  # Return NA if no start_date is found
+  
+  # Calculate the week of the term based on Monday as the first day of the week
+  week_of_term <- as.integer((floor_date(event_date, unit = "week", week_start = 1) - 
+                                floor_date(start_date, unit = "week", week_start = 1)) / 7) + 1
+  return(week_of_term)
+}
+
+# Apply the new function to calculate week_of_term dynamically
+combined_data_filtered <- combined_data %>%
+  filter(!is.na(what), what != "") %>%
+  filter(what != "Choir & Jazz Rehearsal") %>%
+  filter(what != "Jazz Rehearsal") %>%
+  mutate(date = as.Date(ymd(date))) %>%
+  mutate(support_level = if_else(support_level == "N" | support_level == "Y", "L", support_level)) %>%
+  mutate(
+    department = str_replace_all(department, "WCC", "ODOA"),
+    department = str_replace_all(department, "MSUC", "MUSC"),
+    department = str_replace_all(department, "French Dept|French", "FREN"),
+    department = str_replace_all(department, "English", "ENGL"),
+    department = str_replace_all(department, "Pres. Office", "PRES"),
+    department = str_replace_all(department, "History", "HIST"),
+    department = str_replace_all(department, "THD", "THDA"),
+    department = str_replace_all(department, "Inclusion & Equity", "IEC"),
+    venue = str_replace_all(venue, "Skinner Chapel", "Chapel"),
+    department = str_replace_all(department, "/", " & "),
+    department = str_replace_all(department, ",", " &"),
+    venue = str_replace_all(venue, ",", " &"),
+    department = str_replace_all(department, "\\s+", " ")  # Remove extra spaces
+  ) %>%
+  select(-wk) %>%
+  mutate(department_type = case_when(
+    department == "MUSC" ~ "MUSC",
+    department == "ODOA" ~ "ODOA",
+    department == "CSA" ~ "CSA",
+    str_detect(department, "&") ~ "Collab",
+    TRUE ~ "Others"
+  )) %>%
+  mutate(what = str_replace_all(what, "Jazz Ensemble Concert|Jazz Area Concert", "Jazz Concert"),
+         what = str_replace_all(what, "Symphony Band Concert", "Symphony Concert"),
+         what = str_replace_all(what, "Composition Recital", "Composition Showcase Recital"),
+         what = str_replace_all(what, "Harpichord", "Harpsichord"),
+         what = str_replace_all(what, "Emsemble", "Ensemble"),
+         what = str_replace_all(what, "Juest Cellin'", "Just Cellin'"),
+         what = str_replace_all(what, "Facutly|FACULTY|Mazariello", "Faculty")) %>%
+  mutate(event_type = case_when(
+    str_detect(what, "GUEST|ODOA|Concert Series|SPCO") ~ "Guest",
+    str_detect(what, "Faculty") ~ "Faculty Recital",
+    str_detect(what, "Student|Senior|Junior|Piano Recital: |Johnson|Verma Jameson") ~ "Student Recital",
+    str_detect(what, "Studio Recital|Organ & Harpsichord|Composition Showcase Recital|Chamber Recital|Chamber Music Recital|Chamber Music|Organ Recital|Strings Recital|Violin & Viola|Violin/Viola|Drum Ensemble|Drum Recital|Voice Showcase Recital|Chinese Music Recital|Piano Studios Recital|Jazz Chamber|Piano Recital|Comps Fest|Recorder Recital|Music Ensemble|Studio") ~ "Studio Recital",
+    str_detect(what, "Orchestra Concert|Jazz Concert|Symphony Concert|Symphony Band|Choir Concert|Orchestra and Choir|Chinese & Global|Chinese Global Concert|Chinese and Global|Chinese Music Concert|Chinese Music Ensemble|Chinese Ensemble|Music Comps|Jazz Vocal Concert") ~ "Ensemble Concert",
+    str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival") ~ "Student Activity",
+    str_detect(what, "Masterclass|Lecture|Symposium") ~ "Masterclass",
+    str_detect(what, "Trustees|Trustee's|Presidents|Conference|President's|Presentation") ~ "Presentation",
+    str_detect(what, "Clinic|Music Fest|Music Department Showcase|Melinda Russell|Launch|Event|Opening") ~ "Special Events",
+    TRUE ~ "Guest"
+  )) %>%
+  mutate(year = term_to_year(term)) %>%
+  mutate(term = factor(term, levels = unique_terms, ordered = TRUE)) %>%
+  arrange(year, term) %>%
+  mutate(
+    term_category = case_when(
+      str_detect(term, "^F") ~ "Fall",
+      str_detect(term, "^W") ~ "Winter",
+      str_detect(term, "^S") ~ "Spring"
+    )
+  ) %>%
+  mutate(term_category = factor(term_category, levels = c("Spring", "Winter", "Fall"), ordered = TRUE)) %>%
+  # Apply week_of_term calculation
+  rowwise() %>%
+  mutate(week_of_term = calculate_week_of_term(date, term)) %>%
+  ungroup()
+
+# Example event summary after filtering and transformation
+event_summary <- combined_data_filtered %>%
+  group_by(year, term) %>%
+  summarize(term_total = n(), .groups = 'drop') %>%
+  group_by(year) %>%
+  mutate(year_total = sum(term_total)) %>%
+  ungroup()
 
 ################################# SHINY APP ####################################
 # UI
@@ -61,7 +201,7 @@ ui <- function(request) {
           icon = icon("chart-pie"),
           tabName = "analysis",
           badgeLabel = "Look Here!",
-          badgeColor = "lime"
+          badgeColor = "light-blue"
         ),
         menuItem(
           "Results",
@@ -104,7 +244,7 @@ ui <- function(request) {
                                    width = 4,
                                    box(
                                      width = 12,
-                                     title = "Data Exploration", 
+                                     title = "Instruction", 
                                      closable = FALSE, 
                                      status = "warning", 
                                      solidHeader = TRUE, 
@@ -116,10 +256,9 @@ ui <- function(request) {
                                      div(
                                        h1("Data Exploration", align = "center", style = "font-weight:bold"),
                                        br(),
-                                       h4("Explore the trends in life expectancy across different countries."),
+                                       h4("Something something"),
                                        br(),
-                                       h4("Use the gear in the top right corner to select the countries used for the plot, 
-                                          and use the slider below the plot to navigate through the years.")
+                                       h4("Bla bla bla")
                                      )
                                    )
                                  )
@@ -135,7 +274,7 @@ ui <- function(request) {
                                    width = 4,
                                    box(
                                      width = 12,
-                                     title = "Data Exploration", 
+                                     title = "Data Summary", 
                                      closable = FALSE, 
                                      status = "warning", 
                                      solidHeader = TRUE, 
@@ -145,13 +284,11 @@ ui <- function(request) {
                                        tags$div(id = "audio_container2"),
                                      ), 
                                      div(
-                                       h1("Data Exploration", align = "center", style = "font-weight:bold"),
+                                       h1("Data Summary", align = "center", style = "font-weight:bold"),
                                        br(),
-                                       h4("Explore the relation between life expectancy and other variables 
-                                          across different countries."),
+                                       h4("Something something by year"),
                                        br(),
-                                       h4("Use the gear in the top right corner to select the variable used for the plot, 
-                                          and use the slider below the plot to navigate through the years")
+                                       h4("Bla bla bla look at that")
                                      )
                                    )
                                  )
@@ -163,7 +300,7 @@ ui <- function(request) {
           tabName = "results",
           h3('Visualizations'),
           tabsetPanel(id = "tabs2",
-                      tabPanel("K-Means Classification", 
+                      tabPanel("Overall Event Summary", 
                                fluidRow(
                                  column(
                                    width = 8,
@@ -183,21 +320,17 @@ ui <- function(request) {
                                        tags$div(id = "audio_container3"),
                                      ), 
                                      div(
-                                       h1("k-Means Elbow Graph", align = "center", style = "font-weight:bold"),
+                                       h1("Overall Event Summary", align = "center", style = "font-weight:bold"),
                                        br(),
-                                       h4("To begin, we created a K-means clustering model to classify the countries
-                                          into groups with similar life expectancies and features. We started the process by
-                                          experimenting with a different number of centers to find the optimal value. This
-                                          is the elbow graph produced by this process."),
+                                       h4("Year"),
                                        br(),
-                                       h4("The graph shows the elbow to be between 4 and 8 centers. We decided to proceed
-                                          with 5 centers since it gives a good tradeoff of model performance and time taken.")
+                                       h4("The graph shows bla bla bla")
                                      )
                                    )
                                  )
                                )
                       ),
-                      tabPanel("Random Forest Variable Importance",
+                      tabPanel("Breakdown of Events by Support Level",
                                fluidRow(
                                  column(
                                    width = 8,
@@ -207,7 +340,7 @@ ui <- function(request) {
                                    width = 4,
                                    box(
                                      width = 12,
-                                     title = "Random Forest Analysis", 
+                                     title = "Yep", 
                                      closable = FALSE, 
                                      status = "warning", 
                                      solidHeader = TRUE, 
@@ -217,27 +350,17 @@ ui <- function(request) {
                                        tags$div(id = "audio_container4"),
                                      ), 
                                      div(
-                                       h1("Random Forest Analysis", align = "center", style = "font-weight:bold"),
+                                       h1("Support Levels Analysis", align = "center", style = "font-weight:bold"),
                                        br(),
-                                       h4("The graph shows what the most important variables are in the decisions
-                                          made to classify a country within their life expectancy group. Unsurpringly
-                                          the most important variable is adult_mortaility. However, the next two variables,
-                                          income composition of resources and GDP per capita, and the ninth most important
-                                          variable, percentage expenditure, are much more interesting as they are not 
-                                          health-related and they provide insight into the correlation between wealth 
-                                          and life expectancy.Furthermore, the next vairable is relate to education, 
-                                          which is also not healt related, but it suggests that higher levels of education
-                                          could lead to a higher life expectancy. The other five variables are related to 
-                                          health issues."),
+                                       h4("The graph shows la la la"),
                                        br(),
-                                       h4("Given this results, we suggest exploring the association between life expectancy
-                                          and wealth, and education.")
+                                       h4("Given this results, we suggest xxxxx")
                                      )
                                    )
                                  )
                                )
                       ),
-                      tabPanel("Decision Tree",
+                      tabPanel("Breakdown of Events by Department/Source",
                                fluidRow(
                                  column(
                                    width = 8,
@@ -247,7 +370,7 @@ ui <- function(request) {
                                    width = 4,
                                    box(
                                      width = 12,
-                                     title = "Decision Tree", 
+                                     title = "Department Analysis", 
                                      closable = FALSE, 
                                      status = "warning", 
                                      solidHeader = TRUE, 
@@ -259,10 +382,35 @@ ui <- function(request) {
                                      div(
                                        h1("Decision Tree", align = "center", style = "font-weight:bold"),
                                        br(),
-                                       h4("The decision tree furhter confirms that the dataset presents a positive correlation
-                                          between life expectancy and welath and education. It also further confirms that
-                                          countries with lower indeces of public helath problems, such as hiv, and death of
-                                          kids under the age of 5, lead to higher life expectancy.")
+                                       h4("The graph confirms that xxxx")
+                                     )
+                                   )
+                                 )
+                               )
+                      ),
+                      tabPanel("Breakdown of Music, Collab & ODOA Events by Type",
+                               fluidRow(
+                                 column(
+                                   width = 8,
+                                   shinycssloaders::withSpinner(imageOutput("tree_plot_init"))
+                                 ),
+                                 column(
+                                   width = 4,
+                                   box(
+                                     width = 12,
+                                     title = "MUSC Events Analysis", 
+                                     closable = FALSE, 
+                                     status = "warning", 
+                                     solidHeader = TRUE, 
+                                     collapsible = TRUE,
+                                     dropdownMenu = boxDropdown(
+                                       boxDropdownItem("Click me", id = "play5", icon = icon("heart")),
+                                       tags$div(id = "audio_container5"),
+                                     ), 
+                                     div(
+                                       h1("Decision Tree", align = "center", style = "font-weight:bold"),
+                                       br(),
+                                       h4("The graph confirms that xxxx")
                                      )
                                    )
                                  )
@@ -272,27 +420,26 @@ ui <- function(request) {
         ),
         tabItem(
           tabName = "contact",
-          h2("Don't contact us!"),
+          h2("Don't contact me!"),
           br(),
           box(
             width = 10,
-            title = "But if you really want to contact us", 
+            title = "But if you really want to contact me", 
             status = "primary", 
             solidHeader = TRUE,
             collapsible = TRUE, 
             collapsed = TRUE,
-            "You can try either one or both of our software development team:", 
+            "You can try our one and only software development team:", 
             br(), 
             br(),
             fluidRow(
-              box(title = "Alejandro González", status = "primary", "gonzaleza@carleton.edu"),
               box(title = "Kunwu Lyu", status = "primary", "lyuk@carleton.edu")
             ),
             br(),
-            "or the person who taught us how to do this:",
-            fluidRow(box(title = "Deepak Bastola", status = "primary", "dbastola@carleton.edu")), 
+            "or the person who pays me to do this:",
+            fluidRow(box(title = "Alexi Carlson", status = "primary", "acarlson4@carleton.edu")), 
             br(),
-            "and we'll get back to you when we're done with finals."
+            "and we'll get back to you when we're done with String Recitals."
           )
         ),
         tabItem(
@@ -565,37 +712,7 @@ server <- function(input, output, session) {
     list(src = "tree_plot.png", contentType = 'image/png',width = 800, height = 600,
          alt = "Website under construction")
   })
-  
-  
-  # output$kmeans_plot <- renderPlot({
-  #   kmeans_plot <- multi_kmeans %>%
-  #     ggplot(aes(k,tot.withinss)) +
-  #     geom_point() +
-  #     geom_line()+
-  #     scale_x_continuous(breaks = 1:20) 
-  #   kmeans_plot
-  # }) %>% 
-  #   bindCache()
-  # 
-  # rf_results <- reactive({
-  #   plot_variable_importance(ml_data, ml_outcome)
-  # })
-  # 
-  # output$importance_plot <- renderPlot({
-  #   rf_results()$importance_plot
-  # }) %>% 
-  #   bindCache()
-  # 
-  # output$tree_plot <- renderPlot({
-  #   important_vars <- c("income_composition_of_resources", "adult_mortality", "gdp_pcap", "schooling")
-  #   tree_results <- tune_and_fit_decision_tree(ml_data, important_vars, ml_outcome)
-  #   rpart.plot(tree_results$tree_fit$fit, roundint = FALSE)
-  # }) %>%
-  #   bindCache()
-  
-  
-  
-  
+
   ################SURPRISE################
   
   observeEvent((input$play1), {
