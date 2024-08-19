@@ -184,10 +184,63 @@ ggplot(event_summary, aes(x = year, y = term_total, fill = term_category)) +
   scale_fill_manual(values = c("Fall" = "#FF9999", "Winter" = "#99CCFF", "Spring" = "#99FF99")) +
   labs(x = "Year", y = "Total Events", fill = "Term") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) -> gg_plot
+
+ggplotly(gg_plot)
 
 event_summary
 ```
+
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(plotly)
+
+# Create a sequential index for the terms across all years
+event_summary <- event_summary %>%
+  arrange(year, term) %>%
+  mutate(term_index = row_number())  # This creates a sequential index
+
+gg_plot <- ggplot(event_summary, aes(x = as.numeric(factor(term)), y = term_total, group = 1)) +
+  geom_line(aes(color = term_category), size = 1) +
+  geom_point(aes(color = term_category), size = 2) +
+  scale_color_manual(values = c("Fall" = "#FF9999", "Winter" = "#99CCFF", "Spring" = "#99FF99")) +
+  scale_x_continuous(breaks = 1:nrow(event_summary), labels = event_summary$term) +
+  labs(x = "Term", y = "Total Events", color = "Term Category") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Convert to plotly for interactivity
+plotly_chart <- ggplotly(gg_plot)
+
+
+# In your Shiny app, render this as an interactive plot
+plotly_chart
+```
+
+
+```{r}
+gg_plot <- ggplot(event_summary, aes(x = year, y = term_total, fill = term_category, group = term_category)) +
+  geom_area(position = "stack") +
+  labs(x = "Year", y = "Total Events", fill = "Term") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plotly_chart <- ggplotly(gg_plot)
+plotly_chart
+```
+
+```{r}
+gg_plot <- ggplot(event_summary, aes(x = year, y = term_total, fill = term_category)) +
+  geom_area() +
+  labs(x = "Year", y = "Total Events", fill = "Term") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+plotly_chart <- ggplotly(gg_plot)
+plotly_chart
+```
+
 
 
 # Breakdown of Events by Support Level
@@ -241,6 +294,86 @@ ggplot(support_tables_melted, aes(x = term_category, y = Support, fill = support
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 support_tables_melted
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(plotly)
+
+# Calculate total support and average audience count
+support_summary <- combined_data_filtered %>%
+  filter(support_level != "NA") %>%
+  group_by(year, support_level) %>%
+  summarize(
+    total_support = n(),
+    average_audience_count = mean(as.numeric(audience_count[!is.na(audience_count)]), na.rm = TRUE),
+    .groups = 'drop'
+  )
+
+# Convert year to a factor with ordered levels if needed
+support_summary <- support_summary %>%
+  mutate(year = factor(year, levels = unique(year), ordered = TRUE),
+         support_level = factor(support_level, levels = c("NA", "H", "M", "L"), ordered = TRUE))
+
+# Create the bubble chart with ggplot2
+ggplot_bubble_chart <- ggplot(support_summary, aes(x = year, y = average_audience_count, size = total_support, color = support_level)) +
+  geom_point(alpha = 0.7) +
+  scale_size_continuous(range = c(3, 20)) + # Adjust the range for bubble sizes
+  scale_color_manual(values = c("H" = "#FF9999", "M" = "#99CCFF", "L" = "#99FF99", "NA" = "black")) +
+  labs(x = "Year", y = "Average Audience Count", size = "Total Support", color = "Support Level") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Convert to a plotly object
+plotly_bubble_chart <- ggplotly(ggplot_bubble_chart)
+
+# Render the plotly object (in Shiny, you would use `renderPlotly`)
+plotly_bubble_chart
+
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(plotly)
+
+# Define the correct order for the terms
+term_order <- c("F14", "W15", "S15", "F15", "W16", "S16", "F16", "W17", "S17",
+                 "F17", "W18", "S18", "F18", "W19", "S19", "F19", "W20", "S20",
+                 "F20", "W21", "S21", "F21", "W22", "S22", "F22", "W23", "S23",
+                 "F23", "W24", "S24")
+
+# Calculate total support and average audience count
+support_summary <- combined_data_filtered %>%
+  filter(support_level != "NA") %>%
+  group_by(term, support_level) %>%
+  summarize(
+    total_support = n(),
+    average_audience_count = mean(as.numeric(audience_count[!is.na(audience_count)]), na.rm = TRUE),
+    .groups = 'drop'
+  )
+
+# Convert term to a factor with the specified order
+support_summary <- support_summary %>%
+  mutate(term = factor(term, levels = term_order, ordered = TRUE),
+         support_level = factor(support_level, levels = c("NA", "H", "M", "L"), ordered = TRUE))
+
+# Create the bubble chart with ggplot2
+ggplot_bubble_chart <- ggplot(support_summary, aes(x = term, y = average_audience_count, size = total_support, color = support_level)) +
+  geom_point(alpha = 0.7) +
+  scale_size_continuous(range = c(3, 20)) + # Adjust the range for bubble sizes
+  scale_color_manual(values = c("H" = "#FF9999", "M" = "#99CCFF", "L" = "#99FF99", "NA" = "black")) +
+  labs(x = "Term", y = "Average Audience Count", size = "Total Support", color = "Support Level") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Convert to a plotly object
+plotly_bubble_chart <- ggplotly(ggplot_bubble_chart)
+
+# Render the plotly object (in Shiny, you would use `renderPlotly`)
+plotly_bubble_chart
+
 ```
 
 

@@ -592,20 +592,19 @@ server <- function(input, output, session) {
   })
   
   output$sidebarpanel <- renderUI({
-    if (USER$login == TRUE ){ 
-      if (credentials[,"permission"][which(credentials$username_id==input$userName)]=="advanced") {
+    if (USER$login == TRUE) { 
+      if (credentials[,"permission"][which(credentials$username_id==input$userName)] == "advanced") {
         sidebarMenu(
           id = "sidebarID",
-          dataMenu,
+          dataMenu,   # Include all menus for advanced users
           resultsMenu,
           contactMenu,
           aboutMenu
         )
-      }
-      else{
+      } else {
         sidebarMenu(
           id = "sidebarID",
-          resultsMenu,
+          resultsMenu,  # Exclude the Data menu for non-advanced users
           contactMenu,
           aboutMenu
         )
@@ -613,81 +612,50 @@ server <- function(input, output, session) {
     }
   })
   
-  
   output$body <- renderUI({
-    if (USER$login == TRUE ) {
-      if (credentials[,"permission"][which(credentials$username_id==input$userName)]=="advanced") {
+    if (USER$login == TRUE) {
+      if (credentials[,"permission"][which(credentials$username_id==input$userName)] == "advanced") {
         tabItems(
-          analysisTab,
+          analysisTab,  # Include all tabs for advanced users
           resultsTab,
           contactTab,
           readmeTab
         )
-      } 
-      else {
-        tabItem(
-          resultsTab,
+      } else {
+        tabItems(
+          resultsTab,  # Exclude the Analysis tab for non-advanced users
           contactTab,
-          readmeTab)
+          readmeTab
+        )
       }
-    }
-    else {
-      loginpage
+    } else {
+      loginpage  # Show the login page when not logged in
     }
   })
   
   
   ############################## Plot 1 Overview ###############################
+  # Sort the data frame by year and term in the order of F, W, S
+  event_summary <- event_summary %>%
+    mutate(term = factor(term, levels = c("F14", "W15", "S15", 
+                                          "F15", "W16", "S16", "F16", "W17", "S17", 
+                                          "F17", "W18", "S18", "F18", "W19", "S19", 
+                                          "F19", "W20", "S20", "F20", "W21", "S21", 
+                                          "F21", "W22", "S22", "F22", "W23", "S23", 
+                                          "F23", "W24", "S24"), ordered = TRUE)) %>%
+    arrange(year, term) %>%
+    mutate(
+      term_category = case_when(
+        str_detect(term, "^F") ~ "Fall",
+        str_detect(term, "^W") ~ "Winter",
+        str_detect(term, "^S") ~ "Spring"
+      )
+    ) %>%
+    mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE))
   
-  # Function to get sheet names from Google Sheets
-  get_sheet_names <- function(sheet_url) {
-    sheet_names <- sheets_sheets(sheet_url)
-    return(sheet_names)
-  }
   
-  # Function to extract term from sheet name
-  extract_term <- function(sheet_name) {
-    # Extract term from sheet name assuming format "F14 - Event Data", "W15 - Event Data", etc.
-    term_match <- str_extract(sheet_name, "^[FWS]\\d{2}")
-    return(term_match)
-  }
-  
-  # Function to process and sort event summary based on dynamic term levels
-  process_event_summary <- function(event_summary, sheet_names) {
-    # Extract terms from sheet names
-    terms <- unique(sapply(sheet_names, extract_term))
-    
-    # Define term levels based on sheet names
-    term_levels <- c()
-    for (season in c("F", "W", "S")) {
-      term_levels <- c(term_levels, sort(terms[str_detect(terms, paste0("^", season))]))
-    }
-    
-    event_summary %>%
-      mutate(term = factor(term, levels = term_levels, ordered = TRUE)) %>%
-      arrange(year, term) %>%
-      mutate(
-        term_category = case_when(
-          str_detect(term, "^F") ~ "Fall",
-          str_detect(term, "^W") ~ "Winter",
-          str_detect(term, "^S") ~ "Spring"
-        )
-      ) %>%
-      mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE))
-  }
-  
-  # URL of the Google Sheets
-  sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit?gid=265403245"
-  
-  # Fetch sheet names
-  sheet_names <- sheet_names(sheet_url)
-  
-  # Assuming event_summary is already loaded
-  # Process the event summary data frame
-  event_summary_processed <- process_event_summary(event_summary, sheet_names)
-  
-  # Create the stacked bar chart using ggplot2
-  ggplot_event_summary <- ggplot(event_summary_processed, aes(x = year, y = term_total, fill = term_category)) +
+  # Create the stacked bar chart
+  ggplot_event_summary <- ggplot(event_summary, aes(x = year, y = term_total, fill = term_category)) +
     geom_bar(stat = "identity") +
     geom_text(aes(label = term_total), 
               position = position_stack(vjust = 0.5), 
