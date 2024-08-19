@@ -40,8 +40,38 @@ remotes::install_github("timelyportfolio/dataui")
 gs4_auth(email = "lyuk@carleton.edu", cache = ".secrets")
 
 ############################### USERNAME / PASSWORD ############################
+# Main login screen
+loginpage <- div(id = "loginpage", style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
+                 wellPanel(
+                   tags$h2("LOG IN", class = "text-center", style = "padding-top: 0;color:#333; font-weight:600;"),
+                   textInput("userName", placeholder="Username", label = tagList(icon("user"), "Username")),
+                   passwordInput("passwd", placeholder="Password", label = tagList(icon("unlock-alt"), "Password")),
+                   br(),
+                   div(
+                     style = "text-align: center;",
+                     actionButton("login", "SIGN IN", style = "color: white; background-color:#3c8dbc;
+                                 padding: 10px 15px; width: 150px; cursor: pointer;
+                                 font-size: 18px; font-weight: 600;"),
+                     shinyjs::hidden(
+                       div(id = "nomatch",
+                           tags$p("Oops! Incorrect username or password!",
+                                  style = "color: red; font-weight: 600; 
+                                            padding-top: 5px;font-size:16px;", 
+                                  class = "text-center"))),
+                     br(),
+                     br(),
+                     tags$code("Username: myuser  Password: mypass"),
+                     br(),
+                     tags$code("Username: myuser1  Password: mypass1")
+                   ))
+)
 
-
+credentials <- data.frame(
+  username_id = c("myuser", "myuser1"),
+  password   = sapply(c("mypass", "mypass1"), password_store),
+  permission  = c("basic", "advanced"), 
+  stringsAsFactors = FALSE
+)
 
 ################################ DATA WRANGLING ################################
 
@@ -68,6 +98,14 @@ read_and_clean_event_file <- function(sheet_name) {
   clean_names(data) %>%
     mutate(across(everything(), as.character)) %>%
     mutate(term = str_sub(sheet_name, 1, 3)) # Extract the term from the sheet name
+}
+
+term_to_year <- function(term) {
+  year <- as.numeric(str_sub(term, 2, 3))
+  season <- str_sub(term, 1, 1)
+  start_year <- if_else(season == "F", 2000 + year, 2000 + year - 1)
+  end_year <- start_year + 1
+  return(paste0(start_year, "-", end_year))
 }
 
 # Use purrr to read all sheets and store them in a named list
@@ -187,6 +225,276 @@ event_summary <- combined_data_filtered %>%
   mutate(year_total = sum(term_total)) %>%
   ungroup()
 
+sidebar <- dashboardSidebar(minified = TRUE, collapsed = TRUE,
+                            uiOutput("sidebarpanel")) 
+body <- dashboardBody(shinyjs::useShinyjs(), uiOutput("body"))
+
+# Define menu items
+dataMenu <- menuItem(
+  "Data",
+  icon = icon("chart-pie"),
+  tabName = "analysis",
+  badgeLabel = "Look Here!",
+  badgeColor = "light-blue"
+)
+
+resultsMenu <- menuItem(
+  "Results",
+  icon = icon("newspaper"),
+  tabName = "results",
+  badgeLabel = "Also Here!",
+  badgeColor = "aqua"
+)
+
+contactMenu <- menuItem(
+  "Contact",
+  icon = icon("calendar"),
+  tabName = "contact",
+  badgeLabel = "DON'T",
+  badgeColor = "red"
+)
+
+aboutMenu <- menuItem(
+  "About",
+  icon = icon("scale-balanced"),
+  tabName = "readme",
+  badgeLabel = "READ!",
+  badgeColor = "purple",
+  selected = TRUE
+)
+
+# Define tab items
+analysisTab <- tabItem(
+  tabName = "analysis",
+  h3('Upload and Check Data Here'),
+  tabsetPanel(id = "tabs",
+              tabPanel("Upload New Term Data", 
+                       fluidRow(
+                         column(
+                           width = 8,
+                           shinycssloaders::withSpinner(plotlyOutput("Plot1"))
+                         ),
+                         column(
+                           width = 4,
+                           box(
+                             width = 12,
+                             title = "Instruction", 
+                             closable = FALSE, 
+                             status = "warning", 
+                             solidHeader = TRUE, 
+                             collapsible = TRUE,
+                             dropdownMenu = boxDropdown(
+                               boxDropdownItem("Click me", id = "play1", icon = icon("heart")),
+                               tags$div(id = "audio_container1")
+                             ), 
+                             div(
+                               h1("Data Exploration", align = "center", style = "font-weight:bold"),
+                               br(),
+                               h4("Something something"),
+                               br(),
+                               h4("Bla bla bla")
+                             )
+                           )
+                         )
+                       )
+              ),
+              tabPanel("Check Processed Data Here",
+                       fluidRow(
+                         column(
+                           width = 8,
+                           shinycssloaders::withSpinner(plotlyOutput("Plot2"))
+                         ),
+                         column(
+                           width = 4,
+                           box(
+                             width = 12,
+                             title = "Data Summary", 
+                             closable = FALSE, 
+                             status = "warning", 
+                             solidHeader = TRUE, 
+                             collapsible = TRUE,
+                             dropdownMenu = boxDropdown(
+                               boxDropdownItem("Click me", id = "play2", icon = icon("heart")),
+                               tags$div(id = "audio_container2")
+                             ), 
+                             div(
+                               h1("Data Summary", align = "center", style = "font-weight:bold"),
+                               br(),
+                               h4("Something something by year"),
+                               br(),
+                               h4("Bla bla bla look at that")
+                             )
+                           )
+                         )
+                       )
+              )
+  )
+)
+
+resultsTab <- tabItem(
+  tabName = "results",
+  h3('Visualizations'),
+  tabsetPanel(id = "tabs2",
+              tabPanel("Overall Event Summary", 
+                       fluidRow(
+                         column(
+                           width = 8,
+                           shinycssloaders::withSpinner(plotlyOutput("Plot1"))
+                         ),
+                         column(
+                           width = 4,
+                           box(
+                             width = 12,
+                             title = "Analysis", 
+                             closable = FALSE, 
+                             status = "warning", 
+                             solidHeader = TRUE, 
+                             collapsible = TRUE,
+                             dropdownMenu = boxDropdown(
+                               boxDropdownItem("Click me", id = "play3", icon = icon("heart")),
+                               tags$div(id = "audio_container3")
+                             ), 
+                             div(
+                               h1("Overall Event Summary", align = "center", style = "font-weight:bold"),
+                               br(),
+                               h4("Year"),
+                               br(),
+                               h4("The graph shows bla bla bla")
+                             )
+                           )
+                         )
+                       )
+              ),
+              tabPanel("Breakdown of Events by Support Level",
+                       fluidRow(
+                         column(
+                           width = 8,
+                           shinycssloaders::withSpinner(plotlyOutput("Plot2"))
+                         ),
+                         column(
+                           width = 4,
+                           box(
+                             width = 12,
+                             title = "Yep", 
+                             closable = FALSE, 
+                             status = "warning", 
+                             solidHeader = TRUE, 
+                             collapsible = TRUE,
+                             dropdownMenu = boxDropdown(
+                               boxDropdownItem("Click me", id = "play4", icon = icon("heart")),
+                               tags$div(id = "audio_container4")
+                             ), 
+                             div(
+                               h1("Support Levels Analysis", align = "center", style = "font-weight:bold"),
+                               br(),
+                               h4("The graph shows la la la"),
+                               br(),
+                               h4("Given this results, we suggest xxxxx")
+                             )
+                           )
+                         )
+                       )
+              ),
+              tabPanel("Breakdown of Events by Department/Source",
+                       fluidRow(
+                         column(
+                           width = 8,
+                           shinycssloaders::withSpinner(plotlyOutput("Plot3"))
+                         ),
+                         column(
+                           width = 4,
+                           box(
+                             width = 12,
+                             title = "Department Analysis", 
+                             closable = FALSE, 
+                             status = "warning", 
+                             solidHeader = TRUE, 
+                             collapsible = TRUE,
+                             dropdownMenu = boxDropdown(
+                               boxDropdownItem("Click me", id = "play5", icon = icon("heart")),
+                               tags$div(id = "audio_container5")
+                             ), 
+                             div(
+                               h1("Decision Tree", align = "center", style = "font-weight:bold"),
+                               br(),
+                               h4("The graph confirms that xxxx")
+                             )
+                           )
+                         )
+                       )
+              ),
+              tabPanel("Breakdown of Music, Collab & ODOA Events by Type",
+                       fluidRow(
+                         column(
+                           width = 8,
+                           shinycssloaders::withSpinner(plotlyOutput("Plot4"))
+                         ),
+                         column(
+                           width = 4,
+                           box(
+                             width = 12,
+                             title = "MUSC Events Analysis", 
+                             closable = FALSE, 
+                             status = "warning", 
+                             solidHeader = TRUE, 
+                             collapsible = TRUE,
+                             dropdownMenu = boxDropdown(
+                               boxDropdownItem("Click me", id = "play6", icon = icon("heart")),
+                               tags$div(id = "audio_container6")
+                             ), 
+                             div(
+                               h1("Decision Tree", align = "center", style = "font-weight:bold"),
+                               br(),
+                               h4("The graph confirms that xxxx")
+                             )
+                           )
+                         )
+                       )
+              )
+  )
+)
+
+contactTab <- tabItem(
+  tabName = "contact",
+  h2("Don't contact me!"),
+  br(),
+  box(
+    width = 10,
+    title = "But if you really want to contact me", 
+    status = "primary", 
+    solidHeader = TRUE,
+    collapsible = TRUE, 
+    collapsed = TRUE,
+    "You can try our one and only software development team:", 
+    br(), 
+    br(),
+    fluidRow(
+      box(title = "Kunwu Lyu", status = "primary", "lyuk@carleton.edu")
+    ),
+    br(),
+    "or the person who pays me to do this:",
+    fluidRow(box(title = "Alexi Carlson", status = "primary", "acarlson4@carleton.edu")), 
+    br(),
+    "and we'll get back to you when we're done with String Recitals."
+  )
+)
+
+readmeTab <- tabItem(
+  tabName = "readme",
+  div(
+    h1("Welcome to the PAC Office Event Data Analyzer", align = "center", style = "font-weight:bold"),
+    br(),
+    h4("Navigate to the Data tab to upload and check the new term data!"),
+    br(),
+    h4("Navigate to the Results tab to see visualizations and trends across the past years"),
+    br(),
+    h4("For optimal viewing, collapse the menu on the top left corner."),
+    br(),
+    h4("PS: use the gear icon on the top right corner to adjust parameters", align = "center", style = "font-weight:bold")
+  )
+)
+
+
 ################################# SHINY APP ####################################
 # UI
 ui <- function(request) {
@@ -198,272 +506,8 @@ ui <- function(request) {
       dropdownMenuOutput("logoutbtn"),
       controlbarIcon = icon("gear")
     ),
-    sidebar = dashboardSidebar(
-      minified = TRUE, collapsed = TRUE,
-      sidebarMenu(
-        id = "sidebarID",
-        menuItem(
-          "Data",
-          icon = icon("chart-pie"),
-          tabName = "analysis",
-          badgeLabel = "Look Here!",
-          badgeColor = "light-blue"
-        ),
-        menuItem(
-          "Results",
-          icon = icon("newspaper"),
-          tabName = "results",
-          badgeLabel = "Also Here!",
-          badgeColor = "aqua"
-        ),
-        menuItem(
-          "Contact",
-          icon = icon("calendar"),
-          tabName = "contact",
-          badgeLabel = "DON'T",
-          badgeColor = "red"
-        ),
-        menuItem(
-          "About",
-          icon = icon("scale-balanced"),
-          tabName = "readme",
-          badgeLabel = "READ!",
-          badgeColor = "purple",
-          selected = TRUE
-        )
-      )
-    ),
-    body = dashboardBody(
-      shinyjs::useShinyjs(),
-      tabItems(
-        tabItem(
-          tabName = "analysis",
-          h3('Upload and Check Data Here'),
-          tabsetPanel(id = "tabs",
-                      tabPanel("Upload New Term Data", 
-                               fluidRow(
-                                 column(
-                                   width = 8,
-                                   shinycssloaders::withSpinner(plotlyOutput("Plot1"))
-                                 ),
-                                 column(
-                                   width = 4,
-                                   box(
-                                     width = 12,
-                                     title = "Instruction", 
-                                     closable = FALSE, 
-                                     status = "warning", 
-                                     solidHeader = TRUE, 
-                                     collapsible = TRUE,
-                                     dropdownMenu = boxDropdown(
-                                       boxDropdownItem("Click me", id = "play1", icon = icon("heart")),
-                                       tags$div(id = "audio_container1"),
-                                     ), 
-                                     div(
-                                       h1("Data Exploration", align = "center", style = "font-weight:bold"),
-                                       br(),
-                                       h4("Something something"),
-                                       br(),
-                                       h4("Bla bla bla")
-                                     )
-                                   )
-                                 )
-                               )
-                      ),
-                      tabPanel("Check Processed Data Here",
-                               fluidRow(
-                                 column(
-                                   width = 8,
-                                   shinycssloaders::withSpinner(plotlyOutput("Plot2"))
-                                 ),
-                                 column(
-                                   width = 4,
-                                   box(
-                                     width = 12,
-                                     title = "Data Summary", 
-                                     closable = FALSE, 
-                                     status = "warning", 
-                                     solidHeader = TRUE, 
-                                     collapsible = TRUE,
-                                     dropdownMenu = boxDropdown(
-                                       boxDropdownItem("Click me", id = "play2", icon = icon("heart")),
-                                       tags$div(id = "audio_container2"),
-                                     ), 
-                                     div(
-                                       h1("Data Summary", align = "center", style = "font-weight:bold"),
-                                       br(),
-                                       h4("Something something by year"),
-                                       br(),
-                                       h4("Bla bla bla look at that")
-                                     )
-                                   )
-                                 )
-                               )
-                      )
-          )
-        ),
-        tabItem(
-          tabName = "results",
-          h3('Visualizations'),
-          tabsetPanel(id = "tabs2",
-                      tabPanel("Overall Event Summary", 
-                               fluidRow(
-                                 column(
-                                   width = 8,
-                                   shinycssloaders::withSpinner(plotlyOutput("Plot1"))
-                                 ),
-                                 column(
-                                   width = 4,
-                                   box(
-                                     width = 12,
-                                     title = "Analysis", 
-                                     closable = FALSE, 
-                                     status = "warning", 
-                                     solidHeader = TRUE, 
-                                     collapsible = TRUE,
-                                     dropdownMenu = boxDropdown(
-                                       boxDropdownItem("Click me", id = "play3", icon = icon("heart")),
-                                       tags$div(id = "audio_container3"),
-                                     ), 
-                                     div(
-                                       h1("Overall Event Summary", align = "center", style = "font-weight:bold"),
-                                       br(),
-                                       h4("Year"),
-                                       br(),
-                                       h4("The graph shows bla bla bla")
-                                     )
-                                   )
-                                 )
-                               )
-                      ),
-                      tabPanel("Breakdown of Events by Support Level",
-                               fluidRow(
-                                 column(
-                                   width = 8,
-                                   shinycssloaders::withSpinner(plotlyOutput("Plot2"))
-                                 ),
-                                 column(
-                                   width = 4,
-                                   box(
-                                     width = 12,
-                                     title = "Yep", 
-                                     closable = FALSE, 
-                                     status = "warning", 
-                                     solidHeader = TRUE, 
-                                     collapsible = TRUE,
-                                     dropdownMenu = boxDropdown(
-                                       boxDropdownItem("Click me", id = "play4", icon = icon("heart")),
-                                       tags$div(id = "audio_container4"),
-                                     ), 
-                                     div(
-                                       h1("Support Levels Analysis", align = "center", style = "font-weight:bold"),
-                                       br(),
-                                       h4("The graph shows la la la"),
-                                       br(),
-                                       h4("Given this results, we suggest xxxxx")
-                                     )
-                                   )
-                                 )
-                               )
-                      ),
-                      tabPanel("Breakdown of Events by Department/Source",
-                               fluidRow(
-                                 column(
-                                   width = 8,
-                                   shinycssloaders::withSpinner(plotlyOutput("Plot3"))
-                                 ),
-                                 column(
-                                   width = 4,
-                                   box(
-                                     width = 12,
-                                     title = "Department Analysis", 
-                                     closable = FALSE, 
-                                     status = "warning", 
-                                     solidHeader = TRUE, 
-                                     collapsible = TRUE,
-                                     dropdownMenu = boxDropdown(
-                                       boxDropdownItem("Click me", id = "play5", icon = icon("heart")),
-                                       tags$div(id = "audio_container5"),
-                                     ), 
-                                     div(
-                                       h1("Decision Tree", align = "center", style = "font-weight:bold"),
-                                       br(),
-                                       h4("The graph confirms that xxxx")
-                                     )
-                                   )
-                                 )
-                               )
-                      ),
-                      tabPanel("Breakdown of Music, Collab & ODOA Events by Type",
-                               fluidRow(
-                                 column(
-                                   width = 8,
-                                   shinycssloaders::withSpinner(plotlyOutput("Plot4"))
-                                 ),
-                                 column(
-                                   width = 4,
-                                   box(
-                                     width = 12,
-                                     title = "MUSC Events Analysis", 
-                                     closable = FALSE, 
-                                     status = "warning", 
-                                     solidHeader = TRUE, 
-                                     collapsible = TRUE,
-                                     dropdownMenu = boxDropdown(
-                                       boxDropdownItem("Click me", id = "play5", icon = icon("heart")),
-                                       tags$div(id = "audio_container5"),
-                                     ), 
-                                     div(
-                                       h1("Decision Tree", align = "center", style = "font-weight:bold"),
-                                       br(),
-                                       h4("The graph confirms that xxxx")
-                                     )
-                                   )
-                                 )
-                               )
-                      )
-          )
-        ),
-        tabItem(
-          tabName = "contact",
-          h2("Don't contact me!"),
-          br(),
-          box(
-            width = 10,
-            title = "But if you really want to contact me", 
-            status = "primary", 
-            solidHeader = TRUE,
-            collapsible = TRUE, 
-            collapsed = TRUE,
-            "You can try our one and only software development team:", 
-            br(), 
-            br(),
-            fluidRow(
-              box(title = "Kunwu Lyu", status = "primary", "lyuk@carleton.edu")
-            ),
-            br(),
-            "or the person who pays me to do this:",
-            fluidRow(box(title = "Alexi Carlson", status = "primary", "acarlson4@carleton.edu")), 
-            br(),
-            "and we'll get back to you when we're done with String Recitals."
-          )
-        ),
-        tabItem(
-          tabName = "readme",
-          div(
-            h1("Welcome to the PAC Office Event Data Analyzer", align = "center", style = "font-weight:bold"),
-            br(),
-            h4("Navigate to the Data tab to upload and check the new term data!"),
-            br(),
-            h4("Navigate to the Results tab to see visualizations and trends across the past years"),
-            br(),
-            h4("For optimal viewing, collapse the menu on the top left corner."),
-            br(),
-            h4("PS: use the gear icon on the top right corner to adjust parameters", align = "center", style = "font-weight:bold")
-          )
-        )
-      )
-    ),
+    sidebar,
+    body,
     controlbar = dashboardControlbar(
       width = 300,
       h4("Parameters Control"),
@@ -483,59 +527,76 @@ ui <- function(request) {
 server <- function(input, output, session) {
   
   ############################## AUTHENTICATION ################################
-  login = FALSE
-  USER <- reactiveValues(login = login)
+  USER <- reactiveValues(login = FALSE)
   
-  observe({ 
-    if (USER$login == FALSE) {
-      if (!is.null(input$login)) {
-        if (input$login > 0) {
-          Username <- isolate(input$userName)
-          Password <- isolate(input$passwd)
-          if(length(which(credentials$username_id==Username))==1) { 
-            pasmatch  <- credentials["passod"][which(credentials$username_id==Username),]
-            pasverify <- password_verify(pasmatch, Password)
-            if(pasverify) {
-              USER$login <- TRUE
-            } else {
-              shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade")
-              shinyjs::delay(3000, shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade"))
-            }
-          } else {
-            shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade")
-            shinyjs::delay(3000, shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade"))
-          }
-        } 
+  observeEvent(input$login, {
+    Username <- isolate(input$userName)
+    Password <- isolate(input$passwd)
+    
+    if (nrow(credentials[credentials$username_id == Username, ]) == 1) {
+      stored_password <- credentials$password[credentials$username_id == Username]
+      if (password_verify(stored_password, Password)) {
+        USER$login <- TRUE
+      } else {
+        shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade")
+        shinyjs::delay(3000, shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade"))
       }
-    }    
+    } else {
+      shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade")
+      shinyjs::delay(3000, shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade"))
+    }
+  })
+  
+  ################################## Refresh page ##############################
+  output$logoutbtn <- renderUI({
+    if (USER$login) {
+      tags$li(a(icon("sign-out"), "Logout", 
+                href = "javascript:window.location.reload(true)"),
+              class = "dropdown", 
+              style = "background-color: #eee !important; border: 0;
+                      font-weight: bold; margin:5px; padding: 10px;")
+    }
   })
   
   output$sidebarpanel <- renderUI({
     if (USER$login == TRUE ){ 
-      sidebarMenu(
-        menuItem("Main Page", tabName = "dashboard", icon = icon("dashboard")),
-        menuItem("Second Page", tabName = "second", icon = icon("th"))
-      )
+      if (credentials[,"permission"][which(credentials$username_id==input$userName)]=="advanced") {
+        sidebarMenu(
+          id = "sidebarID",
+          dataMenu,
+          resultsMenu,
+          contactMenu,
+          aboutMenu
+        )
+      }
+      else{
+        sidebarMenu(
+          id = "sidebarID",
+          resultsMenu,
+          contactMenu,
+          aboutMenu
+        )
+      }
     }
   })
   
+  
   output$body <- renderUI({
     if (USER$login == TRUE ) {
-      tabItems(
-        
-        # First tab
-        tabItem(tabName ="dashboard", class = "active",
-                fluidRow(
-                  box(width = 12, dataTableOutput('results'))
-                )),
-        
-        # Second tab
-        tabItem(tabName = "second",
-                fluidRow(
-                  box(width = 12, dataTableOutput('results2'))
-                )
-        ))
-      
+      if (credentials[,"permission"][which(credentials$username_id==input$userName)]=="advanced") {
+        tabItems(
+          analysisTab,
+          resultsTab,
+          contactTab,
+          readmeTab
+        )
+      } 
+      else {
+        tabItem(
+          resultsTab,
+          contactTab,
+          readmeTab)
+      }
     }
     else {
       loginpage
@@ -990,22 +1051,6 @@ server <- function(input, output, session) {
     })
   })
   
-  ################################## Refresh page ##############################
-  # output$logoutbtn <- renderUI({
-  #   tags$li(a(icon("arrows-rotate"), "Refresh Page",
-  #             href="javascript:window.location.reload(true)"),
-  #           class = "dropdown",
-  #           style = "background-color: #eee !important; border: 0;
-  #                   font-weight: bold; margin:5px; padding: 10px;")
-  # })
-  output$logoutbtn <- renderUI({
-    req(USER$login)
-    tags$li(a(icon("sign-out"), "Logout", 
-              href="javascript:window.location.reload(true)"),
-            class = "dropdown", 
-            style = "background-color: #eee !important; border: 0;
-                    font-weight: bold; margin:5px; padding: 10px;")
-  })
   
   
   ##################### ML Plots #############
@@ -1024,7 +1069,7 @@ server <- function(input, output, session) {
     list(src = "tree_plot.png", contentType = 'image/png',width = 800, height = 600,
          alt = "Website under construction")
   })
-
+  
   ################SURPRISE################
   
   observeEvent((input$play1), {
