@@ -34,8 +34,14 @@ library(rpart.plot)
 library(ranger)
 library(broom)
 library(googlesheets4)
+library(DT)
+library(sodium)
 remotes::install_github("timelyportfolio/dataui")
 gs4_auth(email = "lyuk@carleton.edu", cache = ".secrets")
+
+############################### USERNAME / PASSWORD ############################
+
+
 
 ################################ DATA WRANGLING ################################
 
@@ -475,6 +481,67 @@ ui <- function(request) {
 
 # Server
 server <- function(input, output, session) {
+  
+  ############################## AUTHENTICATION ################################
+  login = FALSE
+  USER <- reactiveValues(login = login)
+  
+  observe({ 
+    if (USER$login == FALSE) {
+      if (!is.null(input$login)) {
+        if (input$login > 0) {
+          Username <- isolate(input$userName)
+          Password <- isolate(input$passwd)
+          if(length(which(credentials$username_id==Username))==1) { 
+            pasmatch  <- credentials["passod"][which(credentials$username_id==Username),]
+            pasverify <- password_verify(pasmatch, Password)
+            if(pasverify) {
+              USER$login <- TRUE
+            } else {
+              shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade")
+              shinyjs::delay(3000, shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade"))
+            }
+          } else {
+            shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade")
+            shinyjs::delay(3000, shinyjs::toggle(id = "nomatch", anim = TRUE, time = 1, animType = "fade"))
+          }
+        } 
+      }
+    }    
+  })
+  
+  output$sidebarpanel <- renderUI({
+    if (USER$login == TRUE ){ 
+      sidebarMenu(
+        menuItem("Main Page", tabName = "dashboard", icon = icon("dashboard")),
+        menuItem("Second Page", tabName = "second", icon = icon("th"))
+      )
+    }
+  })
+  
+  output$body <- renderUI({
+    if (USER$login == TRUE ) {
+      tabItems(
+        
+        # First tab
+        tabItem(tabName ="dashboard", class = "active",
+                fluidRow(
+                  box(width = 12, dataTableOutput('results'))
+                )),
+        
+        # Second tab
+        tabItem(tabName = "second",
+                fluidRow(
+                  box(width = 12, dataTableOutput('results2'))
+                )
+        ))
+      
+    }
+    else {
+      loginpage
+    }
+  })
+  
   
   ############################## Plot 1 Overview ###############################
   
@@ -924,10 +991,18 @@ server <- function(input, output, session) {
   })
   
   ################################## Refresh page ##############################
+  # output$logoutbtn <- renderUI({
+  #   tags$li(a(icon("arrows-rotate"), "Refresh Page",
+  #             href="javascript:window.location.reload(true)"),
+  #           class = "dropdown",
+  #           style = "background-color: #eee !important; border: 0;
+  #                   font-weight: bold; margin:5px; padding: 10px;")
+  # })
   output$logoutbtn <- renderUI({
-    tags$li(a(icon("arrows-rotate"), "Refresh Page",
+    req(USER$login)
+    tags$li(a(icon("sign-out"), "Logout", 
               href="javascript:window.location.reload(true)"),
-            class = "dropdown",
+            class = "dropdown", 
             style = "background-color: #eee !important; border: 0;
                     font-weight: bold; margin:5px; padding: 10px;")
   })
