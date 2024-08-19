@@ -75,29 +75,63 @@ credentials <- data.frame(
 
 ################################ DATA WRANGLING ################################
 
-# Define the Google Sheet URL
-sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit#gid=265403245"
+## Google Sheet Version
+# # Define the Google Sheet URL
+# sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit#gid=265403245"
+# 
+# # Get the list of sheet names from the Google Sheet
+# sheet_names_list <- sheet_names(sheet_url)
+# 
+# # Extract the terms from the sheet names dynamically
+# extracted_terms <- sheet_names_list %>%
+#   str_extract("^[A-Z]\\d{2}") %>%
+#   na.omit()  # Remove any NA values in case some sheet names do not follow the pattern
+# 
+# # Ensure unique and sorted terms
+# unique_terms <- sort(unique(extracted_terms))
+# 
+# # Create a function to read and clean a sheet
+# read_and_clean_event_file <- function(sheet_name) {
+#   # Read the sheet using googlesheets4
+#   data <- read_sheet(sheet_url, sheet = sheet_name)
+#   
+#   # Clean column names and ensure all columns are character type
+#   clean_names(data) %>%
+#     mutate(across(everything(), as.character)) %>%
+#     mutate(term = str_sub(sheet_name, 1, 3)) # Extract the term from the sheet name
+# }
+# 
+# term_to_year <- function(term) {
+#   year <- as.numeric(str_sub(term, 2, 3))
+#   season <- str_sub(term, 1, 1)
+#   start_year <- if_else(season == "F", 2000 + year, 2000 + year - 1)
+#   end_year <- start_year + 1
+#   return(paste0(start_year, "-", end_year))
+# }
+# 
+# # Use purrr to read all sheets and store them in a named list
+# event_data_list <- set_names(map(sheet_names_list, read_and_clean_event_file), sheet_names_list)
+# 
+# # Combine all the data frames into one
+# combined_data <- reduce(event_data_list, full_join)
 
-# Get the list of sheet names from the Google Sheet
-sheet_names_list <- sheet_names(sheet_url)
+## Local version
+# Define the directory containing the files
+data_dir <- "data/"
 
-# Extract the terms from the sheet names dynamically
-extracted_terms <- sheet_names_list %>%
-  str_extract("^[A-Z]\\d{2}") %>%
-  na.omit()  # Remove any NA values in case some sheet names do not follow the pattern
+# Define the file codes
+file_codes <- c("F14", "W15", "S15", "F15", "W16", "S16", "F16", "W17", "S17", 
+                "F17", "W18", "S18", "F18", "W19", "S19", "F19", "W20", "S20", 
+                "F20", "W21", "S21", "F21", "W22", "S22", "F22", "W23", "S23", 
+                "F23", "W24", "S24")
 
-# Ensure unique and sorted terms
-unique_terms <- sort(unique(extracted_terms))
-
-# Create a function to read and clean a sheet
-read_and_clean_event_file <- function(sheet_name) {
-  # Read the sheet using googlesheets4
-  data <- read_sheet(sheet_url, sheet = sheet_name)
-  
-  # Clean column names and ensure all columns are character type
-  clean_names(data) %>%
-    mutate(across(everything(), as.character)) %>%
-    mutate(term = str_sub(sheet_name, 1, 3)) # Extract the term from the sheet name
+# Create a function to read a file given its code
+read_and_clean_event_file <- function(code) {
+  file_path <- paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv")
+  data <- read_csv(file_path)
+  clean_names(data) %>% 
+    mutate(across(everything(), as.character)) %>% 
+    mutate(term = code)
 }
 
 term_to_year <- function(term) {
@@ -108,10 +142,9 @@ term_to_year <- function(term) {
   return(paste0(start_year, "-", end_year))
 }
 
-# Use purrr to read all sheets and store them in a named list
-event_data_list <- set_names(map(sheet_names_list, read_and_clean_event_file), sheet_names_list)
+# Use purrr to read all files and store them in a named list
+event_data_list <- set_names(map(file_codes, read_and_clean_event_file), file_codes)
 
-# Combine all the data frames into one
 combined_data <- reduce(event_data_list, full_join)
 
 # Define the term start dates (hardcoded as per the original logic)
