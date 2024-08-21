@@ -36,6 +36,7 @@ library(broom)
 library(googlesheets4)
 library(DT)
 library(sodium)
+library(formattable)
 remotes::install_github("timelyportfolio/dataui")
 gs4_auth(email = "lyuk@carleton.edu", cache = ".secrets")
 
@@ -304,30 +305,20 @@ analysisTab <- tabItem(
               tabPanel("Upload New Term Data", 
                        fluidRow(
                          column(
-                           width = 8,
-                           shinycssloaders::withSpinner(plotlyOutput("Plot1"))
-                         ),
+                           width = 6,
+                           br(),
+                           textInput("termID", "Term:", placeholder = "e.g., F24"),
+                           br(),
+                           dateInput("termDate", "First Day of Class:", format =  "yyyy-mm-dd",
+                                     weekstart = 1),
+                           br(),
+                           actionBttn("submitNewTerm", "Submit", style = "material-flat",
+                                      color = "primary")
+                         ), 
+##################################### TEMP #####################################
                          column(
-                           width = 4,
-                           box(
-                             width = 12,
-                             title = "Instruction", 
-                             closable = FALSE, 
-                             status = "warning", 
-                             solidHeader = TRUE, 
-                             collapsible = TRUE,
-                             dropdownMenu = boxDropdown(
-                               boxDropdownItem("Click me", id = "play1", icon = icon("heart")),
-                               tags$div(id = "audio_container1")
-                             ), 
-                             div(
-                               h1("Data Exploration", align = "center", style = "font-weight:bold"),
-                               br(),
-                               h4("Something something"),
-                               br(),
-                               h4("Bla bla bla")
-                             )
-                           )
+                           width = 6,
+                           shinycssloaders::withSpinner(reactableOutput(outputId = "term_table"))
                          )
                        )
               ),
@@ -541,13 +532,6 @@ ui <- function(request) {
     ),
     sidebar,
     body,
-    controlbar = dashboardControlbar(
-      width = 300,
-      h4("Parameters Control"),
-      uiOutput("plot1Control"), 
-      uiOutput("plot2Control"),
-      overlay = FALSE
-    ),
     footer = dashboardFooter(
       left = "By Kunwu Lyu",
       right = "Northfield, MN, 2024"
@@ -674,16 +658,6 @@ server <- function(input, output, session) {
     plotly_event_summary
   })
   
-  # UI for controlling countries parameters.
-  output$plot1Control <- renderUI({
-    conditionalPanel(condition = 'input.tabs == "Life Expectancy by Countries"',
-                     selectizeInput("countries", "Compare Countries:",
-                                    choices = country_names, multiple = TRUE, selected = c("Afghanistan", "Belgium")),
-                     actionButton("updatePlot1", "Update"),
-                     actionButton("resetPlot1", "Reset!")
-    )
-  })
-  
   # Updating plot based on selected countries
   observeEvent(input$updatePlot1, {
     req(input$countries)
@@ -754,45 +728,6 @@ server <- function(input, output, session) {
   output$Plot2 <- renderPlotly({
     # Display the plotly chart
     plotly_support_summary
-  })
-  
-  # Render control bar UI elements
-  output$plot2Control <- renderUI({
-    conditionalPanel(condition = 'input.tabs == "Life Expectancy vs. Something"',
-                     selectInput("compare_var", 
-                                 "Compare Life Expectancy with:", 
-                                 choices = c(Status = "status", 
-                                             `Adult Mortality` = "adult_mortality", 
-                                             `Infant Deaths` = "infant_deaths",
-                                             Alcohol = "alcohol", 
-                                             `Percentage Expenditure` = "percentage_expenditure", 
-                                             `Hepatitis B` = "hepatitis_b",
-                                             Measles = "measles", 
-                                             BMI = "bmi",
-                                             `Under Five Deaths per 1000` = "under_five_deaths", 
-                                             Polio = "polio",
-                                             `Total Expenditure` = "total_expenditure", 
-                                             Diphtheria = "diphtheria",
-                                             `HIV and AIDS` = "hiv_aids",
-                                             `Population` = "population",
-                                             `Thinness 1-19 Years` = "thinness_1_19_years",
-                                             `Thinness 5-9 Years` = "thinness_5_9_years",
-                                             `Income Composition of Resources` = "income_composition_of_resources",
-                                             `Schooling` = "schooling",
-                                             `GDP per Capita` = "gdp_pcap"),
-                                 selected = "gdp_pcap",
-                                 multiple = FALSE),
-                     prettyToggle(inputId = "log_scale", 
-                                  label_on = "Log Scaled",
-                                  label_off = "Linear Scaled", 
-                                  icon_on = icon("check-square"), 
-                                  icon_off = icon("square"),
-                                  status_on = "info", 
-                                  status_off = "warning",
-                                  value = TRUE),
-                     actionButton("updatePlot2", "Update"),
-                     actionButton("resetPlot2", "Reset!")
-    )
   })
   
   # Update plot based on selected variable
@@ -869,45 +804,6 @@ server <- function(input, output, session) {
   output$Plot3 <- renderPlotly({
     # Display the plotly chart
     plotly_department_summary
-  })
-  
-  # Render control bar UI elements
-  output$plot3Control <- renderUI({
-    conditionalPanel(condition = 'input.tabs == "Life Expectancy vs. Something"',
-                     selectInput("compare_var", 
-                                 "Compare Life Expectancy with:", 
-                                 choices = c(Status = "status", 
-                                             `Adult Mortality` = "adult_mortality", 
-                                             `Infant Deaths` = "infant_deaths",
-                                             Alcohol = "alcohol", 
-                                             `Percentage Expenditure` = "percentage_expenditure", 
-                                             `Hepatitis B` = "hepatitis_b",
-                                             Measles = "measles", 
-                                             BMI = "bmi",
-                                             `Under Five Deaths per 1000` = "under_five_deaths", 
-                                             Polio = "polio",
-                                             `Total Expenditure` = "total_expenditure", 
-                                             Diphtheria = "diphtheria",
-                                             `HIV and AIDS` = "hiv_aids",
-                                             `Population` = "population",
-                                             `Thinness 1-19 Years` = "thinness_1_19_years",
-                                             `Thinness 5-9 Years` = "thinness_5_9_years",
-                                             `Income Composition of Resources` = "income_composition_of_resources",
-                                             `Schooling` = "schooling",
-                                             `GDP per Capita` = "gdp_pcap"),
-                                 selected = "gdp_pcap",
-                                 multiple = FALSE),
-                     prettyToggle(inputId = "log_scale", 
-                                  label_on = "Log Scaled",
-                                  label_off = "Linear Scaled", 
-                                  icon_on = icon("check-square"), 
-                                  icon_off = icon("square"),
-                                  status_on = "info", 
-                                  status_off = "warning",
-                                  value = TRUE),
-                     actionButton("updatePlot2", "Update"),
-                     actionButton("resetPlot2", "Reset!")
-    )
   })
   
   # Update plot based on selected variable
@@ -994,45 +890,6 @@ server <- function(input, output, session) {
     plotly_event_summary
   })
   
-  # Render control bar UI elements
-  output$plot4Control <- renderUI({
-    conditionalPanel(condition = 'input.tabs == "Life Expectancy vs. Something"',
-                     selectInput("compare_var", 
-                                 "Compare Life Expectancy with:", 
-                                 choices = c(Status = "status", 
-                                             `Adult Mortality` = "adult_mortality", 
-                                             `Infant Deaths` = "infant_deaths",
-                                             Alcohol = "alcohol", 
-                                             `Percentage Expenditure` = "percentage_expenditure", 
-                                             `Hepatitis B` = "hepatitis_b",
-                                             Measles = "measles", 
-                                             BMI = "bmi",
-                                             `Under Five Deaths per 1000` = "under_five_deaths", 
-                                             Polio = "polio",
-                                             `Total Expenditure` = "total_expenditure", 
-                                             Diphtheria = "diphtheria",
-                                             `HIV and AIDS` = "hiv_aids",
-                                             `Population` = "population",
-                                             `Thinness 1-19 Years` = "thinness_1_19_years",
-                                             `Thinness 5-9 Years` = "thinness_5_9_years",
-                                             `Income Composition of Resources` = "income_composition_of_resources",
-                                             `Schooling` = "schooling",
-                                             `GDP per Capita` = "gdp_pcap"),
-                                 selected = "gdp_pcap",
-                                 multiple = FALSE),
-                     prettyToggle(inputId = "log_scale", 
-                                  label_on = "Log Scaled",
-                                  label_off = "Linear Scaled", 
-                                  icon_on = icon("check-square"), 
-                                  icon_off = icon("square"),
-                                  status_on = "info", 
-                                  status_off = "warning",
-                                  value = TRUE),
-                     actionButton("updatePlot2", "Update"),
-                     actionButton("resetPlot2", "Reset!")
-    )
-  })
-  
   # Update plot based on selected variable
   observeEvent(input$updatePlot4, {
     req(input$compare_var, input$log_scale)
@@ -1052,9 +909,26 @@ server <- function(input, output, session) {
     })
   })
   
-  
-  
   ##################### ML Plots #############
+  
+  output$term_table <- renderReactable({
+    reactable(term_start_dates, 
+              columns = list(
+                term = colDef(name = "Term"),
+                start_date = colDef(name = "Start Date", format = colFormat(date = TRUE))
+              ),
+              bordered = TRUE,
+              highlight = TRUE,
+              searchable = TRUE,
+              defaultSorted = list(term = "asc"),
+              striped = TRUE,
+              pagination = TRUE
+    )
+  })
+  
+  observeEvent(input$submitNewTerm, {
+    
+  })
   
   output$kmeans_plot_init <- renderImage({
     list(src = "kmeans_plot.png", contentType = 'image/png',width = 800, height = 600,
