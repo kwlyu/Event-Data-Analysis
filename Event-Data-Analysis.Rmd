@@ -430,6 +430,92 @@ ggplot(department_tables_melted, aes(x = term_category, y = DepartmentCount, fil
 department_tables_melted
 ```
 
+```{r}
+ggplot(department_tables_melted, aes(x = year, y = DepartmentCount, fill = department_type, group = department_type)) +
+  geom_area(position = "stack") +
+  labs(x = "Term", y = "Department Count", fill = "Department Type") +
+  scale_fill_manual(values = c("MUSC" = "#FF9999", "ODOA" = "#99CCFF", "CSA" = "#99FF99", "Collab" = "#FFD700", "Others" = "#FFA500")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
+
+```{r}
+ggplot(department_tables_melted, aes(x = year, y = DepartmentCount, color = department_type, group = department_type)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Term", y = "Department Count", color = "Department Type") +
+  scale_color_manual(values = c("MUSC" = "#FF9999", "ODOA" = "#99CCFF", "CSA" = "#99FF99", "Collab" = "#FFD700", "Others" = "#FFA500")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+```{r}
+# Summarize and pivot data for each term and add year information
+summarize_and_pivot_department <- function(current_term) {
+  combined_data_filtered %>%
+    filter(term == current_term) %>%
+    group_by(department_type, year) %>%
+    summarize(DepartmentCount = n(), .groups = 'drop') %>%
+    pivot_wider(names_from = department_type, values_from = DepartmentCount, values_fill = list(DepartmentCount = 0)) %>%
+    mutate(term = current_term)  # Add a term column to identify the term
+}
+
+# List of terms to iterate over
+terms <- unique(combined_data_filtered$term)
+
+# Use purrr::map to apply summarize_and_pivot function for each term
+department_tables <- map_dfr(terms, summarize_and_pivot_department)  # Combine into a single data frame
+
+# Melt the data for ggplot
+department_tables_melted <- department_tables %>%
+  pivot_longer(cols = -c(term, year), names_to = "department_type", values_to = "DepartmentCount")
+
+# Ensure the term and department_type are factors with the correct order
+department_tables_melted <- department_tables_melted %>%
+  mutate(department_type = factor(department_type, levels = c("MUSC", "ODOA", "CSA", "Collab", "Others"), ordered = TRUE))
+
+# Calculate percentages for each segment
+department_tables_melted <- department_tables_melted %>%
+  group_by(term) %>%
+  mutate(total_count = sum(DepartmentCount, na.rm = TRUE),
+         percentage = (DepartmentCount / total_count) * 100)
+
+library(ggplot2)
+library(dplyr)
+
+# Define shading intervals
+shading_intervals <- data.frame(
+  start = c(1, 4, 7, 10, 13, 16, 19, 22, 25, 28), # Starting indices of each shaded area
+  end = c(3, 6, 9, 12, 15, 18, 21, 24, 27, 30),   # Ending indices of each shaded area
+  fill = rep(c("lightgrey", "white"), times = 5)    # Alternating shading colors
+)
+
+# Ensure the term is an ordered factor with the correct order
+department_tables_melted <- department_tables_melted %>%
+  mutate(term = factor(term, levels = c("F14", "W15", "S15", "F15", "W16", "S16", 
+                                        "F16", "W17", "S17", "F17", "W18", "S18", 
+                                        "F18", "W19", "S19", "F19", "W20", "S20", 
+                                        "F20", "W21", "S21", "F21", "W22", "S22", 
+                                        "F22", "W23", "S23", "F23", "W24", "S24"), 
+                         ordered = TRUE))
+
+# Create the cumulative line chart with alternating shading
+ggplot(department_tables_melted, aes(x = term, y = DepartmentCount, color = department_type, group = department_type)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Term", y = "Department Count", color = "Department Type") +
+  scale_color_manual(values = c("MUSC" = "#FF9999", "ODOA" = "#99CCFF", "CSA" = "#99FF99", "Collab" = "#FFD700", "Others" = "#FFA500")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_rect(data = shading_intervals, aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf, fill = fill), alpha = 0.2, inherit.aes = FALSE) +
+  scale_fill_identity()
+
+```
+
 
 # Breakdown of Music, Collab & ODOA Events by Type
 ```{r}
