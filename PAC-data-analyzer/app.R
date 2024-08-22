@@ -326,7 +326,7 @@ analysisTab <- tabItem(
                        fluidRow(
                          column(
                            width = 8,
-                           shinycssloaders::withSpinner(reactableOutput("stand_in"))
+                           shinycssloaders::withSpinner(reactableOutput("combined_table"))
                          ),
                          column(
                            width = 4,
@@ -916,6 +916,60 @@ server <- function(input, output, session) {
                                                                            statline_color = "red",
                                                                            bandline = "innerquartiles",
                                                                            bandline_color = "darkgreen"))))
+  })
+  
+  output$combined_table <- renderReactable({
+    combined_data_filtered %>%
+      reactable(
+        theme = clean(),  # Apply the clean theme for a minimalist design
+        pagination = FALSE,  # Disable pagination for this example
+        columns = list(
+          # Customize columns with interactive data bars where appropriate
+          days_committed = colDef(
+            cell = data_bars(
+              data = .,
+              fill_color = viridis::mako(5),
+              background = '#F1F1F1',
+              text_position = 'outside-end',
+              number_fmt = scales::comma
+            )
+          ),
+          av_staff = colDef(
+            cell = data_bars(
+              data = .,
+              fill_color = c('#FFF2D9','#FFE1A6','#FFCB66','#FFB627'),
+              fill_gradient = TRUE,
+              background = 'transparent',
+              number_fmt = scales::comma_format(accuracy = 0.1)
+            )
+          ),
+          pac_staff = colDef(
+            cell = data_bars(
+              data = .,
+              fill_color = 'black',
+              fill_opacity = 0.8,
+              round_edges = TRUE,
+              text_position = 'center',
+              number_fmt = scales::comma
+            )
+          ),
+          audience_count = colDef(
+            cell = data_bars(
+              data = .,
+              fill_color = 'white',
+              background = 'darkgrey',
+              border_style = 'solid',
+              border_width = '1px',
+              border_color = 'forestgreen',
+              box_shadow = TRUE,
+              text_position = 'inside-base',
+              number_fmt = scales::comma
+            )
+          )
+          # Add other columns as needed
+        )
+      )
+    
   })
   
   observeEvent(input$submitNewTerm, {
