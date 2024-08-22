@@ -40,6 +40,7 @@ library(formattable)
 remotes::install_github("timelyportfolio/dataui")
 gs4_auth(email = "lyuk@carleton.edu", cache = ".secrets")
 
+
 ############################### USERNAME / PASSWORD ############################
 # Main login screen
 loginpage <- div(id = "loginpage", style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
@@ -261,7 +262,14 @@ event_summary <- combined_data_filtered %>%
 
 sidebar <- dashboardSidebar(minified = TRUE, collapsed = TRUE,
                             uiOutput("sidebarpanel")) 
-body <- dashboardBody(shinyjs::useShinyjs(), uiOutput("body"))
+body <- dashboardBody(shinyjs::useShinyjs(), uiOutput("body"),
+                      tags$script(HTML("
+    $(document).on('keypress', function(e) {
+      if(e.which == 13) {
+        $('#login').click();
+      }
+    });
+  ")))
 
 # Define menu items
 dataMenu <- menuItem(
