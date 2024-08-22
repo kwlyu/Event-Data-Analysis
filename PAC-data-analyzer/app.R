@@ -326,7 +326,7 @@ analysisTab <- tabItem(
                        fluidRow(
                          column(
                            width = 8,
-                           shinycssloaders::withSpinner(plotlyOutput("Plot2"))
+                           shinycssloaders::withSpinner(reactableOutput("stand_in"))
                          ),
                          column(
                            width = 4,
@@ -637,9 +637,8 @@ server <- function(input, output, session) {
     ) %>%
     mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE))
   
-  
   # Create the stacked bar chart
-  ggplot_event_summary <- ggplot(event_summary, aes(x = year, y = term_total, fill = term_category)) +
+  ggplot(event_summary, aes(x = year, y = term_total, fill = term_category)) +
     geom_bar(stat = "identity") +
     geom_text(aes(label = term_total), 
               position = position_stack(vjust = 0.5), 
@@ -648,14 +647,11 @@ server <- function(input, output, session) {
     scale_fill_manual(values = c("Fall" = "#FF9999", "Winter" = "#99CCFF", "Spring" = "#99FF99")) +
     labs(x = "Year", y = "Total Events", fill = "Term") +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  
-  # Convert the ggplot object to a plotly object for interactivity
-  plotly_event_summary <- ggplotly(ggplot_event_summary)
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) -> gg_plot
   
   # Initial rendering of the countries plot
   output$Plot1 <- renderPlotly({
-    plotly_event_summary
+    ggplotly(gg_plot)
   })
   
   # Updating plot based on selected countries
@@ -677,57 +673,37 @@ server <- function(input, output, session) {
   })
   
   ############################### Plot 2 Overview ##############################
+  # Calculate total support and average audience count
+  support_summary <- combined_data_filtered %>%
+    filter(support_level != "NA") %>%
+    group_by(year, support_level) %>%
+    summarize(
+      total_support = n(),
+      average_audience_count = mean(as.numeric(audience_count[!is.na(audience_count)]), na.rm = TRUE),
+      .groups = 'drop'
+    )
   
-  # Function to summarize and pivot data for each year
-  summarize_and_pivot <- function(current_year) {
-    combined_data_filtered %>%
-      filter(year == current_year) %>%
-      group_by(term_category, support_level) %>%
-      summarize(Support = n(), .groups = 'drop') %>%
-      pivot_wider(names_from = support_level, values_from = Support, values_fill = list(Support = 0)) %>%
-      mutate(year = current_year)  # Add a year column to identify the table
-  }
-  
-  # List of years to iterate over
-  years <- unique(combined_data_filtered$year)
-  
-  # Use purrr::map to apply summarize_and_pivot function for each year
-  support_tables <- map_dfr(years, summarize_and_pivot)  # Combine into a single data frame
-  
-  # Melt the data for ggplot
-  support_tables_melted <- support_tables %>%
-    pivot_longer(cols = -c(term_category, year), names_to = "support_level", values_to = "Support")
-  
-  # Ensure the term_category and support_level are factors with the correct order
-  support_tables_melted <- support_tables_melted %>%
-    filter(support_level != "NA") %>% 
-    mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+  # Convert year to a factor with ordered levels if needed
+  support_summary <- support_summary %>%
+    mutate(year = factor(year, levels = unique(year), ordered = TRUE),
            support_level = factor(support_level, levels = c("NA", "H", "M", "L"), ordered = TRUE))
   
-  # Calculate percentages for each segment
-  support_tables_melted <- support_tables_melted %>%
-    group_by(year, term_category) %>%
-    mutate(total_support = sum(Support),
-           percentage = (Support / total_support) * 100)
-  
-  # Create the ggplot chart
-  ggplot_support_summary <- ggplot(support_tables_melted, aes(x = term_category, y = Support, fill = support_level)) +
-    geom_bar(stat = "identity", position = "stack") +
-    geom_text(aes(label = paste0(Support, " (", round(percentage, 1), "%)")),
-              position = position_stack(vjust = 0.5), size = 2, color = "black") +
-    facet_wrap(~ year) +
-    labs(x = "Term", y = "Support Count", fill = "Support Level") +
-    scale_fill_manual(values = c("H" = "#FF9999", "M" = "#99CCFF", "L" = "#99FF99", "NA" = "black")) +
+  # Create the bubble chart with ggplot2
+  ggplot_bubble_chart <- ggplot(support_summary, aes(x = year, y = average_audience_count, size = total_support, color = support_level)) +
+    geom_point(alpha = 0.7) +
+    scale_size_continuous(range = c(3, 20)) + # Adjust the range for bubble sizes
+    scale_color_manual(values = c("H" = "#FF9999", "M" = "#99CCFF", "L" = "#99FF99", "NA" = "black")) +
+    labs(x = "Year", y = "Average Audience Count", size = "Total Support", color = "Support Level") +
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
   
   # Convert to a plotly object
-  plotly_support_summary <- ggplotly(ggplot_support_summary)
+  plotly_bubble_chart <- ggplotly(ggplot_bubble_chart)
   
   # Initial rendering of the plot
   output$Plot2 <- renderPlotly({
-    # Display the plotly chart
-    plotly_support_summary
+    # Render the plotly object (in Shiny, you would use `renderPlotly`)
+    plotly_bubble_chart
   })
   
   # Update plot based on selected variable
@@ -809,7 +785,7 @@ server <- function(input, output, session) {
   # Update plot based on selected variable
   observeEvent(input$updatePlot3, {
     req(input$compare_var, input$log_scale)
-    output$Plot2 <- renderPlotly({
+    output$Plot3 <- renderPlotly({
       isolate({
         renderContinentPlot(input$compare_var, input$log_scale)
       })
@@ -820,7 +796,7 @@ server <- function(input, output, session) {
   observeEvent(input$resetPlot3, {
     updateSelectInput(session, "compare_var", selected = "gdp_pcap")
     updatePrettyToggle(session, "log_scale", value = TRUE)
-    output$Plot2 <- renderPlotly({
+    output$Plot3 <- renderPlotly({
       renderContinentPlot(compare = "gdp_pcap", TRUE)
     })
   })
@@ -893,7 +869,7 @@ server <- function(input, output, session) {
   # Update plot based on selected variable
   observeEvent(input$updatePlot4, {
     req(input$compare_var, input$log_scale)
-    output$Plot2 <- renderPlotly({
+    output$Plot4 <- renderPlotly({
       isolate({
         renderContinentPlot(input$compare_var, input$log_scale)
       })
@@ -904,7 +880,7 @@ server <- function(input, output, session) {
   observeEvent(input$resetPlot4, {
     updateSelectInput(session, "compare_var", selected = "gdp_pcap")
     updatePrettyToggle(session, "log_scale", value = TRUE)
-    output$Plot2 <- renderPlotly({
+    output$Plot4 <- renderPlotly({
       renderContinentPlot(compare = "gdp_pcap", TRUE)
     })
   })
@@ -924,6 +900,22 @@ server <- function(input, output, session) {
               striped = TRUE,
               pagination = TRUE
     )
+  })
+
+############################## TEMP 2 ##########################################
+  output$stand_in <- renderReactable({
+    ## Combine multiple elements together
+    iris %>%
+      group_by(Species) %>%
+      summarize(petal_width = list(Petal.Width)) %>%
+      reactable(.,
+                columns = list(petal_width = colDef(cell = react_sparkline(.,
+                                                                           height = 80,
+                                                                           decimals = 1,
+                                                                           statline = "mean",
+                                                                           statline_color = "red",
+                                                                           bandline = "innerquartiles",
+                                                                           bandline_color = "darkgreen"))))
   })
   
   observeEvent(input$submitNewTerm, {

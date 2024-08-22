@@ -231,17 +231,6 @@ plotly_chart <- ggplotly(gg_plot)
 plotly_chart
 ```
 
-```{r}
-gg_plot <- ggplot(event_summary, aes(x = year, y = term_total, fill = term_category)) +
-  geom_area() +
-  labs(x = "Year", y = "Total Events", fill = "Term") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-plotly_chart <- ggplotly(gg_plot)
-plotly_chart
-```
-
-
 
 # Breakdown of Events by Support Level
 ```{r}
