@@ -150,7 +150,7 @@ event_data_list <- set_names(map(file_codes, read_and_clean_event_file), file_co
 combined_data <- reduce(event_data_list, full_join)
 
 # Define the term start dates (hardcoded as per the original logic)
-term_start_dates <- reactiveValues(data = data.frame(
+term_start_dates <- data.frame(
   term = file_codes,  # Add all relevant terms
   start_date = as.Date(c("2014-09-15", "2015-01-05", "2015-03-30",
                          "2015-09-14", "2016-01-04", "2016-03-28",
@@ -162,7 +162,7 @@ term_start_dates <- reactiveValues(data = data.frame(
                          "2021-09-15", "2022-01-05", "2022-03-28",
                          "2022-09-12", "2023-01-04", "2023-03-27",
                          "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
-))
+)
 
 # Function to calculate the week of term
 calculate_week_of_term <- function(event_date, term) {
