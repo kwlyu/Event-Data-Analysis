@@ -150,17 +150,8 @@ event_data_list <- set_names(map(file_codes, read_and_clean_event_file), file_co
 combined_data <- reduce(event_data_list, full_join)
 
 # Define the term start dates (hardcoded as per the original logic)
-term_start_dates <- data.frame(
-  term = c("F14", "W15", "S15", 
-           "F15", "W16", "S16", 
-           "F16", "W17", "S17", 
-           "F17", "W18", "S18", 
-           "F18", "W19", "S19", 
-           "F19", "W20", "S20", 
-           "F20", "W21", "S21", 
-           "F21", "W22", "S22", 
-           "F22", "W23", "S23", 
-           "F23", "W24", "S24"),  # Add all relevant terms
+term_start_dates <- reactiveValues(data = data.frame(
+  term = file_codes,  # Add all relevant terms
   start_date = as.Date(c("2014-09-15", "2015-01-05", "2015-03-30",
                          "2015-09-14", "2016-01-04", "2016-03-28",
                          "2016-09-12", "2017-01-04", "2017-03-27",
@@ -171,7 +162,7 @@ term_start_dates <- data.frame(
                          "2021-09-15", "2022-01-05", "2022-03-28",
                          "2022-09-12", "2023-01-04", "2023-03-27",
                          "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
-)
+))
 
 # Function to calculate the week of term
 calculate_week_of_term <- function(event_date, term) {
@@ -323,7 +314,7 @@ analysisTab <- tabItem(
                            actionBttn("submitNewTerm", "Submit", style = "material-flat",
                                       color = "primary")
                          ), 
-##################################### TEMP #####################################
+##################################### TEMP 1 ###################################
                          column(
                            width = 6,
                            shinycssloaders::withSpinner(reactableOutput(outputId = "term_table"))
@@ -369,12 +360,6 @@ resultsTab <- tabItem(
   tabsetPanel(id = "tabs2",
               tabPanel("Overall Event Summary", 
                        fluidRow(
-                         column(
-                           width = 8,
-                           shinycssloaders::withSpinner(plotlyOutput("Plot1"))
-                         ),
-                         column(
-                           width = 4,
                            box(
                              width = 12,
                              title = "Analysis", 
@@ -389,22 +374,15 @@ resultsTab <- tabItem(
                              div(
                                h1("Overall Event Summary", align = "center", style = "font-weight:bold"),
                                br(),
-                               h4("Year"),
-                               br(),
-                               h4("The graph shows bla bla bla")
+                               shinycssloaders::withSpinner(plotlyOutput("Plot1"))
                              )
                            )
-                         )
-                       )
+                       ),
+                       fluidRow(div(br(), 
+                                    h3("  maybe something else to talk about this")))
               ),
               tabPanel("Breakdown of Events by Support Level",
                        fluidRow(
-                         column(
-                           width = 8,
-                           shinycssloaders::withSpinner(plotlyOutput("Plot2"))
-                         ),
-                         column(
-                           width = 4,
                            box(
                              width = 12,
                              title = "Yep", 
@@ -419,22 +397,15 @@ resultsTab <- tabItem(
                              div(
                                h1("Support Levels Analysis", align = "center", style = "font-weight:bold"),
                                br(),
-                               h4("The graph shows la la la"),
-                               br(),
-                               h4("Given this results, we suggest xxxxx")
+                               shinycssloaders::withSpinner(plotlyOutput("Plot2"))
                              )
                            )
-                         )
-                       )
+                       ),
+                       fluidRow(div(br(), 
+                                    h3("  maybe something else to talk about this")))
               ),
               tabPanel("Breakdown of Events by Department/Source",
                        fluidRow(
-                         column(
-                           width = 8,
-                           shinycssloaders::withSpinner(plotlyOutput("Plot3"))
-                         ),
-                         column(
-                           width = 4,
                            box(
                              width = 12,
                              title = "Department Analysis", 
@@ -447,22 +418,17 @@ resultsTab <- tabItem(
                                tags$div(id = "audio_container5")
                              ), 
                              div(
-                               h1("Decision Tree", align = "center", style = "font-weight:bold"),
+                               h1("Sponsor Types", align = "center", style = "font-weight:bold"),
                                br(),
-                               h4("The graph confirms that xxxx")
+                               shinycssloaders::withSpinner(plotlyOutput("Plot3"))
                              )
                            )
-                         )
-                       )
+                       ),
+                       fluidRow(div(br(), 
+                                    h3("  maybe something else to talk about this")))
               ),
               tabPanel("Breakdown of Music, Collab & ODOA Events by Type",
                        fluidRow(
-                         column(
-                           width = 8,
-                           shinycssloaders::withSpinner(plotlyOutput("Plot4"))
-                         ),
-                         column(
-                           width = 4,
                            box(
                              width = 12,
                              title = "MUSC Events Analysis", 
@@ -475,13 +441,14 @@ resultsTab <- tabItem(
                                tags$div(id = "audio_container6")
                              ), 
                              div(
-                               h1("Decision Tree", align = "center", style = "font-weight:bold"),
+                               h1("Event Type", align = "center", style = "font-weight:bold"),
                                br(),
-                               h4("The graph confirms that xxxx")
+                               shinycssloaders::withSpinner(plotlyOutput("Plot4"))
                              )
                            )
-                         )
-                       )
+                       ),
+                       fluidRow(div(br(), 
+                                    h3("  maybe something else to talk about this")))
               )
   )
 )
@@ -910,7 +877,7 @@ server <- function(input, output, session) {
     )
   })
 
-############################## TEMP 2 ##########################################
+
   output$stand_in <- renderReactable({
     ## Combine multiple elements together
     iris %>%
@@ -979,10 +946,16 @@ server <- function(input, output, session) {
       )
     
   })
-  
+  ############################## TEMP 2 ##########################################
   observeEvent(input$submitNewTerm, {
+    new_term <- input$termID
+    new_start_date <- as.Date(input$termDate)
     
+    # Use dplyr to append the new row
+    term_start_dates$data <- term_start_dates$data %>%
+      bind_rows(data.frame(term = new_term, start_date = new_start_date))
   })
+  
   
   output$kmeans_plot_init <- renderImage({
     list(src = "kmeans_plot.png", contentType = 'image/png',width = 800, height = 600,
