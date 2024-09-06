@@ -37,6 +37,7 @@ library(googlesheets4)
 library(DT)
 library(sodium)
 library(formattable)
+library(shinyfullscreen)
 remotes::install_github("timelyportfolio/dataui")
 gs4_auth(email = "lyuk@carleton.edu", cache = ".secrets")
 
@@ -317,18 +318,12 @@ analysisTab <- tabItem(
 ##################################### TEMP 1 ###################################
                          column(
                            width = 6,
-                           shinycssloaders::withSpinner(reactableOutput(outputId = "term_table"))
+                           shinycssloaders::withSpinner(fullscreen_this(reactableOutput(outputId = "term_table")))
                          )
                        )
               ),
               tabPanel("Check Processed Data Here",
                        fluidRow(
-                         column(
-                           width = 8,
-                           shinycssloaders::withSpinner(reactableOutput("combined_table"))
-                         ),
-                         column(
-                           width = 4,
                            box(
                              width = 12,
                              title = "Data Summary", 
@@ -342,13 +337,9 @@ analysisTab <- tabItem(
                              ), 
                              div(
                                h1("Data Summary", align = "center", style = "font-weight:bold"),
-                               br(),
-                               h4("Something something by year"),
-                               br(),
-                               h4("Bla bla bla look at that")
+                               shinycssloaders::withSpinner(fullscreen_this(reactableOutput("combined_table")))
                              )
                            )
-                         )
                        )
               )
   )
@@ -374,7 +365,7 @@ resultsTab <- tabItem(
                              div(
                                h1("Overall Event Summary", align = "center", style = "font-weight:bold"),
                                br(),
-                               shinycssloaders::withSpinner(plotlyOutput("Plot1"))
+                               shinycssloaders::withSpinner(fullscreen_this(plotlyOutput("Plot1")))
                              )
                            )
                        ),
@@ -397,7 +388,7 @@ resultsTab <- tabItem(
                              div(
                                h1("Support Levels Analysis", align = "center", style = "font-weight:bold"),
                                br(),
-                               shinycssloaders::withSpinner(plotlyOutput("Plot2"))
+                               shinycssloaders::withSpinner(fullscreen_this(plotlyOutput("Plot2")))
                              )
                            )
                        ),
@@ -420,7 +411,7 @@ resultsTab <- tabItem(
                              div(
                                h1("Sponsor Types", align = "center", style = "font-weight:bold"),
                                br(),
-                               shinycssloaders::withSpinner(plotlyOutput("Plot3"))
+                               shinycssloaders::withSpinner(fullscreen_this(plotlyOutput("Plot3")))
                              )
                            )
                        ),
@@ -443,7 +434,7 @@ resultsTab <- tabItem(
                              div(
                                h1("Event Type", align = "center", style = "font-weight:bold"),
                                br(),
-                               shinycssloaders::withSpinner(plotlyOutput("Plot4"))
+                               shinycssloaders::withSpinner(fullscreen_this(plotlyOutput("Plot4")))
                              )
                            )
                        ),
