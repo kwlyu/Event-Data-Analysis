@@ -330,6 +330,7 @@ analysisTab <- tabItem(
                          )
                        )
               ),
+################### TEMP 3 ##############
               tabPanel("Check Processed Data Here",
                        fluidRow(
                            box(
@@ -345,7 +346,33 @@ analysisTab <- tabItem(
                                boxDropdownItem("Generate Music Guest Info", id = "MUSC_Guest", icon = icon("copy")),
                                tags$head(
                                  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js")
-                               )
+                               ),
+                               tags$script(HTML("
+                                  Shiny.addCustomMessageHandler('txt', function(message) {
+                                    // Create a temporary button for clipboard copying
+                                    var copyButton = document.createElement('button');
+                                    copyButton.setAttribute('id', 'copyButton');
+                                    copyButton.setAttribute('data-clipboard-text', message);
+                                    document.body.appendChild(copyButton);
+                                    
+                                    // Initialize clipboard.js
+                                    var clipboard = new ClipboardJS('#copyButton');
+                                    
+                                    // Success and error handling
+                                    clipboard.on('success', function(e) {
+                                      Shiny.setInputValue('clipboard_status', 'success');  // Trigger Shiny input for success
+                                      document.body.removeChild(copyButton);  // Remove button after copying
+                                    });
+                                
+                                    clipboard.on('error', function(e) {
+                                      Shiny.setInputValue('clipboard_status', 'error');  // Trigger Shiny input for error
+                                      document.body.removeChild(copyButton);  // Remove button on failure
+                                    });
+                                    
+                                    // Trigger the copy action
+                                    copyButton.click();
+                                  });
+                                "))
                              ), 
                              div(
                                h1("Data Summary", align = "center", style = "font-weight:bold"),
@@ -609,48 +636,62 @@ server <- function(input, output, session) {
   
   ############################## Generate Music Guest Info #####################
   observeEvent(input$MUSC_Guest, {
+    # Read and clean the data
     music_guest_only <- read_csv(file = "guest_only.csv")
     print_guest_dat <- music_guest_only %>% 
       select(date, what, genre, sponsor, year, term_category) %>% 
       mutate(what = str_replace_all(what, "GUEST: ", ""))
+    
+    # Function to generate guest information text
     print_guest_fn <- function(data) {
-      # Extract unique years
       years <- unique(data$year)
+      output_text <- ""
       
       for (year in years) {
-        cat("\n---------------------------\n")  # Divider between years
-        cat(year, "\n", sep = "")
+        output_text <- paste0(output_text, "\n---------------------------\n", year, "\n")
         
-        # Extract term categories for the current year
         terms <- unique(data$term_category[data$year == year])
-        
         for (term in terms) {
-          cat("\n", term, "\n", sep = "")
+          output_text <- paste0(output_text, "\n", term, "\n")
           
-          # Extract rows corresponding to the current term and year
           term_data <- data[data$year == year & data$term_category == term, ]
-          
           if (nrow(term_data) == 0) {
-            cat("No guests\n")
+            output_text <- paste0(output_text, "No guests\n")
           } else {
             for (i in 1:nrow(term_data)) {
               event <- term_data$what[i]
               genre <- term_data$genre[i]
               sponsor <- term_data$sponsor[i]
-              cat(event, " | ", genre, " | ", sponsor, "\n", sep = "")
+              output_text <- paste0(output_text, event, " | ", genre, " | ", sponsor, "\n")
             }
           }
         }
       }
-      
-      cat("\n---------------------------\n")  # Final divider
+      output_text <- paste0(output_text, "\n---------------------------\n")
+      return(output_text)
     }
     
-    print_guest_fn(print_guest_dat) -> musc_guest_info
-    text <- paste0(musc_guest_info)
-    session$sendCustomMessage("txt", text)
+    # Generate the text
+    musc_guest_info <- print_guest_fn(print_guest_dat)
+    
+    # Attempt to send the text as a custom message
+    tryCatch({
+      session$sendCustomMessage("txt", musc_guest_info)
+      
+      # Success: Show a success alert using shinyalert
+      shinyalert::shinyalert("Success!", "Guest information copied to clipboard.", type = "success"
+                             ,closeOnEsc = TRUE,
+                             closeOnClickOutside = TRUE
+                             )
+      
+    }, error = function(e) {
+      # Failure: Show an error alert
+      shinyalert::shinyalert("Error", "Failed to copy guest information.", type = "error"
+                             ,closeOnEsc = TRUE,
+                             closeOnClickOutside = TRUE
+                             )
+    })
   })
-  
   
   
   ############################## Plot 1 Overview ###############################
