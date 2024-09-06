@@ -322,27 +322,38 @@ analysisTab <- tabItem(
                            br(),
                            actionBttn("submitNewTerm", "Submit", style = "material-flat",
                                       color = "primary")
-                         ), 
-##################################### TEMP 1 ###################################
+                         ),
                          column(
                            width = 6,
                            shinycssloaders::withSpinner(fullscreen_this(reactableOutput(outputId = "term_table")))
                          )
                        )
               ),
-################### TEMP 3 ##############
+################### TEMP 1 ##############
               tabPanel("Check Processed Data Here",
                        fluidRow(
                            box(
                              width = 12,
                              title = "Data Summary", 
                              closable = FALSE, 
-                             status = "warning", 
+                             status = "danger", 
                              solidHeader = TRUE, 
                              collapsible = TRUE,
+                             sidebar = boxSidebar(
+                               id = "combined_data_control",
+                               width = 25,
+                               sliderInput(
+                                 "obs",
+                                 "Number of observations:",
+                                 min = 0,
+                                 max = 1000,
+                                 value = 500
+                               )
+                             ),
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play2", icon = icon("heart")),
                                tags$div(id = "audio_container2"),
+                               dropdownDivider(),
                                boxDropdownItem("Generate Music Guest Info", id = "MUSC_Guest", icon = icon("copy")),
                                tags$head(
                                  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js")
@@ -977,28 +988,12 @@ server <- function(input, output, session) {
               pagination = TRUE
     )
   })
-
-
-  output$stand_in <- renderReactable({
-    ## Combine multiple elements together
-    iris %>%
-      group_by(Species) %>%
-      summarize(petal_width = list(Petal.Width)) %>%
-      reactable(.,
-                columns = list(petal_width = colDef(cell = react_sparkline(.,
-                                                                           height = 80,
-                                                                           decimals = 1,
-                                                                           statline = "mean",
-                                                                           statline_color = "red",
-                                                                           bandline = "innerquartiles",
-                                                                           bandline_color = "darkgreen"))))
-  })
   
   output$combined_table <- renderReactable({
     combined_data_filtered %>%
       reactable(
         theme = clean(),  # Apply the clean theme for a minimalist design
-        pagination = FALSE,  # Disable pagination for this example
+        pagination = TRUE,  # Disable pagination for this example
         columns = list(
           # Customize columns with interactive data bars where appropriate
           days_committed = colDef(
