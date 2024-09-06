@@ -180,11 +180,38 @@ calculate_week_of_term <- function(event_date, term) {
 }
 
 # Apply the new function to calculate week_of_term dynamically
+
 combined_data_filtered <- combined_data %>%
   filter(!is.na(what), what != "") %>%
   filter(what != "Choir & Jazz Rehearsal") %>%
   filter(what != "Jazz Rehearsal") %>%
   mutate(date = as.Date(ymd(date))) %>%
+  mutate(
+    livestream = coalesce(livestream, live_stream)  # If 'livestream' is NA, use 'live_stream'
+  ) %>%
+  select(-live_stream) %>%  
+  mutate(
+    support_level = fct_relevel(factor(support_level), "H", "M", "L"),
+    audio_needs = fct_relevel(factor(audio_needs), "H", "M", "L"),
+    stage_needs = fct_relevel(factor(stage_needs), "H", "M", "L"),
+    lighting_needs = fct_relevel(factor(lighting_needs), "H", "M", "L"),
+    projection = fct_relevel(factor(projection), "Y", "N"),
+    video_recording = fct_relevel(factor(video_recording), "Y", "N"),
+    livestream = fct_relevel(factor(livestream), "Y", "N"),
+    poster = fct_relevel(factor(poster), "Y", "N"),
+    program = fct_relevel(factor(program), "Y", "N"),
+    reception = fct_relevel(factor(reception), "Y", "N")
+  ) %>%
+  mutate(
+    venue = factor(venue),
+    department = factor(department)
+  ) %>%  
+  mutate(
+    audience_count = as.numeric(ifelse(grepl("^[0-9]+$", audience_count), audience_count, NA)),
+    days_committed = as.numeric(ifelse(grepl("^[0-9]+$", days_committed), days_committed, NA)),
+    av_staff = as.numeric(ifelse(grepl("^[0-9]+$", av_staff), av_staff, NA)),
+    pac_staff = as.numeric(ifelse(grepl("^[0-9]+$", pac_staff), pac_staff, NA))
+  ) %>%  
   mutate(support_level = if_else(support_level == "N" | support_level == "Y", "L", support_level)) %>%
   mutate(
     department = str_replace_all(department, "WCC", "ODOA"),
@@ -990,44 +1017,163 @@ server <- function(input, output, session) {
   })
   
   output$combined_table <- renderReactable({
-    combined_data_filtered %>%
+    # Generate color maps for venue and department columns
+    venue_colors <- viridis(n = length(unique(combined_data_filtered$venue)), option = "viridis")
+    department_colors <- viridis(n = length(unique(combined_data_filtered$department)), option = "viridis")
+    
+    venue_map <- setNames(venue_colors, unique(combined_data_filtered$venue))
+    department_map <- setNames(department_colors, unique(combined_data_filtered$department))
+    
+    combined_data_filtered %>% 
       reactable(
         theme = clean(),  # Apply the clean theme for a minimalist design
-        pagination = TRUE,  # Disable pagination for this example
+        pagination = TRUE,  # Enable pagination
         columns = list(
-          # Customize columns with interactive data bars where appropriate
+          venue = colDef(
+            name = "Venue",
+            cell = function(value) {
+              color <- venue_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          date = colDef(name = "Date"),
+          what = colDef(name = "Event"),
+          department = colDef(
+            name = "Department",
+            cell = function(value) {
+              color <- department_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
           days_committed = colDef(
+            name = "Days Committed",
             cell = data_bars(
               data = .,
-              fill_color = viridis::mako(5),
+              fill_color = viridis::plasma(4),
               background = '#F1F1F1',
               text_position = 'outside-end',
               number_fmt = scales::comma
             )
           ),
           av_staff = colDef(
+            name = "AV Staff",
             cell = data_bars(
               data = .,
-              fill_color = c('#FFF2D9','#FFE1A6','#FFCB66','#FFB627'),
-              fill_gradient = TRUE,
-              background = 'transparent',
-              number_fmt = scales::comma_format(accuracy = 0.1)
-            )
-          ),
-          pac_staff = colDef(
-            cell = data_bars(
-              data = .,
-              fill_color = 'black',
+              fill_color = viridis::inferno(9),
               fill_opacity = 0.8,
               round_edges = TRUE,
-              text_position = 'center',
+              text_position = 'outside-end',
               number_fmt = scales::comma
             )
           ),
-          audience_count = colDef(
+          pac_staff = colDef(
+            name = "PAC Staff",
             cell = data_bars(
               data = .,
-              fill_color = 'white',
+              fill_color = viridis::inferno(9),
+              fill_opacity = 0.8,
+              round_edges = TRUE,
+              text_position = 'outside-end',
+              number_fmt = scales::comma
+            )
+          ),
+          support_level = colDef(
+            name = "Support Level",
+            cell = function(value) {
+              color_map <- c("H" = "lightcoral", "M" = "lightblue", "L" = "lightgreen")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          audio_needs = colDef(
+            name = "Audio Needs",
+            cell = function(value) {
+              color_map <- c("H" = "lightcoral", "M" = "lightblue", "L" = "lightgreen")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          stage_needs = colDef(
+            name = "Stage Needs",
+            cell = function(value) {
+              color_map <- c("H" = "lightcoral", "M" = "lightblue", "L" = "lightgreen")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          lighting_needs = colDef(
+            name = "Lighting Needs",
+            cell = function(value) {
+              color_map <- c("H" = "lightcoral", "M" = "lightblue", "L" = "lightgreen")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          projection = colDef(
+            name = "Projection",
+            cell = function(value) {
+              color_map <- c("Y" = "green", "N" = "red")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          video_recording = colDef(
+            name = "Video Recording",
+            cell = function(value) {
+              color_map <- c("Y" = "green", "N" = "red")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          livestream = colDef(
+            name = "Livestream",
+            cell = function(value) {
+              color_map <- c("Y" = "green", "N" = "red")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          audience_count = colDef(
+            name = "Audience Count",
+            cell = data_bars(
+              data = .,
+              fill_color = viridis::turbo(5),
               background = 'darkgrey',
               border_style = 'solid',
               border_width = '1px',
@@ -1036,12 +1182,77 @@ server <- function(input, output, session) {
               text_position = 'inside-base',
               number_fmt = scales::comma
             )
-          )
-          # Add other columns as needed
+          ),
+          poster = colDef(
+            name = "Poster",
+            cell = function(value) {
+              color_map <- c("Y" = "green", "N" = "red")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          program = colDef(
+            name = "Program",
+            cell = function(value) {
+              color_map <- c("Y" = "green", "N" = "red")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          reception = colDef(
+            name = "Reception",
+            cell = function(value) {
+              color_map <- c("Y" = "green", "N" = "red")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          term = colDef(name = "Term"),
+          department_type = colDef(
+            name = "Department Type",
+            cell = function(value) {
+              color_map <- c("MUSC" = "blue", "ODOA" = "purple", "CSA" = "orange", "Collab" = "maroon", "Others" = "pink")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          event_type = colDef(
+            name = "Event Type",
+            cell = function(value) {
+              color_map <- c("Guest" = "blue", "Faculty Recital" = "purple", "Student Recital" = "orange", "Studio Recital" = "grey", "Ensemble Concert" = "lightgrey", "Student Activity" = "pink", "Masterclass" = "cyan", "Presentation" = "lightblue", "Special Events" = "lightgreen")
+              color <- color_map[as.character(value)]
+              if (is.na(color)) color <- "lightgrey"
+              tags$span(
+                style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"),
+                as.character(value)
+              )
+            }
+          ),
+          year = colDef(name = "Year"),
+          term_category = colDef(name = "Term Category"),
+          week_of_term = colDef(name = "Week of Term")
         )
       )
-    
   })
+  
+  
+  
   ############################## TEMP 2 ##########################################
   observeEvent(input$submitNewTerm, {
     new_term <- input$termID
@@ -1050,22 +1261,6 @@ server <- function(input, output, session) {
     # Use dplyr to append the new row
     term_start_dates$data <- term_start_dates$data %>%
       bind_rows(data.frame(term = new_term, start_date = new_start_date))
-  })
-  
-  
-  output$kmeans_plot_init <- renderImage({
-    list(src = "kmeans_plot.png", contentType = 'image/png',width = 800, height = 600,
-         alt = "Website under construction")
-  })
-  
-  output$importance_plot_init <- renderImage({
-    list(src = "importance_plot.png", contentType = 'image/png',width = 800, height = 600,
-         alt = "Website under construction")
-  })
-  
-  output$tree_plot_init <- renderImage({
-    list(src = "tree_plot.png", contentType = 'image/png',width = 800, height = 600,
-         alt = "Website under construction")
   })
   
   ################SURPRISE################

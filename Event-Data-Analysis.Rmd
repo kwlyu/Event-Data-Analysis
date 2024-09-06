@@ -681,4 +681,3 @@ combined_data_filtered <- combined_data_filtered %>%
   select(-start_date)
 
 ```
-
