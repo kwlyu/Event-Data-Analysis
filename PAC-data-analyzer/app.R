@@ -459,11 +459,23 @@ contactTab <- tabItem(
     br(), 
     br(),
     fluidRow(
-      box(title = "Kunwu Lyu", status = "primary", "lyuk@carleton.edu")
+      userBox(title = userDescription(
+        title = "Kunwu Lyu",
+        subtitle = "lead Developer",
+        type = 1,
+        image = "https://media.licdn.com/dms/image/v2/D5603AQHPh_-Y2pO5MA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1685996205041?e=2147483647&v=beta&t=tLCBes3OQbU0wXwExAH3PGipB-9jZx-EsImiMFrIMtQ",
+        backgroundImage = "https://hga.com/wp-content/uploads/2018/04/Carleton-College-Music-and-Performance-Commons-Addition-interior-ballet-rehearsal.jpg"
+      ), status = "primary", "lyuk@carleton.edu")
     ),
     br(),
     "or the person who pays me to do this:",
-    fluidRow(box(title = "Alexi Carlson", status = "primary", "acarlson4@carleton.edu")), 
+    fluidRow(userBox(title = userDescription(
+      title = "Alexi Carlson",
+      subtitle = "Performing Activities Coordinator",
+      type = 1,
+      image = "https://cdn.carleton.edu/uploads/sites/172/2021/12/Alexi-Carlson-Headshot.png?resize=400,400&crop=0,6,100,88",
+      backgroundImage = "https://www.pegasusgrp.net/uploads/1/1/7/4/117471487/1826-027-00-carltonpac-av-485-medium_orig.jpg"
+    ), status = "primary", "acarlson4@carleton.edu")), 
     br(),
     "and we'll get back to you when we're done with String Recitals."
   )
