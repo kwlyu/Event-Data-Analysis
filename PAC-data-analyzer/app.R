@@ -252,6 +252,14 @@ event_summary <- combined_data_filtered %>%
   mutate(year_total = sum(term_total)) %>%
   ungroup()
 
+combined_data_filtered %>% filter(event_type == "Guest",
+                                  str_detect(department, "MUSC")) %>% 
+  filter(!str_detect(what, "Masterclass")) -> guest_only
+
+
+############################ UI ################################################
+
+
 sidebar <- dashboardSidebar(minified = TRUE, collapsed = TRUE,
                             uiOutput("sidebarpanel")) 
 body <- dashboardBody(shinyjs::useShinyjs(), uiOutput("body"),
@@ -333,7 +341,11 @@ analysisTab <- tabItem(
                              collapsible = TRUE,
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play2", icon = icon("heart")),
-                               tags$div(id = "audio_container2")
+                               tags$div(id = "audio_container2"),
+                               boxDropdownItem("Generate Music Guest Info", id = "MUSC_Guest", icon = icon("copy")),
+                               tags$head(
+                                 tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js")
+                               )
                              ), 
                              div(
                                h1("Data Summary", align = "center", style = "font-weight:bold"),
@@ -594,6 +606,51 @@ server <- function(input, output, session) {
       loginpage  # Show the login page when not logged in
     }
   })
+  
+  ############################## Generate Music Guest Info #####################
+  observeEvent(input$MUSC_Guest, {
+    music_guest_only <- read_csv(file = "guest_only.csv")
+    print_guest_dat <- music_guest_only %>% 
+      select(date, what, genre, sponsor, year, term_category) %>% 
+      mutate(what = str_replace_all(what, "GUEST: ", ""))
+    print_guest_fn <- function(data) {
+      # Extract unique years
+      years <- unique(data$year)
+      
+      for (year in years) {
+        cat("\n---------------------------\n")  # Divider between years
+        cat(year, "\n", sep = "")
+        
+        # Extract term categories for the current year
+        terms <- unique(data$term_category[data$year == year])
+        
+        for (term in terms) {
+          cat("\n", term, "\n", sep = "")
+          
+          # Extract rows corresponding to the current term and year
+          term_data <- data[data$year == year & data$term_category == term, ]
+          
+          if (nrow(term_data) == 0) {
+            cat("No guests\n")
+          } else {
+            for (i in 1:nrow(term_data)) {
+              event <- term_data$what[i]
+              genre <- term_data$genre[i]
+              sponsor <- term_data$sponsor[i]
+              cat(event, " | ", genre, " | ", sponsor, "\n", sep = "")
+            }
+          }
+        }
+      }
+      
+      cat("\n---------------------------\n")  # Final divider
+    }
+    
+    print_guest_fn(print_guest_dat) -> musc_guest_info
+    text <- paste0(musc_guest_info)
+    session$sendCustomMessage("txt", text)
+  })
+  
   
   
   ############################## Plot 1 Overview ###############################
