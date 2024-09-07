@@ -1511,6 +1511,12 @@ server <- function(input, output, session) {
     # Use dplyr to append the new row
     term_start_dates$data <- term_start_dates$data %>%
       bind_rows(data.frame(term = new_term, start_date = new_start_date))
+    
+    # Success: Show a success alert using shinyalert
+    shinyalert::shinyalert("Success!", "New Term Data Entered.", type = "success"
+                           ,closeOnEsc = TRUE,
+                           closeOnClickOutside = TRUE
+    )
   })
   
   ################SURPRISE################
