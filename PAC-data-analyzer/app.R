@@ -526,33 +526,35 @@ resultsTab <- tabItem(
                                boxDropdownItem("Click me", id = "play4", icon = icon("heart")),
                                tags$div(id = "audio_container4"),
                                dropdownDivider(),
-                               ################### TEMP 1 ##############
-                               # Wrap the selectInput inside a div and prevent event propagation
+                               ################# TEMP 1 ########################
+                               # Year select input for plot2
                                tags$div(id = "dropdownMenu-container",
                                         selectInput(
                                           inputId = "year_select_plot2",
-                                          label = tags$span(style = "color:black;", "Select Year:"),  # Label with black color
+                                          label = tags$span(style = "color:black;", "Select Year:"),
                                           choices = year_choices,
-                                          selected = "All",  # Default selection
-                                          multiple = TRUE    # Allow multiple selections
+                                          selected = "All", 
+                                          multiple = TRUE
                                         )
                                ),
                                
-                               # Green "Update" button
+                               # Update and Reset buttons for plot2
                                actionBttn(inputId = "update_plot2", label = "Update", 
                                           style = "fill", color = "success"),
-                               
-                               # Red "Reset" button
                                actionBttn(inputId = "reset_plot2", label = "Reset", 
                                           style = "fill", color = "danger"),
-                               
+                               # Toggle for audience count
                                prettyToggle(
                                  inputId = "toggle_audience",
-                                 label_on = "Show Audience Count",
-                                 label_off = "Hide Audience Count"
+                                 label_on = tags$span(style = "color:black;", "Show Audience Count"),
+                                 label_off = tags$span(style = "color:black;", "Hide Audience Count"),
+                                 icon_on = icon("check"),
+                                 icon_off = icon("times"),
+                                 status_on = "success",
+                                 status_off = "danger"
                                ),
                                
-                               # Fix the dropdown menu closing issue using JavaScript
+                               # Fix the dropdown menu closing issue
                                tags$script(HTML("
     $(document).on('click', '#dropdownMenu-container', function(event) {
       event.stopPropagation();
@@ -894,59 +896,110 @@ server <- function(input, output, session) {
     updateSelectInput(session, "year_select_plot1", selected = "All")
   })
   
+  
   ############################### Plot 2 Overview ##############################
-  # Calculate total support and average audience count
-  support_summary <- combined_data_filtered %>%
-    filter(support_level != "NA") %>%
-    group_by(year, support_level) %>%
-    summarize(
-      total_support = n(),
-      average_audience_count = mean(as.numeric(audience_count[!is.na(audience_count)]), na.rm = TRUE),
-      .groups = 'drop'
-    )
+  renderPlot2fn1 <- function(data) {
+    # Function to summarize and pivot data for each year
+    summarize_and_pivot <- function(current_year) {
+      data %>%
+        filter(year == current_year) %>%
+        group_by(term_category, support_level) %>%
+        summarize(Support = n(), .groups = 'drop') %>%
+        pivot_wider(names_from = support_level, values_from = Support, values_fill = list(Support = 0)) %>%
+        mutate(year = current_year)  # Add a year column to identify the table
+    }
+    
+    # List of years to iterate over
+    years <- unique(data$year)
+    
+    # Use purrr::map to apply summarize_and_pivot function for each year
+    support_tables <- map_dfr(years, summarize_and_pivot)  # Combine into a single data frame
+    
+    # Melt the data for ggplot
+    support_tables_melted <- support_tables %>%
+      pivot_longer(cols = -c(term_category, year), names_to = "support_level", values_to = "Support")
+    
+    # Ensure the term_category and support_level are factors with the correct order
+    support_tables_melted <- support_tables_melted %>%
+      filter(support_level != "NA") %>% 
+      mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+             support_level = factor(support_level, levels = c("NA", "H", "M", "L"), ordered = TRUE))
+    
+    # Calculate percentages for each segment
+    support_tables_melted <- support_tables_melted %>%
+      group_by(year, term_category) %>%
+      mutate(total_support = sum(Support),
+             percentage = (Support / total_support) * 100)
+    
+    # Create the facet plot
+    ggplot2 <- ggplot(support_tables_melted, aes(x = term_category, y = Support, fill = support_level)) +
+      geom_bar(stat = "identity", position = "stack") +
+      geom_text(aes(label = paste0(Support, " (", round(percentage, 1), "%)")),
+                position = position_stack(vjust = 0.5), size = 2, color = "black") +
+      facet_wrap(~ year) +
+      labs(x = "Term", y = "Support Count", fill = "Support Level") +
+      scale_fill_manual(values = c("H" = "#FF9999", "M" = "#99CCFF", "L" = "#99FF99", "NA" = "black")) +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    ggplotly(ggplot2)
+  }
   
-  # Convert year to a factor with ordered levels if needed
-  support_summary <- support_summary %>%
-    mutate(year = factor(year, levels = unique(year), ordered = TRUE),
-           support_level = factor(support_level, levels = c("NA", "H", "M", "L"), ordered = TRUE))
+  renderPlot2fn2 <- function(data) {
+    # Version with average audience count
+    support_summary <- data %>%
+      filter(support_level != "NA") %>%
+      group_by(year, support_level) %>%
+      summarize(
+        total_support = n(),
+        average_audience_count = mean(as.numeric(audience_count[!is.na(audience_count)]), na.rm = TRUE),
+        .groups = 'drop'
+      )
+    
+    ggplot_bubble_chart <- ggplot(support_summary, aes(x = year, y = average_audience_count, size = total_support, color = support_level)) +
+      geom_point(alpha = 0.7) +
+      scale_size_continuous(range = c(3, 20)) +
+      scale_color_manual(values = c("H" = "#FF9999", "M" = "#99CCFF", "L" = "#99FF99", "NA" = "black")) +
+      labs(x = "Year", y = "Average Audience Count", size = "Total Support", color = "Support Level") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    ggplotly(ggplot_bubble_chart)
+  }
   
-  # Create the bubble chart with ggplot2
-  ggplot_bubble_chart <- ggplot(support_summary, aes(x = year, y = average_audience_count, size = total_support, color = support_level)) +
-    geom_point(alpha = 0.7) +
-    scale_size_continuous(range = c(3, 20)) + # Adjust the range for bubble sizes
-    scale_color_manual(values = c("H" = "#FF9999", "M" = "#99CCFF", "L" = "#99FF99", "NA" = "black")) +
-    labs(x = "Year", y = "Average Audience Count", size = "Total Support", color = "Support Level") +
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  
-  # Convert to a plotly object
-  plotly_bubble_chart <- ggplotly(ggplot_bubble_chart)
-  
-  # Initial rendering of the plot
+  # Initial Rendering
   output$Plot2 <- renderPlotly({
-    # Render the plotly object (in Shiny, you would use `renderPlotly`)
-    plotly_bubble_chart
+    renderPlot2fn1(combined_data_filtered)
   })
   
-  # Update plot based on selected variable
-  observeEvent(input$updatePlot2, {
-    req(input$compare_var, input$log_scale)
-    output$Plot2 <- renderPlotly({
-      isolate({
-        renderContinentPlot(input$compare_var, input$log_scale)
+  # Update plot when update button is pressed
+  observeEvent(input$update_plot2, {
+    # Filter data based on selected years
+    filtered_data <- combined_data_filtered %>%
+      filter(year %in% input$year_select_plot2 | input$year_select_plot2 == "All")
+    
+    # Check if audience toggle is on or off
+    if (input$toggle_audience) {
+      output$Plot2 <- renderPlotly({
+        renderPlot2fn2(filtered_data)
       })
-    })
+    } else {
+      output$Plot2 <- renderPlotly({
+        renderPlot2fn1(filtered_data)
+      })
+    }
   })
   
-  # Reset the plot to default variable
-  observeEvent(input$resetPlot2, {
-    updateSelectInput(session, "compare_var", selected = "gdp_pcap")
-    updatePrettyToggle(session, "log_scale", value = TRUE)
+  # Reset plot2 when reset button is pressed
+  observeEvent(input$reset_plot2, {
+    updateSelectInput(session, "year_select_plot2", selected = "All")
+    updatePrettyToggle(session, "toggle_audience", value = FALSE)
+    
+    # Reset plot to default
     output$Plot2 <- renderPlotly({
-      renderContinentPlot(compare = "gdp_pcap", TRUE)
+      renderPlot2fn1(combined_data_filtered)
     })
   })
-  
   ############################### Plot 3 Overview ##############################
   # Function to summarize and pivot data for each year
   summarize_and_pivot_department <- function(current_year) {
