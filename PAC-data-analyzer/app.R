@@ -62,17 +62,14 @@ loginpage <- div(id = "loginpage", style = "width: 500px; max-width: 100%; margi
                                             padding-top: 5px;font-size:16px;", 
                                   class = "text-center"))),
                      br(),
-                     br(),
-                     tags$code("Username: myuser  Password: mypass"),
-                     br(),
-                     tags$code("Username: myuser1  Password: mypass1")
+                     br()
                    ))
 )
 
 credentials <- data.frame(
-  username_id = c("myuser", "myuser1"),
-  password   = sapply(c("mypass", "mypass1"), password_store),
-  permission  = c("basic", "advanced"), 
+  username_id = c("KPSstu", "pac", "I left a back door"),
+  password   = sapply(c("ShowComp", " pac", "Kunwu says LDC at 7:30"), password_store),
+  permission  = c("basic", "advanced", "advanced"), 
   stringsAsFactors = FALSE
 )
 
