@@ -5,7 +5,7 @@ account: estimelee
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 12500756
-bundleId:
+bundleId: 9074162
 url: https://estimelee.shinyapps.io/PAC-data-analyzer/
 version: 1
 asMultiple: FALSE

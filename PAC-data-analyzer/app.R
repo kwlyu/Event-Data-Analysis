@@ -255,7 +255,7 @@ dataWranglingfn <- function() {
       TRUE ~ "Guest"
     )) %>%
     mutate(year = term_to_year(term)) %>%
-    mutate(term = factor(term, levels = unique_terms, ordered = TRUE)) %>%
+    mutate(term = factor(term, levels = term_start_dates$term, ordered = TRUE)) %>%
     arrange(year, term) %>%
     mutate(
       term_category = case_when(
@@ -1513,7 +1513,7 @@ server <- function(input, output, session) {
   
   ############################## TEMP 2 ##########################################
   observeEvent(input$submitNewTerm, {
-    showPageSpinner()
+    
     
     new_term <- input$termID
     new_start_date <- as.Date(input$termDate)
@@ -1536,15 +1536,17 @@ server <- function(input, output, session) {
             term_start_dates<- term_start_dates %>% 
               filter(term != new_term) %>%  # Remove existing row
               bind_rows(data.frame(term = new_term, start_date = new_start_date))  # Add new row
-            
+            showPageSpinner()
             # Proceed with the rest of the operations
             processNewTerm(new_term)
           } else {
+            showPageSpinner()
             hidePageSpinner()
           }
         }
       )
     } else {
+      showPageSpinner()
       # If the term does not exist, simply append the new term
       term_start_dates <- term_start_dates %>% 
         bind_rows(data.frame(term = new_term, start_date = new_start_date))
