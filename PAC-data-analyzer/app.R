@@ -125,28 +125,6 @@ file_codes <- c("F14", "W15", "S15", "F15", "W16", "S16", "F16", "W17", "S17",
                 "F20", "W21", "S21", "F21", "W22", "S22", "F22", "W23", "S23", 
                 "F23", "W24", "S24")
 
-# Create a function to read a file given its code
-read_and_clean_event_file <- function(code) {
-  file_path <- paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv")
-  data <- read_csv(file_path)
-  clean_names(data) %>% 
-    mutate(across(everything(), as.character)) %>% 
-    mutate(term = code)
-}
-
-term_to_year <- function(term) {
-  year <- as.numeric(str_sub(term, 2, 3))
-  season <- str_sub(term, 1, 1)
-  start_year <- if_else(season == "F", 2000 + year, 2000 + year - 1)
-  end_year <- start_year + 1
-  return(paste0(start_year, "-", end_year))
-}
-
-# Use purrr to read all files and store them in a named list
-event_data_list <- set_names(map(file_codes, read_and_clean_event_file), file_codes)
-
-combined_data <- reduce(event_data_list, full_join)
-
 # Define the term start dates (hardcoded as per the original logic)
 term_start_dates <- data.frame(
   term = file_codes,  # Add all relevant terms
@@ -162,127 +140,162 @@ term_start_dates <- data.frame(
                          "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
 )
 
-# Function to calculate the week of term
-calculate_week_of_term <- function(event_date, term) {
-  start_date <- term_start_dates %>%
-    filter(term == !!term) %>%
-    pull(start_date)
+dataWranglingfn <- function() {
+  # Create a function to read a file given its code
+  read_and_clean_event_file <- function(code) {
+    file_path <- paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv")
+    data <- read_csv(file_path)
+    clean_names(data) %>% 
+      mutate(across(everything(), as.character)) %>% 
+      mutate(term = code)
+  }
   
-  if(length(start_date) == 0) return(NA_integer_)  # Return NA if no start_date is found
+  term_to_year <- function(term) {
+    year <- as.numeric(str_sub(term, 2, 3))
+    season <- str_sub(term, 1, 1)
+    start_year <- if_else(season == "F", 2000 + year, 2000 + year - 1)
+    end_year <- start_year + 1
+    return(paste0(start_year, "-", end_year))
+  }
   
-  # Calculate the week of the term based on Monday as the first day of the week
-  week_of_term <- as.integer((floor_date(event_date, unit = "week", week_start = 1) - 
-                                floor_date(start_date, unit = "week", week_start = 1)) / 7) + 1
-  return(week_of_term)
+  # Use purrr to read all files and store them in a named list
+  event_data_list <- set_names(map(file_codes, read_and_clean_event_file), file_codes)
+  
+  combined_data <- reduce(event_data_list, full_join)
+  
+  # Function to calculate the week of term
+  calculate_week_of_term <- function(event_date, term) {
+    start_date <- term_start_dates %>%
+      filter(term == !!term) %>%
+      pull(start_date)
+    
+    if(length(start_date) == 0) return(NA_integer_)  # Return NA if no start_date is found
+    
+    # Calculate the week of the term based on Monday as the first day of the week
+    week_of_term <- as.integer((floor_date(event_date, unit = "week", week_start = 1) - 
+                                  floor_date(start_date, unit = "week", week_start = 1)) / 7) + 1
+    return(week_of_term)
+  }
+  
+  # Apply the new function to calculate week_of_term dynamically
+  
+  combined_data_filtered <- combined_data %>%
+    filter(!is.na(what), what != "") %>%
+    filter(what != "Choir & Jazz Rehearsal") %>%
+    filter(what != "Jazz Rehearsal") %>%
+    mutate(date = as.Date(ymd(date))) %>%
+    mutate(
+      livestream = coalesce(livestream, live_stream)  # If 'livestream' is NA, use 'live_stream'
+    ) %>%
+    select(-live_stream) %>%  
+    mutate(department = ifelse(str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival"), "CSA", department)) %>% 
+    mutate(
+      support_level = fct_relevel(factor(support_level), "H", "M", "L"),
+      audio_needs = fct_relevel(factor(audio_needs), "H", "M", "L"),
+      stage_needs = fct_relevel(factor(stage_needs), "H", "M", "L"),
+      lighting_needs = fct_relevel(factor(lighting_needs), "H", "M", "L"),
+      projection = fct_relevel(factor(projection), "Y", "N"),
+      video_recording = fct_relevel(factor(video_recording), "Y", "N"),
+      livestream = fct_relevel(factor(livestream), "Y", "N"),
+      poster = fct_relevel(factor(poster), "Y", "N"),
+      program = fct_relevel(factor(program), "Y", "N"),
+      reception = fct_relevel(factor(reception), "Y", "N")
+    ) %>%
+    mutate(
+      venue = factor(venue),
+      department = factor(department)
+    ) %>%  
+    mutate(
+      audience_count = as.numeric(ifelse(grepl("^[0-9]+$", audience_count), audience_count, NA)),
+      days_committed = as.numeric(ifelse(grepl("^[0-9]+$", days_committed), days_committed, NA)),
+      av_staff = as.numeric(ifelse(grepl("^[0-9]+$", av_staff), av_staff, NA)),
+      pac_staff = as.numeric(ifelse(grepl("^[0-9]+$", pac_staff), pac_staff, NA))
+    ) %>%  
+    mutate(support_level = if_else(support_level == "N" | support_level == "Y", "L", support_level)) %>%
+    mutate(
+      department = str_replace_all(department, "WCC", "ODOA"),
+      department = str_replace_all(department, "MSUC", "MUSC"),
+      department = str_replace_all(department, "French Dept|French", "FREN"),
+      department = str_replace_all(department, "English", "ENGL"),
+      department = str_replace_all(department, "Pres. Office", "PRES"),
+      department = str_replace_all(department, "History", "HIST"),
+      department = str_replace_all(department, "THD", "THDA"),
+      department = str_replace_all(department, "Inclusion & Equity", "IEC"),
+      venue = str_replace_all(venue, "Skinner Chapel", "Chapel"),
+      department = str_replace_all(department, "/", " & "),
+      department = str_replace_all(department, ",", " &"),
+      venue = str_replace_all(venue, ",", " &"),
+      department = str_replace_all(department, "\\s+", " ")  # Remove extra spaces
+    ) %>%
+    select(-wk) %>%
+    mutate(department_type = case_when(
+      department == "MUSC" ~ "MUSC",
+      department == "ODOA" ~ "ODOA",
+      department == "CSA" ~ "CSA",
+      str_detect(department, "&") ~ "Collab",
+      TRUE ~ "Others"
+    )) %>%
+    mutate(what = str_replace_all(what, "Jazz Ensemble Concert|Jazz Area Concert", "Jazz Concert"),
+           what = str_replace_all(what, "Symphony Band Concert", "Symphony Concert"),
+           what = str_replace_all(what, "Composition Recital", "Composition Showcase Recital"),
+           what = str_replace_all(what, "Harpichord", "Harpsichord"),
+           what = str_replace_all(what, "Emsemble", "Ensemble"),
+           what = str_replace_all(what, "Juest Cellin'", "Just Cellin'"),
+           what = str_replace_all(what, "Facutly|FACULTY|Mazariello", "Faculty")) %>%
+    mutate(event_type = case_when(
+      str_detect(what, "GUEST|ODOA|Concert Series|SPCO") ~ "Guest",
+      str_detect(what, "Faculty") ~ "Faculty Recital",
+      str_detect(what, "Student|Senior|Junior|Piano Recital: |Johnson|Verma Jameson") ~ "Student Recital",
+      str_detect(what, "Studio Recital|Organ & Harpsichord|Composition Showcase Recital|Chamber Recital|Chamber Music Recital|Chamber Music|Organ Recital|Strings Recital|Violin & Viola|Violin/Viola|Drum Ensemble|Drum Recital|Voice Showcase Recital|Chinese Music Recital|Piano Studios Recital|Jazz Chamber|Piano Recital|Comps Fest|Recorder Recital|Music Ensemble|Studio") ~ "Studio Recital",
+      str_detect(what, "Orchestra Concert|Jazz Concert|Symphony Concert|Symphony Band|Choir Concert|Orchestra and Choir|Chinese & Global|Chinese Global Concert|Chinese and Global|Chinese Music Concert|Chinese Music Ensemble|Chinese Ensemble|Music Comps|Jazz Vocal Concert") ~ "Ensemble Concert",
+      str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival") ~ "Student Activity",
+      str_detect(what, "Masterclass|Lecture|Symposium") ~ "Masterclass",
+      str_detect(what, "Trustees|Trustee's|Presidents|Conference|President's|Presentation") ~ "Presentation",
+      str_detect(what, "Clinic|Music Fest|Music Department Showcase|Melinda Russell|Launch|Event|Opening") ~ "Special Events",
+      TRUE ~ "Guest"
+    )) %>%
+    mutate(year = term_to_year(term)) %>%
+    mutate(term = factor(term, levels = unique_terms, ordered = TRUE)) %>%
+    arrange(year, term) %>%
+    mutate(
+      term_category = case_when(
+        str_detect(term, "^F") ~ "Fall",
+        str_detect(term, "^W") ~ "Winter",
+        str_detect(term, "^S") ~ "Spring"
+      )
+    ) %>%
+    mutate(term_category = factor(term_category, levels = c("Spring", "Winter", "Fall"), ordered = TRUE)) %>%
+    # Apply week_of_term calculation
+    rowwise() %>%
+    mutate(week_of_term = calculate_week_of_term(date, term)) %>%
+    ungroup()
+  
+  # Example event summary after filtering and transformation
+  event_summary <- combined_data_filtered %>%
+    group_by(year, term) %>%
+    summarize(term_total = n(), .groups = 'drop') %>%
+    group_by(year) %>%
+    mutate(year_total = sum(term_total)) %>%
+    ungroup()
+  
+  combined_data_filtered %>% filter(event_type == "Guest",
+                                    str_detect(department, "MUSC")) %>% 
+    filter(!str_detect(what, "Masterclass")) -> guest_only
+  
+  # Get the unique years and append the "All" option
+  year_choices <- c("All", combined_data_filtered %>% pull(year) %>% unique())
+  
+  return(list(combined_data_filtered = combined_data_filtered,
+              event_summary = event_summary,
+              year_choices = year_choices))
 }
 
-# Apply the new function to calculate week_of_term dynamically
+result_list <- dataWranglingfn()
+combined_data_filtered <- result_list$combined_data_filtered
+event_summary <- result_list$event_summary
+year_choices <- result_list$year_choices
 
-combined_data_filtered <- combined_data %>%
-  filter(!is.na(what), what != "") %>%
-  filter(what != "Choir & Jazz Rehearsal") %>%
-  filter(what != "Jazz Rehearsal") %>%
-  mutate(date = as.Date(ymd(date))) %>%
-  mutate(
-    livestream = coalesce(livestream, live_stream)  # If 'livestream' is NA, use 'live_stream'
-  ) %>%
-  select(-live_stream) %>%  
-  mutate(department = ifelse(str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival"), "CSA", department)) %>% 
-  mutate(
-    support_level = fct_relevel(factor(support_level), "H", "M", "L"),
-    audio_needs = fct_relevel(factor(audio_needs), "H", "M", "L"),
-    stage_needs = fct_relevel(factor(stage_needs), "H", "M", "L"),
-    lighting_needs = fct_relevel(factor(lighting_needs), "H", "M", "L"),
-    projection = fct_relevel(factor(projection), "Y", "N"),
-    video_recording = fct_relevel(factor(video_recording), "Y", "N"),
-    livestream = fct_relevel(factor(livestream), "Y", "N"),
-    poster = fct_relevel(factor(poster), "Y", "N"),
-    program = fct_relevel(factor(program), "Y", "N"),
-    reception = fct_relevel(factor(reception), "Y", "N")
-  ) %>%
-  mutate(
-    venue = factor(venue),
-    department = factor(department)
-  ) %>%  
-  mutate(
-    audience_count = as.numeric(ifelse(grepl("^[0-9]+$", audience_count), audience_count, NA)),
-    days_committed = as.numeric(ifelse(grepl("^[0-9]+$", days_committed), days_committed, NA)),
-    av_staff = as.numeric(ifelse(grepl("^[0-9]+$", av_staff), av_staff, NA)),
-    pac_staff = as.numeric(ifelse(grepl("^[0-9]+$", pac_staff), pac_staff, NA))
-  ) %>%  
-  mutate(support_level = if_else(support_level == "N" | support_level == "Y", "L", support_level)) %>%
-  mutate(
-    department = str_replace_all(department, "WCC", "ODOA"),
-    department = str_replace_all(department, "MSUC", "MUSC"),
-    department = str_replace_all(department, "French Dept|French", "FREN"),
-    department = str_replace_all(department, "English", "ENGL"),
-    department = str_replace_all(department, "Pres. Office", "PRES"),
-    department = str_replace_all(department, "History", "HIST"),
-    department = str_replace_all(department, "THD", "THDA"),
-    department = str_replace_all(department, "Inclusion & Equity", "IEC"),
-    venue = str_replace_all(venue, "Skinner Chapel", "Chapel"),
-    department = str_replace_all(department, "/", " & "),
-    department = str_replace_all(department, ",", " &"),
-    venue = str_replace_all(venue, ",", " &"),
-    department = str_replace_all(department, "\\s+", " ")  # Remove extra spaces
-  ) %>%
-  select(-wk) %>%
-  mutate(department_type = case_when(
-    department == "MUSC" ~ "MUSC",
-    department == "ODOA" ~ "ODOA",
-    department == "CSA" ~ "CSA",
-    str_detect(department, "&") ~ "Collab",
-    TRUE ~ "Others"
-  )) %>%
-  mutate(what = str_replace_all(what, "Jazz Ensemble Concert|Jazz Area Concert", "Jazz Concert"),
-         what = str_replace_all(what, "Symphony Band Concert", "Symphony Concert"),
-         what = str_replace_all(what, "Composition Recital", "Composition Showcase Recital"),
-         what = str_replace_all(what, "Harpichord", "Harpsichord"),
-         what = str_replace_all(what, "Emsemble", "Ensemble"),
-         what = str_replace_all(what, "Juest Cellin'", "Just Cellin'"),
-         what = str_replace_all(what, "Facutly|FACULTY|Mazariello", "Faculty")) %>%
-  mutate(event_type = case_when(
-    str_detect(what, "GUEST|ODOA|Concert Series|SPCO") ~ "Guest",
-    str_detect(what, "Faculty") ~ "Faculty Recital",
-    str_detect(what, "Student|Senior|Junior|Piano Recital: |Johnson|Verma Jameson") ~ "Student Recital",
-    str_detect(what, "Studio Recital|Organ & Harpsichord|Composition Showcase Recital|Chamber Recital|Chamber Music Recital|Chamber Music|Organ Recital|Strings Recital|Violin & Viola|Violin/Viola|Drum Ensemble|Drum Recital|Voice Showcase Recital|Chinese Music Recital|Piano Studios Recital|Jazz Chamber|Piano Recital|Comps Fest|Recorder Recital|Music Ensemble|Studio") ~ "Studio Recital",
-    str_detect(what, "Orchestra Concert|Jazz Concert|Symphony Concert|Symphony Band|Choir Concert|Orchestra and Choir|Chinese & Global|Chinese Global Concert|Chinese and Global|Chinese Music Concert|Chinese Music Ensemble|Chinese Ensemble|Music Comps|Jazz Vocal Concert") ~ "Ensemble Concert",
-    str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival") ~ "Student Activity",
-    str_detect(what, "Masterclass|Lecture|Symposium") ~ "Masterclass",
-    str_detect(what, "Trustees|Trustee's|Presidents|Conference|President's|Presentation") ~ "Presentation",
-    str_detect(what, "Clinic|Music Fest|Music Department Showcase|Melinda Russell|Launch|Event|Opening") ~ "Special Events",
-    TRUE ~ "Guest"
-  )) %>%
-  mutate(year = term_to_year(term)) %>%
-  mutate(term = factor(term, levels = unique_terms, ordered = TRUE)) %>%
-  arrange(year, term) %>%
-  mutate(
-    term_category = case_when(
-      str_detect(term, "^F") ~ "Fall",
-      str_detect(term, "^W") ~ "Winter",
-      str_detect(term, "^S") ~ "Spring"
-    )
-  ) %>%
-  mutate(term_category = factor(term_category, levels = c("Spring", "Winter", "Fall"), ordered = TRUE)) %>%
-  # Apply week_of_term calculation
-  rowwise() %>%
-  mutate(week_of_term = calculate_week_of_term(date, term)) %>%
-  ungroup()
 
-# Example event summary after filtering and transformation
-event_summary <- combined_data_filtered %>%
-  group_by(year, term) %>%
-  summarize(term_total = n(), .groups = 'drop') %>%
-  group_by(year) %>%
-  mutate(year_total = sum(term_total)) %>%
-  ungroup()
-
-combined_data_filtered %>% filter(event_type == "Guest",
-                                  str_detect(department, "MUSC")) %>% 
-  filter(!str_detect(what, "Masterclass")) -> guest_only
-
-# Get the unique years and append the "All" option
-year_choices <- c("All", combined_data_filtered %>% pull(year) %>% unique())
 
 ############################ UI ################################################
 
@@ -896,12 +909,7 @@ server <- function(input, output, session) {
   ############################## Plot 1 Overview ###############################
   # Sort the data frame by year and term in the order of F, W, S
   event_summary <- event_summary %>%
-    mutate(term = factor(term, levels = c("F14", "W15", "S15", 
-                                          "F15", "W16", "S16", "F16", "W17", "S17", 
-                                          "F17", "W18", "S18", "F18", "W19", "S19", 
-                                          "F19", "W20", "S20", "F20", "W21", "S21", 
-                                          "F21", "W22", "S22", "F22", "W23", "S23", 
-                                          "F23", "W24", "S24"), ordered = TRUE)) %>%
+    mutate(term = factor(term, levels = term_start_dates$term, ordered = TRUE)) %>%
     arrange(year, term) %>%
     mutate(
       term_category = case_when(
@@ -1320,7 +1328,7 @@ server <- function(input, output, session) {
               bordered = TRUE,
               highlight = TRUE,
               searchable = TRUE,
-              defaultSorted = list(term = "asc"),
+              defaultSorted = list(start_date = "desc"),
               striped = TRUE,
               pagination = TRUE
     )
@@ -1505,19 +1513,76 @@ server <- function(input, output, session) {
   
   ############################## TEMP 2 ##########################################
   observeEvent(input$submitNewTerm, {
+    showPageSpinner()
+    
     new_term <- input$termID
     new_start_date <- as.Date(input$termDate)
     
-    # Use dplyr to append the new row
-    term_start_dates$data <- term_start_dates$data %>%
-      bind_rows(data.frame(term = new_term, start_date = new_start_date))
+    # Check if the term already exists in term_start_dates$data
+    existing_term <- term_start_dates %>% filter(term == new_term)
     
-    # Success: Show a success alert using shinyalert
-    shinyalert::shinyalert("Success!", "New Term Data Entered.", type = "success"
-                           ,closeOnEsc = TRUE,
-                           closeOnClickOutside = TRUE
-    )
+    if(nrow(existing_term) > 0) {
+      # If the term exists, show a confirmation alert before overwriting
+      shinyalert::shinyalert(
+        "Warning", 
+        "This term already exists. Proceeding will overwrite existing data. Continue?", 
+        type = "warning", 
+        showCancelButton = TRUE,
+        closeOnEsc = TRUE,
+        closeOnClickOutside = TRUE,
+        callbackR = function(x) {
+          if(x) {
+            # Overwrite the existing term
+            term_start_dates<- term_start_dates %>% 
+              filter(term != new_term) %>%  # Remove existing row
+              bind_rows(data.frame(term = new_term, start_date = new_start_date))  # Add new row
+            
+            # Proceed with the rest of the operations
+            processNewTerm(new_term)
+          } else {
+            hidePageSpinner()
+          }
+        }
+      )
+    } else {
+      # If the term does not exist, simply append the new term
+      term_start_dates <- term_start_dates %>% 
+        bind_rows(data.frame(term = new_term, start_date = new_start_date))
+      
+      # Proceed with the rest of the operations
+      processNewTerm(new_term)
+    }
   })
+  
+  # Helper function to process the new term
+  processNewTerm <- function(new_term) {
+    # Define the code for file naming (assuming 'code' comes from new_term or elsewhere)
+    code <- new_term  # Adjust this if necessary
+    
+    # Fetch new term data from Google Sheets
+    sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit#gid=265403245"
+    new_term_data <- read_sheet(sheet_url, sheet = paste0(new_term, " - Event Data"))
+    
+    # Write the new term data to a CSV file
+    write_csv(new_term_data, paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv"))
+    
+    # Re-run the data wrangling function
+    result_list <- dataWranglingfn()
+    combined_data_filtered <- result_list$combined_data_filtered
+    event_summary <- result_list$event_summary
+    year_choices <- result_list$year_choices
+    
+    hidePageSpinner()
+    
+    # Show success alert
+    shinyalert::shinyalert(
+      "Success!", 
+      "New Term Data Entered.", 
+      type = "success", 
+      closeOnEsc = TRUE, 
+      closeOnClickOutside = TRUE
+    )
+  }
   
   ################SURPRISE################
   
