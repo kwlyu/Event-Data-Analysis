@@ -526,7 +526,6 @@ resultsTab <- tabItem(
                                boxDropdownItem("Click me", id = "play4", icon = icon("heart")),
                                tags$div(id = "audio_container4"),
                                dropdownDivider(),
-                               ################# TEMP 1 ########################
                                # Year select input for plot2
                                tags$div(id = "dropdownMenu-container",
                                         selectInput(
@@ -543,15 +542,15 @@ resultsTab <- tabItem(
                                           style = "fill", color = "success"),
                                actionBttn(inputId = "reset_plot2", label = "Reset", 
                                           style = "fill", color = "danger"),
+                               dropdownDivider(),
                                # Toggle for audience count
-                               prettyToggle(
+                               switchInput(
                                  inputId = "toggle_audience",
-                                 label_on = tags$span(style = "color:black;", "Show Audience Count"),
-                                 label_off = tags$span(style = "color:black;", "Hide Audience Count"),
-                                 icon_on = icon("check"),
-                                 icon_off = icon("times"),
-                                 status_on = "success",
-                                 status_off = "danger"
+                                 onLabel = tags$span(style = "color:black;", "Show Audience Count"),
+                                 offLabel = tags$span(style = "color:black;", "Hide Audience Count"),
+                                 onStatus = "success",
+                                 offStatus = "danger",
+                                 size = "small"
                                ),
                                
                                # Fix the dropdown menu closing issue
@@ -582,7 +581,34 @@ resultsTab <- tabItem(
                              collapsible = TRUE,
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play5", icon = icon("heart")),
-                               tags$div(id = "audio_container5")
+                               tags$div(id = "audio_container5"),
+                               dropdownDivider(),
+                               ################# TEMP 1 ########################
+                               # Wrap the selectInput inside a div and prevent event propagation
+                               tags$div(id = "dropdownMenu-container",
+                                        selectInput(
+                                          inputId = "year_select_plot3",
+                                          label = tags$span(style = "color:black;", "Select Year:"),  # Label with black color
+                                          choices = year_choices,
+                                          selected = "All",  # Default selection
+                                          multiple = TRUE    # Allow multiple selections
+                                        )
+                               ),
+                               
+                               # Green "Update" button
+                               actionBttn(inputId = "update_plot3", label = "Update", 
+                                          style = "fill", color = "success"),
+                               
+                               # Red "Reset" button
+                               actionBttn(inputId = "reset_plot3", label = "Reset", 
+                                          style = "fill", color = "danger"),
+                               
+                               # Fix the dropdown menu closing issue using JavaScript
+                               tags$script(HTML("
+    $(document).on('click', '#dropdownMenu-container', function(event) {
+      event.stopPropagation();
+    });
+  "))
                              ), 
                              div(
                                h1("Sponsor Types", align = "center", style = "font-weight:bold"),
@@ -1001,78 +1027,83 @@ server <- function(input, output, session) {
     })
   })
   ############################### Plot 3 Overview ##############################
-  # Function to summarize and pivot data for each year
-  summarize_and_pivot_department <- function(current_year) {
-    combined_data_filtered %>%
-      filter(year == current_year) %>%
-      group_by(term_category, department_type) %>%
-      summarize(DepartmentCount = n(), .groups = 'drop') %>%
-      pivot_wider(names_from = department_type, values_from = DepartmentCount, values_fill = list(DepartmentCount = 0)) %>%
-      mutate(year = current_year)  # Add a year column to identify the table
+  renderPlot3fn <- function(data) {
+    # Function to summarize and pivot data for each year
+    summarize_and_pivot_department <- function(current_year) {
+      data %>%
+        filter(year == current_year) %>%
+        group_by(term_category, department_type) %>%
+        summarize(DepartmentCount = n(), .groups = 'drop') %>%
+        pivot_wider(names_from = department_type, values_from = DepartmentCount, values_fill = list(DepartmentCount = 0)) %>%
+        mutate(year = current_year)  # Add a year column to identify the table
+    }
+    
+    # List of years to iterate over
+    years <- unique(data$year)
+    
+    # Use purrr::map to apply summarize_and_pivot function for each year
+    department_tables <- map_dfr(years, summarize_and_pivot_department)  # Combine into a single data frame
+    
+    # Melt the data for ggplot
+    department_tables_melted <- department_tables %>%
+      pivot_longer(cols = -c(term_category, year), names_to = "department_type", values_to = "DepartmentCount")
+    
+    # Ensure the term_category and department_type are factors with the correct order
+    department_tables_melted <- department_tables_melted %>%
+      mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+             department_type = factor(department_type, levels = c("MUSC", "ODOA", "CSA", "Collab", "Others"), ordered = TRUE))
+    
+    # Filter out NA department types (if any)
+    department_tables_melted <- department_tables_melted %>%
+      filter(department_type != "NA")
+    
+    # Calculate percentages for each segment
+    department_tables_melted <- department_tables_melted %>%
+      group_by(year, term_category) %>%
+      mutate(total_count = sum(DepartmentCount, na.rm = TRUE),
+             percentage = (DepartmentCount / total_count) * 100)
+    
+    # Create the ggplot chart
+    ggplot_department_summary <- ggplot(department_tables_melted, aes(x = term_category, y = DepartmentCount, fill = department_type)) +
+      geom_bar(stat = "identity", position = "stack") +
+      geom_text(aes(label = paste0(DepartmentCount, " (", round(percentage, 1), "%)")),
+                position = position_stack(vjust = 0.5), size = 2, color = "black",
+                check_overlap = TRUE) +
+      facet_wrap(~ year) +
+      labs(x = "Term", y = "Department Count", fill = "Department Type") +
+      scale_fill_manual(values = c("MUSC" = "#FF9999", "ODOA" = "#99CCFF", "CSA" = "#99FF99", "Collab" = "#FFD700", "Others" = "#FFA500")) +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    # Convert to a plotly object
+    ggplotly(ggplot_department_summary)
   }
-  
-  # List of years to iterate over
-  years <- unique(combined_data_filtered$year)
-  
-  # Use purrr::map to apply summarize_and_pivot function for each year
-  department_tables <- map_dfr(years, summarize_and_pivot_department)  # Combine into a single data frame
-  
-  # Melt the data for ggplot
-  department_tables_melted <- department_tables %>%
-    pivot_longer(cols = -c(term_category, year), names_to = "department_type", values_to = "DepartmentCount")
-  
-  # Ensure the term_category and department_type are factors with the correct order
-  department_tables_melted <- department_tables_melted %>%
-    mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
-           department_type = factor(department_type, levels = c("MUSC", "ODOA", "CSA", "Collab", "Others"), ordered = TRUE))
-  
-  # Filter out NA department types (if any)
-  department_tables_melted <- department_tables_melted %>%
-    filter(department_type != "NA")
-  
-  # Calculate percentages for each segment
-  department_tables_melted <- department_tables_melted %>%
-    group_by(year, term_category) %>%
-    mutate(total_count = sum(DepartmentCount, na.rm = TRUE),
-           percentage = (DepartmentCount / total_count) * 100)
-  
-  # Create the ggplot chart
-  ggplot_department_summary <- ggplot(department_tables_melted, aes(x = term_category, y = DepartmentCount, fill = department_type)) +
-    geom_bar(stat = "identity", position = "stack") +
-    geom_text(aes(label = paste0(DepartmentCount, " (", round(percentage, 1), "%)")),
-              position = position_stack(vjust = 0.5), size = 2, color = "black",
-              check_overlap = TRUE) +
-    facet_wrap(~ year) +
-    labs(x = "Term", y = "Department Count", fill = "Department Type") +
-    scale_fill_manual(values = c("MUSC" = "#FF9999", "ODOA" = "#99CCFF", "CSA" = "#99FF99", "Collab" = "#FFD700", "Others" = "#FFA500")) +
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  
-  # Convert to a plotly object
-  plotly_department_summary <- ggplotly(ggplot_department_summary)
   
   # Initial rendering of the plot
   output$Plot3 <- renderPlotly({
-    # Display the plotly chart
-    plotly_department_summary
+   renderPlot3fn(combined_data_filtered)
   })
   
-  # Update plot based on selected variable
-  observeEvent(input$updatePlot3, {
-    req(input$compare_var, input$log_scale)
+  # Update plot when update button is pressed
+  observeEvent(input$update_plot3, {
+    if (input$year_select_plot3 == "All") {
+      filtered_data <- combined_data_filtered
+    } else {
+      filtered_data <- combined_data_filtered %>%
+        filter(year %in% input$year_select_plot3)
+    }
     output$Plot3 <- renderPlotly({
-      isolate({
-        renderContinentPlot(input$compare_var, input$log_scale)
-      })
+      renderPlot3fn(filtered_data)
     })
   })
   
-  # Reset the plot to default variable
-  observeEvent(input$resetPlot3, {
-    updateSelectInput(session, "compare_var", selected = "gdp_pcap")
-    updatePrettyToggle(session, "log_scale", value = TRUE)
+  # Reset plot3 when reset button is pressed
+  observeEvent(input$reset_plot3, {
+    updateSelectInput(session, "year_select_plot3", selected = "All")
+    
+    # Reset plot to default
     output$Plot3 <- renderPlotly({
-      renderContinentPlot(compare = "gdp_pcap", TRUE)
+      renderPlot3fn(combined_data_filtered)
     })
   })
   
