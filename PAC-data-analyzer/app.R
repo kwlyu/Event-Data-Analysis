@@ -477,19 +477,32 @@ resultsTab <- tabItem(
                                boxDropdownItem("Click me", id = "play3", icon = icon("heart")),
                                tags$div(id = "audio_container3"),
                                dropdownDivider(),
-                               # Create the selectInput
-                               selectInput(
-                                 inputId = "year_select_plot1",
-                                 label = tags$span(style = "color:black;", "Select Year:"),  # Label with black color
-                                 choices = year_choices,
-                                 selected = "All"  # Default selection
+                               
+                               # Wrap the selectInput inside a div and prevent event propagation
+                               tags$div(id = "dropdownMenu-container",
+                                        selectInput(
+                                          inputId = "year_select_plot1",
+                                          label = tags$span(style = "color:black;", "Select Year:"),  # Label with black color
+                                          choices = year_choices,
+                                          selected = "All",  # Default selection
+                                          multiple = TRUE    # Allow multiple selections
+                                        )
                                ),
-                             # Green "Update" button
-                             actionBttn(inputId = "update_plot1", label = "Update", 
-                                        style = "fill", color = "success"),
-                             # Red "Reset" button
-                             actionBttn(inputId = "reset_plot1", label = "Reset", 
-                                        style = "fill", color = "danger")
+                               
+                               # Green "Update" button
+                               actionBttn(inputId = "update_plot1", label = "Update", 
+                                          style = "fill", color = "success"),
+                               
+                               # Red "Reset" button
+                               actionBttn(inputId = "reset_plot1", label = "Reset", 
+                                          style = "fill", color = "danger"),
+                               
+                               # Fix the dropdown menu closing issue using JavaScript
+                               tags$script(HTML("
+    $(document).on('click', '#dropdownMenu-container', function(event) {
+      event.stopPropagation();
+    });
+  "))
                              ), 
                              div(
                                h1("Overall Event Summary", align = "center", style = "font-weight:bold"),
@@ -803,39 +816,50 @@ server <- function(input, output, session) {
     ) %>%
     mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE))
   
-  # Create the stacked bar chart
-  ggplot(event_summary, aes(x = year, y = term_total, fill = term_category)) +
-    geom_bar(stat = "identity") +
-    geom_text(aes(label = term_total), 
-              position = position_stack(vjust = 0.5), 
-              size = 3, 
-              color = "black") +
-    scale_fill_manual(values = c("Fall" = "#FF9999", "Winter" = "#99CCFF", "Spring" = "#99FF99")) +
-    labs(x = "Year", y = "Total Events", fill = "Term") +
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) -> gg_plot
+  # Reactive values to store the filtered dataset and selected years
+  reactive_vals <- reactiveValues(
+    filtered_data = event_summary,
+    selected_years = unique(event_summary$year)
+  )
   
-  # Initial rendering of the countries plot
+  # Render the plot initially with all years selected
   output$Plot1 <- renderPlotly({
+    gg_plot <- reactive_vals$filtered_data %>%
+      ggplot(aes(x = year, y = term_total, fill = term_category)) +
+      geom_bar(stat = "identity") +
+      geom_text(aes(label = term_total), 
+                position = position_stack(vjust = 0.5), 
+                size = 3, 
+                color = "black") +
+      scale_fill_manual(values = c("Fall" = "#FF9999", "Winter" = "#99CCFF", "Spring" = "#99FF99")) +
+      labs(x = "Year", y = "Total Events", fill = "Term") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
     ggplotly(gg_plot)
   })
   
-  # Updating plot based on selected countries
-  observeEvent(input$updatePlot1, {
-    req(input$countries)
-    output$Plot1 <- renderPlotly({
-      isolate({
-        renderCountriesPlot(input$countries)
-      })
-    })
+  # Update the plot when the update button is pressed
+  observeEvent(input$update_plot1, {
+    # Get the selected years from the selectInput
+    selected_years <- input$year_select_plot1
+    
+    # Filter the data based on the selected years
+    if ("All" %in% selected_years) {
+      reactive_vals$filtered_data <- event_summary
+    } else {
+      reactive_vals$filtered_data <- event_summary %>%
+        filter(year %in% selected_years)
+    }
   })
   
-  # Resetting plot to default countries
-  observeEvent(input$resetPlot1, {
-    updateSelectizeInput(session, "countries", selected = c("Afghanistan", "Belgium"))
-    output$Plot1 <- renderPlotly({
-      renderCountriesPlot(c("Afghanistan", "Belgium"))
-    })
+  # Reset the plot and year selection when the reset button is pressed
+  observeEvent(input$reset_plot1, {
+    # Reset the filtered data to all years
+    reactive_vals$filtered_data <- event_summary
+    
+    # Update the year selectInput to select all years
+    updateSelectInput(session, "year_select_plot1", selected = "All")
   })
   
   ############################### Plot 2 Overview ##############################
