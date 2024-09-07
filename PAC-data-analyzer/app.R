@@ -190,6 +190,7 @@ combined_data_filtered <- combined_data %>%
     livestream = coalesce(livestream, live_stream)  # If 'livestream' is NA, use 'live_stream'
   ) %>%
   select(-live_stream) %>%  
+  mutate(department = ifelse(str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival"), "CSA", department)) %>% 
   mutate(
     support_level = fct_relevel(factor(support_level), "H", "M", "L"),
     audio_needs = fct_relevel(factor(audio_needs), "H", "M", "L"),
@@ -583,7 +584,6 @@ resultsTab <- tabItem(
                                boxDropdownItem("Click me", id = "play5", icon = icon("heart")),
                                tags$div(id = "audio_container5"),
                                dropdownDivider(),
-                               ################# TEMP 1 ########################
                                # Wrap the selectInput inside a div and prevent event propagation
                                tags$div(id = "dropdownMenu-container",
                                         selectInput(
@@ -631,7 +631,46 @@ resultsTab <- tabItem(
                              collapsible = TRUE,
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play6", icon = icon("heart")),
-                               tags$div(id = "audio_container6")
+                               tags$div(id = "audio_container6"),
+                               dropdownDivider(),
+                               ################# TEMP 1 ########################
+                               # Wrap the selectInput inside a div and prevent event propagation
+                               tags$div(id = "dropdownMenu-container",
+                                        selectInput(
+                                          inputId = "year_select_plot4",
+                                          label = tags$span(style = "color:black;", "Select Year:"),  # Label with black color
+                                          choices = year_choices,
+                                          selected = "All",  # Default selection
+                                          multiple = TRUE    # Allow multiple selections
+                                        )
+                               ),
+                               
+                               # Green "Update" button
+                               actionBttn(inputId = "update_plot4", label = "Update", 
+                                          style = "fill", color = "success"),
+                               
+                               # Red "Reset" button
+                               actionBttn(inputId = "reset_plot4", label = "Reset", 
+                                          style = "fill", color = "danger"),
+                               
+                               dropdownDivider(),
+                               # Toggle for music only
+                               switchInput(
+                                 inputId = "toggle_music",
+                                 onLabel = tags$span(style = "color:black;", "Music Only"),
+                                 offLabel = tags$span(style = "color:black;", "All Departments"),
+                                 onStatus = "success",
+                                 offStatus = "danger",
+                                 size = "small",
+                                 value = TRUE
+                               ),
+                               
+                               # Fix the dropdown menu closing issue using JavaScript
+                               tags$script(HTML("
+    $(document).on('click', '#dropdownMenu-container', function(event) {
+      event.stopPropagation();
+    });
+  "))
                              ), 
                              div(
                                h1("Event Type", align = "center", style = "font-weight:bold"),
@@ -1108,90 +1147,172 @@ server <- function(input, output, session) {
   })
   
   ############################### Plot 4 Overview ##############################
-  # Function to summarize and pivot data for each year
-  summarize_and_pivot_event <- function(current_year) {
-    combined_data_filtered %>%
-      filter(year == current_year) %>%
-      group_by(term_category, event_type) %>%
-      summarize(EventCount = n(), .groups = 'drop') %>%
-      pivot_wider(names_from = event_type, values_from = EventCount, values_fill = list(EventCount = 0)) %>%
-      mutate(year = current_year)  # Add a year column to identify the table
+  renderPlot4fn1 <- function(data) {
+    # Function to summarize and pivot data for each year
+    summarize_and_pivot_event <- function(current_year) {
+      data %>%
+        filter(year == current_year,
+               department_type == "MUSC") %>%
+        group_by(term_category, event_type) %>%
+        summarize(EventCount = n(), .groups = 'drop') %>%
+        pivot_wider(names_from = event_type, values_from = EventCount, values_fill = list(EventCount = 0)) %>%
+        mutate(year = current_year)  # Add a year column to identify the table
+    }
+    
+    # List of years to iterate over
+    years <- unique(data$year)
+    
+    # Use purrr::map to apply summarize_and_pivot function for each year
+    event_tables <- map_dfr(years, summarize_and_pivot_event)  # Combine into a single data frame
+    
+    # Melt the data for ggplot
+    event_tables_melted <- event_tables %>%
+      pivot_longer(cols = -c(term_category, year), names_to = "event_type", values_to = "EventCount")
+    
+    # Ensure term_category and event_type are characters before converting to factors
+    event_tables_melted <- event_tables_melted %>%
+      mutate(
+        term_category = as.character(term_category),
+        event_type = as.character(event_type)
+      )
+    
+    # Apply the factor conversion with ordering
+    event_tables_melted <- event_tables_melted %>%
+      mutate(
+        term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+        event_type = factor(event_type, levels = c("Ensemble Concert", "Student Activity", "Studio Recital",
+                                                   "Guest", "Faculty Recital", "Student Recital",
+                                                   "Special Events", "Presentation", "Masterclass"),
+                            ordered = TRUE)
+      )
+    
+    # Calculate percentages for each segment
+    event_tables_melted <- event_tables_melted %>%
+      group_by(year, term_category) %>%
+      mutate(total_count = sum(EventCount, na.rm = TRUE),
+             percentage = (EventCount / total_count) * 100)
+    
+    # Create the ggplot chart
+    ggplot_event_summary <- ggplot(event_tables_melted, aes(x = term_category, y = EventCount, fill = event_type)) +
+      geom_bar(stat = "identity", position = "stack") +
+      geom_text(aes(label = paste0(EventCount, " (", round(percentage, 1), "%)")),
+                position = position_stack(vjust = 0.5), size = 2, color = "black",
+                check_overlap = TRUE) +
+      facet_wrap(~ year) +
+      labs(x = "Term", y = "Event Count", fill = "Event Type") +
+      scale_fill_brewer(palette = "Set2") +  # Using a Brewer palette for default colors
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    ggplotly(ggplot_event_summary)
   }
   
-  # List of years to iterate over
-  years <- unique(combined_data_filtered$year)
+  renderPlot4fn2 <- function(data) {
+    # Function to summarize and pivot data for each year
+    summarize_and_pivot_event <- function(current_year) {
+      data %>%
+        filter(year == current_year) %>%
+        group_by(term_category, event_type) %>%
+        summarize(EventCount = n(), .groups = 'drop') %>%
+        pivot_wider(names_from = event_type, values_from = EventCount, values_fill = list(EventCount = 0)) %>%
+        mutate(year = current_year)  # Add a year column to identify the table
+    }
+    
+    # List of years to iterate over
+    years <- unique(data$year)
+    
+    # Use purrr::map to apply summarize_and_pivot function for each year
+    event_tables <- map_dfr(years, summarize_and_pivot_event)  # Combine into a single data frame
+    
+    # Melt the data for ggplot
+    event_tables_melted <- event_tables %>%
+      pivot_longer(cols = -c(term_category, year), names_to = "event_type", values_to = "EventCount")
+    
+    # Ensure term_category and event_type are characters before converting to factors
+    event_tables_melted <- event_tables_melted %>%
+      mutate(
+        term_category = as.character(term_category),
+        event_type = as.character(event_type)
+      )
+    
+    # Apply the factor conversion with ordering
+    event_tables_melted <- event_tables_melted %>%
+      mutate(
+        term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
+        event_type = factor(event_type, levels = c("Ensemble Concert", "Student Activity", "Studio Recital",
+                                                   "Guest", "Faculty Recital", "Student Recital",
+                                                   "Special Events", "Presentation", "Masterclass"),
+                            ordered = TRUE)
+      )
+    
+    # Calculate percentages for each segment
+    event_tables_melted <- event_tables_melted %>%
+      group_by(year, term_category) %>%
+      mutate(total_count = sum(EventCount, na.rm = TRUE),
+             percentage = (EventCount / total_count) * 100)
+    
+    # Create the ggplot chart
+    ggplot_event_summary <- ggplot(event_tables_melted, aes(x = term_category, y = EventCount, fill = event_type)) +
+      geom_bar(stat = "identity", position = "stack") +
+      geom_text(aes(label = paste0(EventCount, " (", round(percentage, 1), "%)")),
+                position = position_stack(vjust = 0.5), size = 2, color = "black",
+                check_overlap = TRUE) +
+      facet_wrap(~ year) +
+      labs(x = "Term", y = "Event Count", fill = "Event Type") +
+      scale_fill_brewer(palette = "Set2") +  # Using a Brewer palette for default colors
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    ggplotly(ggplot_event_summary)
+  }
   
-  # Use purrr::map to apply summarize_and_pivot function for each year
-  event_tables <- map_dfr(years, summarize_and_pivot_event)  # Combine into a single data frame
-  
-  # Melt the data for ggplot
-  event_tables_melted <- event_tables %>%
-    pivot_longer(cols = -c(term_category, year), names_to = "event_type", values_to = "EventCount")
-  
-  # Ensure term_category and event_type are characters before converting to factors
-  event_tables_melted <- event_tables_melted %>%
-    mutate(
-      term_category = as.character(term_category),
-      event_type = as.character(event_type)
-    )
-  
-  # Apply the factor conversion with ordering
-  event_tables_melted <- event_tables_melted %>%
-    mutate(
-      term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
-      event_type = factor(event_type, levels = c("Ensemble Concert", "Student Activity", "Studio Recital",
-                                                 "Guest", "Faculty Recital", "Student Recital",
-                                                 "Special Events", "Presentation", "Masterclass"),
-                          ordered = TRUE)
-    )
-  
-  # Calculate percentages for each segment
-  event_tables_melted <- event_tables_melted %>%
-    group_by(year, term_category) %>%
-    mutate(total_count = sum(EventCount, na.rm = TRUE),
-           percentage = (EventCount / total_count) * 100)
-  
-  # Create the ggplot chart
-  ggplot_event_summary <- ggplot(event_tables_melted, aes(x = term_category, y = EventCount, fill = event_type)) +
-    geom_bar(stat = "identity", position = "stack") +
-    geom_text(aes(label = paste0(EventCount, " (", round(percentage, 1), "%)")),
-              position = position_stack(vjust = 0.5), size = 2, color = "black",
-              check_overlap = TRUE) +
-    facet_wrap(~ year) +
-    labs(x = "Term", y = "Event Count", fill = "Event Type") +
-    scale_fill_brewer(palette = "Set2") +  # Using a Brewer palette for default colors
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  
-  # Convert to a plotly object
-  plotly_event_summary <- ggplotly(ggplot_event_summary)
-  
-  # Initial rendering of the plot
+  # Initial Rendering
   output$Plot4 <- renderPlotly({
-    # Display the plotly chart
-    plotly_event_summary
+    renderPlot4fn1(combined_data_filtered)
   })
   
-  # Update plot based on selected variable
-  observeEvent(input$updatePlot4, {
-    req(input$compare_var, input$log_scale)
+  # Update plot when update button is pressed
+  observeEvent(input$update_plot4, {
+    if (input$year_select_plot4 == "All") {
+      filtered_data <- combined_data_filtered
+      # Check if audience toggle is on or off
+      if (input$toggle_music) {
+        output$Plot4 <- renderPlotly({
+          renderPlot4fn1(filtered_data)
+        })
+      } else {
+        output$Plot4 <- renderPlotly({
+          renderPlot4fn2(filtered_data)
+        })
+      }
+    } else {
+      filtered_data <- combined_data_filtered %>%
+        filter(year %in% input$year_select_plot4)
+      # Check if audience toggle is on or off
+      if (input$toggle_music) {
+        output$Plot4 <- renderPlotly({
+          renderPlot4fn1(filtered_data)
+        })
+      } else {
+        output$Plot4 <- renderPlotly({
+          renderPlot4fn2(filtered_data)
+        })
+      }
+    }
+  })
+  
+  # Reset plot2 when reset button is pressed
+  observeEvent(input$reset_plot4, {
+    updateSelectInput(session, "year_select_plot4", selected = "All")
+    updatePrettyToggle(session, "toggle_MUSC", value = TRUE)
+    
+    # Reset plot to default
     output$Plot4 <- renderPlotly({
-      isolate({
-        renderContinentPlot(input$compare_var, input$log_scale)
-      })
+      renderPlot4fn1(combined_data_filtered)
     })
   })
   
-  # Reset the plot to default variable
-  observeEvent(input$resetPlot4, {
-    updateSelectInput(session, "compare_var", selected = "gdp_pcap")
-    updatePrettyToggle(session, "log_scale", value = TRUE)
-    output$Plot4 <- renderPlotly({
-      renderContinentPlot(compare = "gdp_pcap", TRUE)
-    })
-  })
-  
-  ##################### ML Plots #############
+  ##################### Submit New Term Table #############
   
   output$term_table <- renderReactable({
     reactable(term_start_dates, 
