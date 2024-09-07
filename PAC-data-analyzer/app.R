@@ -906,6 +906,7 @@ server <- function(input, output, session) {
   })
   
   
+  
   ############################## Plot 1 Overview ###############################
   # Sort the data frame by year and term in the order of F, W, S
   event_summary <- event_summary %>%
@@ -1513,7 +1514,6 @@ server <- function(input, output, session) {
   
   ############################## TEMP 2 ##########################################
   observeEvent(input$submitNewTerm, {
-    
     
     new_term <- input$termID
     new_start_date <- as.Date(input$termDate)
