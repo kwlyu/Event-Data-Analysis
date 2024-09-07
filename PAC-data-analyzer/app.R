@@ -283,6 +283,8 @@ combined_data_filtered %>% filter(event_type == "Guest",
                                   str_detect(department, "MUSC")) %>% 
   filter(!str_detect(what, "Masterclass")) -> guest_only
 
+# Get the unique years and append the "All" option
+year_choices <- c("All", combined_data_filtered %>% pull(year) %>% unique())
 
 ############################ UI ################################################
 
@@ -474,7 +476,20 @@ resultsTab <- tabItem(
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play3", icon = icon("heart")),
                                tags$div(id = "audio_container3"),
-                               dropdownDivider()
+                               dropdownDivider(),
+                               # Create the selectInput
+                               selectInput(
+                                 inputId = "year_select_plot1",
+                                 label = tags$span(style = "color:black;", "Select Year:"),  # Label with black color
+                                 choices = year_choices,
+                                 selected = "All"  # Default selection
+                               ),
+                             # Green "Update" button
+                             actionBttn(inputId = "update_plot1", label = "Update", 
+                                        style = "fill", color = "success"),
+                             # Red "Reset" button
+                             actionBttn(inputId = "reset_plot1", label = "Reset", 
+                                        style = "fill", color = "danger")
                              ), 
                              div(
                                h1("Overall Event Summary", align = "center", style = "font-weight:bold"),
