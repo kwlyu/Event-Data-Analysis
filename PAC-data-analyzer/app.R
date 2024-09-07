@@ -369,57 +369,54 @@ analysisTab <- tabItem(
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play2", icon = icon("heart")),
                                tags$div(id = "audio_container2"),
-                               selectInput("exclude_tab_vars", "Exclude Variables:", choices = c(
-                                 "Venue" = "venue",
-                                 "Date" = "date",
-                                 "Event" = "what",
-                                 "Department" = "department",
-                                 "Days Committed" = "days_committed",
-                                 "AV Staff" = "av_staff",
-                                 "PAC Staff" = "pac_staff",
-                                 "Support Level" = "support_level",
-                                 "Audio Needs" = "audio_needs",
-                                 "Stage Needs" = "stage_needs",
-                                 "Lighting Needs" = "lighting_needs",
-                                 "Projection" = "projection",
-                                 "Video Recording" = "video_recording",
-                                 "Livestream" = "livestream",
-                                 "Audience Count" = "audience_count",
-                                 "Poster" = "poster",
-                                 "Program" = "program",
-                                 "Reception" = "reception",
-                                 "Term" = "term",
-                                 "Department Type" = "department_type",
-                                 "Event Type" = "event_type",
-                                 "Year" = "year",
-                                 "Term Category" = "term_category",
-                                 "Week of Term" = "week_of_term"
-                               ), 
-                               multiple = TRUE,
-                               selected = c("days_committed", "poster", "program", "reception", "term", "department_type", "year", "term_category", "week_of_term")),
+                               tags$div(id = "dropdownMenu-container",
+                                        selectInput("exclude_tab_vars", "Exclude Variables:", 
+                                                    choices = c(
+                                                      "Venue" = "venue",
+                                                      "Date" = "date",
+                                                      "Event" = "what",
+                                                      "Department" = "department",
+                                                      "Days Committed" = "days_committed",
+                                                      "AV Staff" = "av_staff",
+                                                      "PAC Staff" = "pac_staff",
+                                                      "Support Level" = "support_level",
+                                                      "Audio Needs" = "audio_needs",
+                                                      "Stage Needs" = "stage_needs",
+                                                      "Lighting Needs" = "lighting_needs",
+                                                      "Projection" = "projection",
+                                                      "Video Recording" = "video_recording",
+                                                      "Livestream" = "livestream",
+                                                      "Audience Count" = "audience_count",
+                                                      "Poster" = "poster",
+                                                      "Program" = "program",
+                                                      "Reception" = "reception",
+                                                      "Term" = "term",
+                                                      "Department Type" = "department_type",
+                                                      "Event Type" = "event_type",
+                                                      "Year" = "year",
+                                                      "Term Category" = "term_category",
+                                                      "Week of Term" = "week_of_term"
+                                                    ),  
+                                                    multiple = TRUE,
+                                                    selected = c("days_committed", "poster", "program", 
+                                                                 "reception", "term", "department_type", 
+                                                                 "year", "term_category", "week_of_term")
+                                        )
+                               ),
                                # Green "Update" button
-                               actionBttn(
-                                 inputId = "update_tab",
-                                 label = "Update",
-                                 style = "fill",
-                                 color = "success"
-                               ),
+                               actionBttn(inputId = "update_tab", label = "Update", 
+                                          style = "fill", color = "success"),
                                # Red "Reset" button
-                               actionBttn(
-                                 inputId = "reset_tab",
-                                 label = "Reset",
-                                 style = "fill",
-                                 color = "danger"
-                               ),
-                               
+                               actionBttn(inputId = "reset_tab", label = "Reset", 
+                                          style = "fill", color = "danger"),
                                dropdownDivider(),
+                               boxDropdownItem("Generate Music Guest Info", id = "MUSC_Guest", 
+                                               icon = icon("copy")),
                                
-                               boxDropdownItem("Generate Music Guest Info", id = "MUSC_Guest", icon = icon("copy")),
-                               
+                               # Clipboard.js script
                                tags$head(
                                  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js")
                                ),
-                               
                                tags$script(HTML("
     Shiny.addCustomMessageHandler('txt', function(message) {
       var copyButton = document.createElement('button');
@@ -440,6 +437,13 @@ analysisTab <- tabItem(
       });
 
       copyButton.click();
+    });
+  ")),
+                               
+                               # Fix for dropdown menu closing issue
+                               tags$script(HTML("
+    $(document).on('click', '#dropdownMenu-container', function(event) {
+      event.stopPropagation();
     });
   "))
                              ), 
