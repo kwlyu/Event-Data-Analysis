@@ -418,34 +418,34 @@ analysisTab <- tabItem(
                                  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js")
                                ),
                                tags$script(HTML("
-    Shiny.addCustomMessageHandler('txt', function(message) {
-      var copyButton = document.createElement('button');
-      copyButton.setAttribute('id', 'copyButton');
-      copyButton.setAttribute('data-clipboard-text', message);
-      document.body.appendChild(copyButton);
-
-      var clipboard = new ClipboardJS('#copyButton');
-
-      clipboard.on('success', function(e) {
-        Shiny.setInputValue('clipboard_status', 'success');
-        document.body.removeChild(copyButton);
-      });
-
-      clipboard.on('error', function(e) {
-        Shiny.setInputValue('clipboard_status', 'error');
-        document.body.removeChild(copyButton);
-      });
-
-      copyButton.click();
-    });
-  ")),
-                               
-                               # Fix for dropdown menu closing issue
-                               tags$script(HTML("
-    $(document).on('click', '#dropdownMenu-container', function(event) {
-      event.stopPropagation();
-    });
-  "))
+                                Shiny.addCustomMessageHandler('txt', function(message) {
+                                  var copyButton = document.createElement('button');
+                                  copyButton.setAttribute('id', 'copyButton');
+                                  copyButton.setAttribute('data-clipboard-text', message);
+                                  document.body.appendChild(copyButton);
+                            
+                                  var clipboard = new ClipboardJS('#copyButton');
+                            
+                                  clipboard.on('success', function(e) {
+                                    Shiny.setInputValue('clipboard_status', 'success');
+                                    document.body.removeChild(copyButton);
+                                  });
+                            
+                                  clipboard.on('error', function(e) {
+                                    Shiny.setInputValue('clipboard_status', 'error');
+                                    document.body.removeChild(copyButton);
+                                  });
+                            
+                                  copyButton.click();
+                                });
+                              ")),
+                                                           
+                                                           # Fix for dropdown menu closing issue
+                                                           tags$script(HTML("
+                                $(document).on('click', '#dropdownMenu-container', function(event) {
+                                  event.stopPropagation();
+                                });
+                              "))
                              ), 
                              div(
                                h1("Data Summary", align = "center", style = "font-weight:bold"),
@@ -1213,7 +1213,7 @@ server <- function(input, output, session) {
   observeEvent(input$update_tab, {
     # Re-render the table with updated exclusions
     output$combined_table <- renderReactable({
-      render_table(combined_data_filtered, exclude = input$exclude_vars)
+      render_table(combined_data_filtered, exclude = input$exclude_tab_vars)
     })
   })
   
