@@ -472,7 +472,6 @@ resultsTab <- tabItem(
                              status = "warning", 
                              solidHeader = TRUE, 
                              collapsible = TRUE,
-                             ################### TEMP 1 ##############
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play3", icon = icon("heart")),
                                tags$div(id = "audio_container3"),
@@ -525,7 +524,40 @@ resultsTab <- tabItem(
                              collapsible = TRUE,
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play4", icon = icon("heart")),
-                               tags$div(id = "audio_container4")
+                               tags$div(id = "audio_container4"),
+                               dropdownDivider(),
+                               ################### TEMP 1 ##############
+                               # Wrap the selectInput inside a div and prevent event propagation
+                               tags$div(id = "dropdownMenu-container",
+                                        selectInput(
+                                          inputId = "year_select_plot2",
+                                          label = tags$span(style = "color:black;", "Select Year:"),  # Label with black color
+                                          choices = year_choices,
+                                          selected = "All",  # Default selection
+                                          multiple = TRUE    # Allow multiple selections
+                                        )
+                               ),
+                               
+                               # Green "Update" button
+                               actionBttn(inputId = "update_plot2", label = "Update", 
+                                          style = "fill", color = "success"),
+                               
+                               # Red "Reset" button
+                               actionBttn(inputId = "reset_plot2", label = "Reset", 
+                                          style = "fill", color = "danger"),
+                               
+                               prettyToggle(
+                                 inputId = "toggle_audience",
+                                 label_on = "Show Audience Count",
+                                 label_off = "Hide Audience Count"
+                               ),
+                               
+                               # Fix the dropdown menu closing issue using JavaScript
+                               tags$script(HTML("
+    $(document).on('click', '#dropdownMenu-container', function(event) {
+      event.stopPropagation();
+    });
+  "))
                              ), 
                              div(
                                h1("Support Levels Analysis", align = "center", style = "font-weight:bold"),
