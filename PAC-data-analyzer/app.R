@@ -356,7 +356,6 @@ analysisTab <- tabItem(
                          )
                        )
               ),
-################### TEMP 1 ##############
               tabPanel("Check Processed Data Here",
                        fluidRow(
                            box(
@@ -370,7 +369,8 @@ analysisTab <- tabItem(
                                boxDropdownItem("Click me", id = "play2", icon = icon("heart")),
                                tags$div(id = "audio_container2"),
                                tags$div(id = "dropdownMenu-container",
-                                        selectInput("exclude_tab_vars", "Exclude Variables:", 
+                               dropdownDivider(),
+                                        selectInput("exclude_tab_vars", tags$span(style = "color:black;", "Exclude Variables:"), 
                                                     choices = c(
                                                       "Venue" = "venue",
                                                       "Date" = "date",
@@ -470,9 +470,11 @@ resultsTab <- tabItem(
                              status = "warning", 
                              solidHeader = TRUE, 
                              collapsible = TRUE,
+                             ################### TEMP 1 ##############
                              dropdownMenu = boxDropdown(
                                boxDropdownItem("Click me", id = "play3", icon = icon("heart")),
-                               tags$div(id = "audio_container3")
+                               tags$div(id = "audio_container3"),
+                               dropdownDivider()
                              ), 
                              div(
                                h1("Overall Event Summary", align = "center", style = "font-weight:bold"),
