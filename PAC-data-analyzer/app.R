@@ -849,7 +849,7 @@ server <- function(input, output, session) {
   ############################## Generate Music Guest Info #####################
   observeEvent(input$MUSC_Guest, {
     # Read and clean the data
-    music_guest_only <- read_csv(file = "guest_only.csv")
+    music_guest_only <- read_csv(file = "data/guest_only.csv")
     print_guest_dat <- music_guest_only %>% 
       select(date, what, genre, sponsor, year, term_category) %>% 
       mutate(what = str_replace_all(what, "GUEST: ", ""))
