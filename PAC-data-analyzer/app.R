@@ -1956,6 +1956,14 @@ server <- function(input, output, session) {
     )
   })
   
+  observeEvent((input$play6), {
+    insertUI(selector = "#play6",
+             where = "afterEnd",
+             # audio.wav should be in /www of the shiny app
+             ui = tags$audio(src = "audio.wav", type = "audio/wav", autoplay = F, controls = NA, style="display:none;")
+    )
+  })
+  
 }
 
 # Run the app
