@@ -681,3 +681,28 @@ combined_data_filtered <- combined_data_filtered %>%
   select(-start_date)
 
 ```
+
+
+```{r}
+# Define the file codes
+file_codes <- c("F14", "W15", "S15", "F15", "W16", "S16", "F16", "W17", "S17",
+                "F17", "W18", "S18", "F18", "W19", "S19", "F19", "W20", "S20",
+                "F20", "W21", "S21", "F21", "W22", "S22", "F22", "W23", "S23",
+                "F23", "W24", "S24")
+# Define the term start dates (hardcoded as per the original logic)
+term_start_dates <- data.frame(
+  term = file_codes,  # Add all relevant terms
+  start_date = as.Date(c("2014-09-15", "2015-01-05", "2015-03-30",
+                         "2015-09-14", "2016-01-04", "2016-03-28",
+                         "2016-09-12", "2017-01-04", "2017-03-27",
+                         "2017-09-11", "2018-01-03", "2018-03-26",
+                         "2018-09-10", "2019-01-07", "2019-04-01",
+                         "2019-09-16", "2020-01-06", "2020-03-30",
+                         "2020-09-14", "2021-01-04", "2021-03-29",
+                         "2021-09-15", "2022-01-05", "2022-03-28",
+                         "2022-09-12", "2023-01-04", "2023-03-27",
+                         "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
+)
+write_csv(term_start_dates, "data/term_list.csv")
+```
+

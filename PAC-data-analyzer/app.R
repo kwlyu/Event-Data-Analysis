@@ -114,33 +114,32 @@ credentials <- data.frame(
 # 
 # # Combine all the data frames into one
 # combined_data <- reduce(event_data_list, full_join)
+# # Define the file codes
+# file_codes <- c("F14", "W15", "S15", "F15", "W16", "S16", "F16", "W17", "S17",
+#                 "F17", "W18", "S18", "F18", "W19", "S19", "F19", "W20", "S20",
+#                 "F20", "W21", "S21", "F21", "W22", "S22", "F22", "W23", "S23",
+#                 "F23", "W24", "S24")
+# # Define the term start dates (hardcoded as per the original logic)
+# term_start_dates <- data.frame(
+#   term = file_codes,  # Add all relevant terms
+#   start_date = as.Date(c("2014-09-15", "2015-01-05", "2015-03-30",
+#                          "2015-09-14", "2016-01-04", "2016-03-28",
+#                          "2016-09-12", "2017-01-04", "2017-03-27",
+#                          "2017-09-11", "2018-01-03", "2018-03-26",
+#                          "2018-09-10", "2019-01-07", "2019-04-01",
+#                          "2019-09-16", "2020-01-06", "2020-03-30",
+#                          "2020-09-14", "2021-01-04", "2021-03-29",
+#                          "2021-09-15", "2022-01-05", "2022-03-28",
+#                          "2022-09-12", "2023-01-04", "2023-03-27",
+#                          "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
+# )
+# write_csv(term_start_dates, "data/term_list.csv")
+
 
 ## Local version
 # Define the directory containing the files
 data_dir <- "data/"
 
-# Define the file codes
-file_codes <- c("F14", "W15", "S15", "F15", "W16", "S16", "F16", "W17", "S17", 
-                "F17", "W18", "S18", "F18", "W19", "S19", "F19", "W20", "S20", 
-                "F20", "W21", "S21", "F21", "W22", "S22", "F22", "W23", "S23", 
-                "F23", "W24", "S24")
-
-# Define the term start dates (hardcoded as per the original logic)
-term_start_dates <- data.frame(
-  term = file_codes,  # Add all relevant terms
-  start_date = as.Date(c("2014-09-15", "2015-01-05", "2015-03-30",
-                         "2015-09-14", "2016-01-04", "2016-03-28",
-                         "2016-09-12", "2017-01-04", "2017-03-27",
-                         "2017-09-11", "2018-01-03", "2018-03-26",
-                         "2018-09-10", "2019-01-07", "2019-04-01",
-                         "2019-09-16", "2020-01-06", "2020-03-30",
-                         "2020-09-14", "2021-01-04", "2021-03-29",
-                         "2021-09-15", "2022-01-05", "2022-03-28",
-                         "2022-09-12", "2023-01-04", "2023-03-27",
-                         "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
-)
-
-write_csv(term_start_dates, "data/term_list.csv")
 term_list <- read_csv("data/term_list.csv")
 
 dataWranglingfn <- function(term_list) {
@@ -246,13 +245,14 @@ dataWranglingfn <- function(term_list) {
            what = str_replace_all(what, "Juest Cellin'", "Just Cellin'"),
            what = str_replace_all(what, "Facutly|FACULTY|Mazariello", "Faculty")) %>%
     mutate(event_type = case_when(
-      str_detect(what, "GUEST|ODOA|Concert Series|SPCO") ~ "Guest",
+      str_detect(what, "GUEST|ODOA|Concert Series|SPCO") ~ "Guest / Masterclass",
       str_detect(what, "Faculty") ~ "Faculty Recital",
+      str_detect(what, "Faculty&Guest") ~ "Faculty + Guest",
       str_detect(what, "Student|Senior|Junior|Piano Recital: |Johnson|Verma Jameson") ~ "Student Recital",
       str_detect(what, "Studio Recital|Organ & Harpsichord|Composition Showcase Recital|Chamber Recital|Chamber Music Recital|Chamber Music|Organ Recital|Strings Recital|Violin & Viola|Violin/Viola|Drum Ensemble|Drum Recital|Voice Showcase Recital|Chinese Music Recital|Piano Studios Recital|Jazz Chamber|Piano Recital|Comps Fest|Recorder Recital|Music Ensemble|Studio") ~ "Studio Recital",
       str_detect(what, "Orchestra Concert|Jazz Concert|Symphony Concert|Symphony Band|Choir Concert|Orchestra and Choir|Chinese & Global|Chinese Global Concert|Chinese and Global|Chinese Music Concert|Chinese Music Ensemble|Chinese Ensemble|Music Comps|Jazz Vocal Concert") ~ "Ensemble Concert",
       str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival") ~ "Student Activity",
-      str_detect(what, "Masterclass|Lecture|Symposium") ~ "Masterclass",
+      str_detect(what, "Masterclass|Lecture|Symposium") ~ "Guest / Masterclass",
       str_detect(what, "Trustees|Trustee's|Presidents|Conference|President's|Presentation") ~ "Presentation",
       str_detect(what, "Clinic|Music Fest|Music Department Showcase|Melinda Russell|Launch|Event|Opening") ~ "Special Events",
       TRUE ~ "Guest"
@@ -775,6 +775,16 @@ ui <- function(request) {
 # Server
 server <- function(input, output, session) {
   
+  ############################## Reactive Data Set #############################
+  
+  # Process the initial term_list data at app startup
+  initial_result_list <- result_list
+  react_vals <- reactiveValues(
+    combined_data_filtered_react = combined_data_filtered,
+    event_summary_react = event_summary,
+    year_choices_react = year_choices
+  )
+  
   ############################## AUTHENTICATION ################################
   USER <- reactiveValues(login = FALSE)
   
@@ -911,28 +921,22 @@ server <- function(input, output, session) {
   
   
   ############################## Plot 1 Overview ###############################
-  # Sort the data frame by year and term in the order of F, W, S
-  event_summary <- event_summary %>%
-    mutate(term = factor(term, levels = term_start_dates$term, ordered = TRUE)) %>%
-    arrange(year, term) %>%
-    mutate(
-      term_category = case_when(
-        str_detect(term, "^F") ~ "Fall",
-        str_detect(term, "^W") ~ "Winter",
-        str_detect(term, "^S") ~ "Spring"
-      )
-    ) %>%
-    mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE))
   
-  # Reactive values to store the filtered dataset and selected years
-  reactive_vals <- reactiveValues(
-    filtered_data = event_summary,
-    selected_years = unique(event_summary$year)
-  )
-  
-  # Render the plot initially with all years selected
-  output$Plot1 <- renderPlotly({
-    gg_plot <- reactive_vals$filtered_data %>%
+  renderPlot1fn <- function(data) {
+    # Sort the data frame by year and term in the order of F, W, S
+    event_summary <- data %>%
+      mutate(term = factor(term, levels = term_start_dates$term, ordered = TRUE)) %>%
+      arrange(year, term) %>%
+      mutate(
+        term_category = case_when(
+          str_detect(term, "^F") ~ "Fall",
+          str_detect(term, "^W") ~ "Winter",
+          str_detect(term, "^S") ~ "Spring"
+        )
+      ) %>%
+      mutate(term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE))
+    
+    gg_plot <- event_summary %>%
       ggplot(aes(x = year, y = term_total, fill = term_category)) +
       geom_bar(stat = "identity") +
       geom_text(aes(label = term_total), 
@@ -945,6 +949,11 @@ server <- function(input, output, session) {
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
     
     ggplotly(gg_plot)
+  }
+  
+  # Render the plot initially with all years selected
+  output$Plot1 <- renderPlotly({
+    renderPlot1fn(react_vals$event_summary_react)
   })
   
   # Update the plot when the update button is pressed
@@ -954,17 +963,18 @@ server <- function(input, output, session) {
     
     # Filter the data based on the selected years
     if ("All" %in% selected_years) {
-      reactive_vals$filtered_data <- event_summary
+      renderPlot1fn(react_vals$event_summary_react)
     } else {
-      reactive_vals$filtered_data <- event_summary %>%
+      filtered_data <- react_vals$event_summary_react %>%
         filter(year %in% selected_years)
+      renderPlot1fn(filtered_data)
     }
   })
   
   # Reset the plot and year selection when the reset button is pressed
   observeEvent(input$reset_plot1, {
     # Reset the filtered data to all years
-    reactive_vals$filtered_data <- event_summary
+    renderPlot1fn(react_vals$event_summary_react)
     
     # Update the year selectInput to select all years
     updateSelectInput(session, "year_select_plot1", selected = "All")
@@ -1043,13 +1053,13 @@ server <- function(input, output, session) {
   
   # Initial Rendering
   output$Plot2 <- renderPlotly({
-    renderPlot2fn1(combined_data_filtered)
+    renderPlot2fn1(react_vals$combined_data_filtered_react)
   })
   
   # Update plot when update button is pressed
   observeEvent(input$update_plot2, {
     # Filter data based on selected years
-    filtered_data <- combined_data_filtered %>%
+    filtered_data <- react_vals$combined_data_filtered_react %>%
       filter(year %in% input$year_select_plot2 | input$year_select_plot2 == "All")
     
     # Check if audience toggle is on or off
@@ -1071,7 +1081,7 @@ server <- function(input, output, session) {
     
     # Reset plot to default
     output$Plot2 <- renderPlotly({
-      renderPlot2fn1(combined_data_filtered)
+      renderPlot2fn1(react_vals$combined_data_filtered_react)
     })
   })
   ############################### Plot 3 Overview ##############################
@@ -1129,15 +1139,15 @@ server <- function(input, output, session) {
   
   # Initial rendering of the plot
   output$Plot3 <- renderPlotly({
-   renderPlot3fn(combined_data_filtered)
+   renderPlot3fn(react_vals$combined_data_filtered_react)
   })
   
   # Update plot when update button is pressed
   observeEvent(input$update_plot3, {
     if (input$year_select_plot3 == "All") {
-      filtered_data <- combined_data_filtered
+      filtered_data <- react_vals$combined_data_filtered_react
     } else {
-      filtered_data <- combined_data_filtered %>%
+      filtered_data <- react_vals$combined_data_filtered_react %>%
         filter(year %in% input$year_select_plot3)
     }
     output$Plot3 <- renderPlotly({
@@ -1151,7 +1161,7 @@ server <- function(input, output, session) {
     
     # Reset plot to default
     output$Plot3 <- renderPlotly({
-      renderPlot3fn(combined_data_filtered)
+      renderPlot3fn(react_vals$combined_data_filtered_react)
     })
   })
   
@@ -1277,13 +1287,13 @@ server <- function(input, output, session) {
   
   # Initial Rendering
   output$Plot4 <- renderPlotly({
-    renderPlot4fn1(combined_data_filtered)
+    renderPlot4fn1(react_vals$combined_data_filtered_react)
   })
   
   # Update plot when update button is pressed
   observeEvent(input$update_plot4, {
     if (input$year_select_plot4 == "All") {
-      filtered_data <- combined_data_filtered
+      filtered_data <- react_vals$combined_data_filtered_react
       # Check if audience toggle is on or off
       if (input$toggle_music) {
         output$Plot4 <- renderPlotly({
@@ -1295,7 +1305,7 @@ server <- function(input, output, session) {
         })
       }
     } else {
-      filtered_data <- combined_data_filtered %>%
+      filtered_data <- react_vals$combined_data_filtered_react %>%
         filter(year %in% input$year_select_plot4)
       # Check if audience toggle is on or off
       if (input$toggle_music) {
@@ -1317,14 +1327,14 @@ server <- function(input, output, session) {
     
     # Reset plot to default
     output$Plot4 <- renderPlotly({
-      renderPlot4fn1(combined_data_filtered)
+      renderPlot4fn1(react_vals$combined_data_filtered_react)
     })
   })
   
   ##################### Submit New Term Table #############
   
   output$term_table <- renderReactable({
-    reactable(term_start_dates, 
+    reactable(term_list(), 
               columns = list(
                 term = colDef(name = "Term"),
                 start_date = colDef(name = "Start Date", format = colFormat(date = TRUE))
@@ -1493,14 +1503,14 @@ server <- function(input, output, session) {
   
   # Initial rendering of the table
   output$combined_table <- renderReactable({
-    render_table(combined_data_filtered, exclude = c("days_committed", "poster", "program", "reception", "term", "department_type", "year", "term_category", "week_of_term"))
+    render_table(react_vals$combined_data_filtered_react, exclude = c("days_committed", "poster", "program", "reception", "term", "department_type", "year", "term_category", "week_of_term"))
   })
   
   # Update table based on input$update_tab
   observeEvent(input$update_tab, {
     # Re-render the table with updated exclusions
     output$combined_table <- renderReactable({
-      render_table(combined_data_filtered, exclude = input$exclude_tab_vars)
+      render_table(react_vals$combined_data_filtered_react, exclude = input$exclude_tab_vars)
     })
   })
   
@@ -1511,81 +1521,79 @@ server <- function(input, output, session) {
     
     # Re-render the table with default exclusions
     output$combined_table <- renderReactable({
-      render_table(combined_data_filtered, exclude = c("days_committed", "poster", "program", "reception", "term", "department_type", "year", "term_category", "week_of_term"))
+      render_table(react_vals$combined_data_filtered_react, exclude = c("days_committed", "poster", "program", "reception", "term", "department_type", "year", "term_category", "week_of_term"))
     })
   })
   
-  ############################## TEMP 2 ##########################################
+  ############################# Update New Term Data ###########################
+  term_list <- reactiveVal(read_csv("data/term_list.csv"))
+  
   observeEvent(input$submitNewTerm, {
-    
+    req(input$submitNewTerm)
     new_term <- input$termID
     new_start_date <- as.Date(input$termDate)
     
-    # Check if the term already exists in term_start_dates$data
-    existing_term <- term_start_dates %>% filter(term == new_term)
+    # Check if the term already exists in the term_list
+    existing_term <- term_list() %>% filter(term == new_term)
     
-    if(nrow(existing_term) > 0) {
-      # If the term exists, show a confirmation alert before overwriting
+    if (nrow(existing_term) > 0) {
       shinyalert::shinyalert(
         "Warning", 
         "This term already exists. Proceeding will overwrite existing data. Continue?", 
         type = "warning", 
         showCancelButton = TRUE,
-        closeOnEsc = TRUE,
-        closeOnClickOutside = TRUE,
         callbackR = function(x) {
-          if(x) {
-            # Overwrite the existing term
-            term_start_dates<- term_start_dates %>% 
-              filter(term != new_term) %>%  # Remove existing row
-              bind_rows(data.frame(term = new_term, start_date = new_start_date))  # Add new row
+          if (x) {
+            # Overwrite existing term
+            updated_term_list <- term_list() %>%
+              filter(term != new_term) %>%
+              bind_rows(data.frame(term = new_term, start_date = new_start_date))
+            term_list(updated_term_list)
+            
+            # Write the updated list to CSV
+            write_csv(updated_term_list, "data/term_list.csv")
+            
             showPageSpinner()
-            # Proceed with the rest of the operations
             processNewTerm(new_term)
           } else {
-            showPageSpinner()
             hidePageSpinner()
           }
         }
       )
     } else {
-      showPageSpinner()
-      # If the term does not exist, simply append the new term
-      term_start_dates <- term_start_dates %>% 
+      # Append new term to term_list
+      updated_term_list <- term_list() %>%
         bind_rows(data.frame(term = new_term, start_date = new_start_date))
+      term_list(updated_term_list)
       
-      # Proceed with the rest of the operations
+      # Write to CSV
+      write_csv(updated_term_list, "data/term_list.csv")
+      
+      showPageSpinner()
       processNewTerm(new_term)
     }
   })
   
-  # Helper function to process the new term
   processNewTerm <- function(new_term) {
-    # Define the code for file naming (assuming 'code' comes from new_term or elsewhere)
-    code <- new_term  # Adjust this if necessary
-    
     # Fetch new term data from Google Sheets
     sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit#gid=265403245"
     new_term_data <- read_sheet(sheet_url, sheet = paste0(new_term, " - Event Data"))
     
     # Write the new term data to a CSV file
-    write_csv(new_term_data, paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv"))
+    write_csv(new_term_data, paste0(data_dir, "2015-2024 Events Data - ", new_term, " - Event Data.csv"))
     
-    # Re-run the data wrangling function
-    result_list <- dataWranglingfn(term_list)
-    combined_data_filtered <- result_list$combined_data_filtered
-    event_summary <- result_list$event_summary
-    year_choices <- result_list$year_choices
+    # Re-run data wrangling function
+    result_list <- dataWranglingfn(term_list())
+    react_vals$combined_data_filtered_react <- result_list$combined_data_filtered
+    react_vals$event_summary_react <- result_list$event_summary
+    react_vals$year_choices_react <- result_list$year_choices
     
     hidePageSpinner()
     
-    # Show success alert
     shinyalert::shinyalert(
       "Success!", 
       "New Term Data Entered.", 
-      type = "success", 
-      closeOnEsc = TRUE, 
-      closeOnClickOutside = TRUE
+      type = "success"
     )
   }
   
