@@ -142,16 +142,18 @@ data_dir <- "data/"
 
 term_list <- read_csv("data/term_list.csv")
 
+guest_only_base <- read_csv("data/guest_only_base.csv")
+
 dataWranglingfn <- function(term_list) {
   # Create a function to read a file given its code
   read_and_clean_event_file <- function(code) {
     file_path <- paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv")
     data <- read_csv(file_path)
-    clean_names(data) %>% 
-      mutate(across(everything(), as.character)) %>% 
+    clean_names(data) %>%
+      mutate(across(everything(), as.character)) %>%
       mutate(term = code)
   }
-  
+
   term_to_year <- function(term) {
     year <- as.numeric(str_sub(term, 2, 3))
     season <- str_sub(term, 1, 1)
@@ -159,28 +161,28 @@ dataWranglingfn <- function(term_list) {
     end_year <- start_year + 1
     return(paste0(start_year, "-", end_year))
   }
-  
+
   # Use purrr to read all files and store them in a named list
   event_data_list <- set_names(map(term_list$term, read_and_clean_event_file), term_list$term)
-  
+
   combined_data <- reduce(event_data_list, full_join)
-  
+
   # Function to calculate the week of term
   calculate_week_of_term <- function(event_date, term) {
-    start_date <- term_start_dates %>%
+    start_date <- term_list %>%
       filter(term == !!term) %>%
       pull(start_date)
-    
+
     if(length(start_date) == 0) return(NA_integer_)  # Return NA if no start_date is found
-    
+
     # Calculate the week of the term based on Monday as the first day of the week
-    week_of_term <- as.integer((floor_date(event_date, unit = "week", week_start = 1) - 
+    week_of_term <- as.integer((floor_date(event_date, unit = "week", week_start = 1) -
                                   floor_date(start_date, unit = "week", week_start = 1)) / 7) + 1
     return(week_of_term)
   }
-  
+
   # Apply the new function to calculate week_of_term dynamically
-  
+
   combined_data_filtered <- combined_data %>%
     filter(!is.na(what), what != "") %>%
     filter(what != "Choir & Jazz Rehearsal") %>%
@@ -189,8 +191,8 @@ dataWranglingfn <- function(term_list) {
     mutate(
       livestream = coalesce(livestream, live_stream)  # If 'livestream' is NA, use 'live_stream'
     ) %>%
-    select(-live_stream) %>%  
-    mutate(department = ifelse(str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival"), "CSA", department)) %>% 
+    select(-live_stream) %>%
+    mutate(department = ifelse(str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival"), "CSA", department)) %>%
     mutate(
       support_level = fct_relevel(factor(support_level), "H", "M", "L"),
       audio_needs = fct_relevel(factor(audio_needs), "H", "M", "L"),
@@ -206,13 +208,13 @@ dataWranglingfn <- function(term_list) {
     mutate(
       venue = factor(venue),
       department = factor(department)
-    ) %>%  
+    ) %>%
     mutate(
       audience_count = as.numeric(ifelse(grepl("^[0-9]+$", audience_count), audience_count, NA)),
       days_committed = as.numeric(ifelse(grepl("^[0-9]+$", days_committed), days_committed, NA)),
       av_staff = as.numeric(ifelse(grepl("^[0-9]+$", av_staff), av_staff, NA)),
       pac_staff = as.numeric(ifelse(grepl("^[0-9]+$", pac_staff), pac_staff, NA))
-    ) %>%  
+    ) %>%
     mutate(support_level = if_else(support_level == "N" | support_level == "Y", "L", support_level)) %>%
     mutate(
       department = str_replace_all(department, "WCC", "ODOA"),
@@ -247,7 +249,6 @@ dataWranglingfn <- function(term_list) {
     mutate(event_type = case_when(
       str_detect(what, "GUEST|ODOA|Concert Series|SPCO") ~ "Guest / Masterclass",
       str_detect(what, "Faculty") ~ "Faculty Recital",
-      str_detect(what, "Faculty&Guest") ~ "Faculty + Guest",
       str_detect(what, "Student|Senior|Junior|Piano Recital: |Johnson|Verma Jameson") ~ "Student Recital",
       str_detect(what, "Studio Recital|Organ & Harpsichord|Composition Showcase Recital|Chamber Recital|Chamber Music Recital|Chamber Music|Organ Recital|Strings Recital|Violin & Viola|Violin/Viola|Drum Ensemble|Drum Recital|Voice Showcase Recital|Chinese Music Recital|Piano Studios Recital|Jazz Chamber|Piano Recital|Comps Fest|Recorder Recital|Music Ensemble|Studio") ~ "Studio Recital",
       str_detect(what, "Orchestra Concert|Jazz Concert|Symphony Concert|Symphony Band|Choir Concert|Orchestra and Choir|Chinese & Global|Chinese Global Concert|Chinese and Global|Chinese Music Concert|Chinese Music Ensemble|Chinese Ensemble|Music Comps|Jazz Vocal Concert") ~ "Ensemble Concert",
@@ -255,10 +256,13 @@ dataWranglingfn <- function(term_list) {
       str_detect(what, "Masterclass|Lecture|Symposium") ~ "Guest / Masterclass",
       str_detect(what, "Trustees|Trustee's|Presidents|Conference|President's|Presentation") ~ "Presentation",
       str_detect(what, "Clinic|Music Fest|Music Department Showcase|Melinda Russell|Launch|Event|Opening") ~ "Special Events",
-      TRUE ~ "Guest"
+      TRUE ~ "Guest / Masterclass"
     )) %>%
+    mutate(event_type = case_when(str_detect(what, "Faculty&Guest") ~ "Faculty + Guest",
+                                  TRUE ~ event_type  # Keep existing values for other cases
+                                  )) %>% 
     mutate(year = term_to_year(term)) %>%
-    mutate(term = factor(term, levels = term_start_dates$term, ordered = TRUE)) %>%
+    mutate(term = factor(term, levels = term_list$term, ordered = TRUE)) %>%
     arrange(year, term) %>%
     mutate(
       term_category = case_when(
@@ -272,7 +276,7 @@ dataWranglingfn <- function(term_list) {
     rowwise() %>%
     mutate(week_of_term = calculate_week_of_term(date, term)) %>%
     ungroup()
-  
+
   # Example event summary after filtering and transformation
   event_summary <- combined_data_filtered %>%
     group_by(year, term) %>%
@@ -280,24 +284,180 @@ dataWranglingfn <- function(term_list) {
     group_by(year) %>%
     mutate(year_total = sum(term_total)) %>%
     ungroup()
+
+  # combined_data_filtered <- combined_data_filtered %>%
+  #   left_join(guest_only_base %>% select(venue, date, what, department, genre, sponsor), by = join_by(venue, date, what, department)
+  #             # %>% select(what, genre, sponsor), by = "what", relationship = "many-to-many"
+  #             )
+  # Perform the join
+  combined_data_filtered_updated <- combined_data_filtered %>%
+    left_join(guest_only_base %>% select(venue, date, what, department, term, genre, sponsor), 
+              by = c("venue", "date", "what", "department", "term"))
   
-  combined_data_filtered %>% filter(event_type == "Guest",
-                                    str_detect(department, "MUSC")) %>% 
+
+  combined_data_filtered_updated %>% filter(event_type == "Guest / Masterclass",
+                                    str_detect(department, "MUSC")) %>%
     filter(!str_detect(what, "Masterclass")) -> guest_only
-  
+
   # Get the unique years and append the "All" option
-  year_choices <- c("All", combined_data_filtered %>% pull(year) %>% unique())
-  
-  return(list(combined_data_filtered = combined_data_filtered,
+  year_choices <- c("All", combined_data_filtered_updated %>% pull(year) %>% unique())
+
+  return(list(combined_data_filtered = combined_data_filtered_updated,
               event_summary = event_summary,
-              year_choices = year_choices))
+              year_choices = year_choices,
+              guest_only = guest_only))
 }
+
+# dataWranglingfn <- function(term_list) {
+#   # Set term_list as term_start_dates
+#   term_start_dates <- term_list
+#   
+#   # Create a function to read a file given its code
+#   read_and_clean_event_file <- function(code) {
+#     file_path <- paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv")
+#     data <- read_csv(file_path)
+#     clean_names(data) %>%
+#       mutate(across(everything(), as.character)) %>%
+#       mutate(term = code)
+#   }
+#   
+#   # Convert term to academic year range
+#   term_to_year <- function(term) {
+#     year <- as.numeric(str_sub(term, 2, 3))
+#     season <- str_sub(term, 1, 1)
+#     start_year <- if_else(season == "F", 2000 + year, 2000 + year - 1)
+#     end_year <- start_year + 1
+#     return(paste0(start_year, "-", end_year))
+#   }
+#   
+#   # Use purrr to read all files and store them in a named list
+#   event_data_list <- set_names(map(term_list$term, read_and_clean_event_file), term_list$term)
+#   
+#   combined_data <- reduce(event_data_list, full_join)
+#   
+#   # Function to calculate the week of term
+#   calculate_week_of_term <- function(event_date, term) {
+#     start_date <- term_start_dates %>%
+#       filter(term == !!term) %>%
+#       pull(start_date)
+#     
+#     if (length(start_date) == 0) return(NA_integer_)  # Return NA if no start_date is found
+#     
+#     # Calculate the week of the term based on Monday as the first day of the week
+#     week_of_term <- as.integer((floor_date(event_date, unit = "week", week_start = 1) - 
+#                                   floor_date(start_date, unit = "week", week_start = 1)) / 7) + 1
+#     return(week_of_term)
+#   }
+#   
+#   # Filter and clean combined data
+#   combined_data_filtered <- combined_data %>%
+#     filter(!is.na(what), what != "") %>%
+#     filter(what != "Choir & Jazz Rehearsal") %>%
+#     filter(what != "Jazz Rehearsal") %>%
+#     mutate(date = as.Date(ymd(date))) %>%
+#     mutate(
+#       livestream = coalesce(livestream, live_stream)  # If 'livestream' is NA, use 'live_stream'
+#     ) %>%
+#     select(-live_stream) %>%
+#     # Perform further cleaning and factor conversions
+#     mutate(department = ifelse(str_detect(what, "CSA|Just Cellin|Lunar New Year|ACA|A Cappella|Accidentals|Exit 69|Date Knight|Knights|Knightingales|International Festival"), "CSA", department)) %>%
+#     mutate(
+#       support_level = fct_relevel(factor(support_level), "H", "M", "L"),
+#       audio_needs = fct_relevel(factor(audio_needs), "H", "M", "L"),
+#       stage_needs = fct_relevel(factor(stage_needs), "H", "M", "L"),
+#       lighting_needs = fct_relevel(factor(lighting_needs), "H", "M", "L"),
+#       projection = fct_relevel(factor(projection), "Y", "N"),
+#       video_recording = fct_relevel(factor(video_recording), "Y", "N"),
+#       livestream = fct_relevel(factor(livestream), "Y", "N"),
+#       poster = fct_relevel(factor(poster), "Y", "N"),
+#       program = fct_relevel(factor(program), "Y", "N"),
+#       reception = fct_relevel(factor(reception), "Y", "N")
+#     ) %>%
+#     mutate(
+#       venue = factor(venue),
+#       department = factor(department)
+#     ) %>%
+#     mutate(
+#       audience_count = as.numeric(ifelse(grepl("^[0-9]+$", audience_count), audience_count, NA)),
+#       days_committed = as.numeric(ifelse(grepl("^[0-9]+$", days_committed), days_committed, NA)),
+#       av_staff = as.numeric(ifelse(grepl("^[0-9]+$", av_staff), av_staff, NA)),
+#       pac_staff = as.numeric(ifelse(grepl("^[0-9]+$", pac_staff), pac_staff, NA))
+#     ) %>%
+#     mutate(support_level = if_else(support_level == "N" | support_level == "Y", "L", support_level)) %>%
+#     # Further cleaning
+#     mutate(
+#       department = str_replace_all(department, "WCC", "ODOA"),
+#       department = str_replace_all(department, "MSUC", "MUSC"),
+#       department = str_replace_all(department, "French Dept|French", "FREN"),
+#       department = str_replace_all(department, "English", "ENGL"),
+#       department = str_replace_all(department, "Pres. Office", "PRES"),
+#       department = str_replace_all(department, "History", "HIST"),
+#       department = str_replace_all(department, "THD", "THDA"),
+#       department = str_replace_all(department, "Inclusion & Equity", "IEC"),
+#       venue = str_replace_all(venue, "Skinner Chapel", "Chapel"),
+#       department = str_replace_all(department, "/", " & "),
+#       department = str_replace_all(department, ",", " &"),
+#       venue = str_replace_all(venue, ",", " &"),
+#       department = str_replace_all(department, "\\s+", " ")  # Remove extra spaces
+#     ) %>%
+#     # Handle department types
+#     mutate(department_type = case_when(
+#       department == "MUSC" ~ "MUSC",
+#       department == "ODOA" ~ "ODOA",
+#       department == "CSA" ~ "CSA",
+#       str_detect(department, "&") ~ "Collab",
+#       TRUE ~ "Others"
+#     )) %>%
+#     # Correcting event names
+#     mutate(what = str_replace_all(what, "Jazz Ensemble Concert|Jazz Area Concert", "Jazz Concert")) %>%
+#     mutate(year = term_to_year(term)) %>%
+#     mutate(term = factor(term, levels = term_start_dates$term, ordered = TRUE)) %>%
+#     arrange(year, term) %>%
+#     mutate(
+#       term_category = case_when(
+#         str_detect(term, "^F") ~ "Fall",
+#         str_detect(term, "^W") ~ "Winter",
+#         str_detect(term, "^S") ~ "Spring"
+#       )
+#     ) %>%
+#     mutate(term_category = factor(term_category, levels = c("Spring", "Winter", "Fall"), ordered = TRUE)) %>%
+#     # Apply week_of_term calculation
+#     rowwise() %>%
+#     mutate(week_of_term = calculate_week_of_term(date, term)) %>%
+#     ungroup()
+#   
+#   # Example event summary after filtering and transformation
+#   event_summary <- combined_data_filtered %>%
+#     group_by(year, term) %>%
+#     summarize(term_total = n(), .groups = 'drop') %>%
+#     group_by(year) %>%
+#     mutate(year_total = sum(term_total)) %>%
+#     ungroup()
+#   
+#   # Filter guest-only events (if required)
+#   combined_data_filtered <- combined_data_filtered %>%
+#     full_join(guest_only_base %>% select(what, genre, sponsor), by = "what"
+#               # , relationship = "many-to-many"
+#               )
+#   
+#   combined_data_filtered %>%
+#     filter(event_type == "Guest / Masterclass", str_detect(department, "MUSC")) %>%
+#     filter(!str_detect(what, "Masterclass")) -> guest_only
+#   
+#   # Get the unique years and append the "All" option
+#   year_choices <- c("All", combined_data_filtered %>% pull(year) %>% unique())
+#   
+#   return(list(combined_data_filtered = combined_data_filtered,
+#               event_summary = event_summary,
+#               year_choices = year_choices,
+#               guest_only = guest_only))
+# }
 
 result_list <- dataWranglingfn(term_list)
 combined_data_filtered <- result_list$combined_data_filtered
 event_summary <- result_list$event_summary
 year_choices <- result_list$year_choices
-
+guest_only <- result_list$guest_only
 
 
 ############################ UI ################################################
@@ -364,7 +524,23 @@ analysisTab <- tabItem(
                                      weekstart = 1),
                            br(),
                            actionBttn("submitNewTerm", "Submit", style = "material-flat",
-                                      color = "primary")
+                                      color = "primary"),
+                           br(),
+                           br(),
+                           br(),
+                           box(
+                             width = 6,
+                             title = "DELETE TERMS", 
+                             closable = FALSE, 
+                             status = "danger", 
+                             solidHeader = TRUE, 
+                             collapsible = TRUE,
+                             collapsed = TRUE,
+                             div(
+                               actionBttn("deleteTerm", "Delete", style = "material-flat",
+                                          color = "danger")
+                             )
+                           )
                          ),
                          column(
                            width = 6,
@@ -411,12 +587,25 @@ analysisTab <- tabItem(
                                                       "Event Type" = "event_type",
                                                       "Year" = "year",
                                                       "Term Category" = "term_category",
-                                                      "Week of Term" = "week_of_term"
+                                                      "Week of Term" = "week_of_term",
+                                                      "Sponsor" = "sponsor",
+                                                      "Genre" = "genre"
                                                     ),  
                                                     multiple = TRUE,
                                                     selected = c("days_committed", "poster", "program", 
                                                                  "reception", "term", "department_type", 
-                                                                 "year", "term_category", "week_of_term")
+                                                                 "year", "term_category", "week_of_term",
+                                                                 "sponsor", "genre")
+                                        )
+                               ),
+                               # Year select input for tab
+                               tags$div(id = "dropdownMenu-container",
+                                        selectInput(
+                                          inputId = "year_select_tab",
+                                          label = tags$span(style = "color:black;", "Select Year:"),
+                                          choices = year_choices,
+                                          selected = "All", 
+                                          multiple = TRUE
                                         )
                                ),
                                # Green "Update" button
@@ -523,9 +712,7 @@ resultsTab <- tabItem(
                                shinycssloaders::withSpinner(fullscreen_this(plotlyOutput("Plot1")))
                              )
                            )
-                       ),
-                       fluidRow(div(br(), 
-                                    h3("  maybe something else to talk about this")))
+                       )
               ),
               tabPanel("Breakdown of Events by Support Level",
                        fluidRow(
@@ -580,9 +767,7 @@ resultsTab <- tabItem(
                                shinycssloaders::withSpinner(fullscreen_this(plotlyOutput("Plot2")))
                              )
                            )
-                       ),
-                       fluidRow(div(br(), 
-                                    h3("  maybe something else to talk about this")))
+                       )
               ),
               tabPanel("Breakdown of Events by Department/Source",
                        fluidRow(
@@ -629,11 +814,9 @@ resultsTab <- tabItem(
                                shinycssloaders::withSpinner(fullscreen_this(plotlyOutput("Plot3")))
                              )
                            )
-                       ),
-                       fluidRow(div(br(), 
-                                    h3("  maybe something else to talk about this")))
+                       )
               ),
-              tabPanel("Breakdown of Music, Collab & ODOA Events by Type",
+              tabPanel("Breakdown of Events by Type",
                        fluidRow(
                            box(
                              width = 12,
@@ -691,9 +874,7 @@ resultsTab <- tabItem(
                                shinycssloaders::withSpinner(fullscreen_this(plotlyOutput("Plot4")))
                              )
                            )
-                       ),
-                       fluidRow(div(br(), 
-                                    h3("  maybe something else to talk about this")))
+                       )
               )
   )
 )
@@ -703,7 +884,7 @@ contactTab <- tabItem(
   h2("Don't contact me!"),
   br(),
   box(
-    width = 10,
+    width = 12,
     title = "But if you really want to contact me", 
     status = "primary", 
     solidHeader = TRUE,
@@ -782,7 +963,8 @@ server <- function(input, output, session) {
   react_vals <- reactiveValues(
     combined_data_filtered_react = combined_data_filtered,
     event_summary_react = event_summary,
-    year_choices_react = year_choices
+    year_choices_react = year_choices,
+    guest_only_react = guest_only
   )
   
   ############################## AUTHENTICATION ################################
@@ -859,73 +1041,12 @@ server <- function(input, output, session) {
     }
   })
   
-  ############################## Generate Music Guest Info #####################
-  observeEvent(input$MUSC_Guest, {
-    # Read and clean the data
-    music_guest_only <- read_csv(file = "data/guest_only.csv")
-    print_guest_dat <- music_guest_only %>% 
-      select(date, what, genre, sponsor, year, term_category) %>% 
-      mutate(what = str_replace_all(what, "GUEST: ", ""))
-    
-    # Function to generate guest information text
-    print_guest_fn <- function(data) {
-      years <- unique(data$year)
-      output_text <- ""
-      
-      for (year in years) {
-        output_text <- paste0(output_text, "\n---------------------------\n", year, "\n")
-        
-        terms <- unique(data$term_category[data$year == year])
-        for (term in terms) {
-          output_text <- paste0(output_text, "\n", term, "\n")
-          
-          term_data <- data[data$year == year & data$term_category == term, ]
-          if (nrow(term_data) == 0) {
-            output_text <- paste0(output_text, "No guests\n")
-          } else {
-            for (i in 1:nrow(term_data)) {
-              event <- term_data$what[i]
-              genre <- term_data$genre[i]
-              sponsor <- term_data$sponsor[i]
-              output_text <- paste0(output_text, event, " | ", genre, " | ", sponsor, "\n")
-            }
-          }
-        }
-      }
-      output_text <- paste0(output_text, "\n---------------------------\n")
-      return(output_text)
-    }
-    
-    # Generate the text
-    musc_guest_info <- print_guest_fn(print_guest_dat)
-    
-    # Attempt to send the text as a custom message
-    tryCatch({
-      session$sendCustomMessage("txt", musc_guest_info)
-      
-      # Success: Show a success alert using shinyalert
-      shinyalert::shinyalert("Success!", "Guest information copied to clipboard.", type = "success"
-                             ,closeOnEsc = TRUE,
-                             closeOnClickOutside = TRUE
-                             )
-      
-    }, error = function(e) {
-      # Failure: Show an error alert
-      shinyalert::shinyalert("Error", "Failed to copy guest information.", type = "error"
-                             ,closeOnEsc = TRUE,
-                             closeOnClickOutside = TRUE
-                             )
-    })
-  })
-  
-  
-  
   ############################## Plot 1 Overview ###############################
   
   renderPlot1fn <- function(data) {
     # Sort the data frame by year and term in the order of F, W, S
     event_summary <- data %>%
-      mutate(term = factor(term, levels = term_start_dates$term, ordered = TRUE)) %>%
+      mutate(term = factor(term, levels = term_list()$term, ordered = TRUE)) %>%
       arrange(year, term) %>%
       mutate(
         term_category = case_when(
@@ -956,6 +1077,12 @@ server <- function(input, output, session) {
     renderPlot1fn(react_vals$event_summary_react)
   })
   
+  reactive({
+    updateSelectInput(session, "year_select_plot1", selected = "All",
+                      choices = react_vals$year_choices_react)
+  })
+  
+  
   # Update the plot when the update button is pressed
   observeEvent(input$update_plot1, {
     # Get the selected years from the selectInput
@@ -963,18 +1090,24 @@ server <- function(input, output, session) {
     
     # Filter the data based on the selected years
     if ("All" %in% selected_years) {
-      renderPlot1fn(react_vals$event_summary_react)
+      output$Plot1 <- renderPlotly({
+        renderPlot1fn(react_vals$event_summary_react)
+      })
     } else {
       filtered_data <- react_vals$event_summary_react %>%
         filter(year %in% selected_years)
-      renderPlot1fn(filtered_data)
+      output$Plot1 <- renderPlotly({
+        renderPlot1fn(filtered_data)
+      })
     }
   })
   
   # Reset the plot and year selection when the reset button is pressed
   observeEvent(input$reset_plot1, {
     # Reset the filtered data to all years
-    renderPlot1fn(react_vals$event_summary_react)
+    output$Plot1 <- renderPlotly({
+      renderPlot1fn(react_vals$event_summary_react)
+    })
     
     # Update the year selectInput to select all years
     updateSelectInput(session, "year_select_plot1", selected = "All")
@@ -1054,6 +1187,11 @@ server <- function(input, output, session) {
   # Initial Rendering
   output$Plot2 <- renderPlotly({
     renderPlot2fn1(react_vals$combined_data_filtered_react)
+  })
+  
+  reactive({
+    updateSelectInput(session, "year_select_plot2", selected = "All",
+                      choices = react_vals$year_choices_react)
   })
   
   # Update plot when update button is pressed
@@ -1142,17 +1280,28 @@ server <- function(input, output, session) {
    renderPlot3fn(react_vals$combined_data_filtered_react)
   })
   
+  reactive({
+    updateSelectInput(session, "year_select_plot3", selected = "All",
+                      choices = react_vals$year_choices_react)
+  })
+  
   # Update plot when update button is pressed
   observeEvent(input$update_plot3, {
-    if (input$year_select_plot3 == "All") {
-      filtered_data <- react_vals$combined_data_filtered_react
-    } else {
-      filtered_data <- react_vals$combined_data_filtered_react %>%
-        filter(year %in% input$year_select_plot3)
-    }
+    # Filter data based on selected years
+    filtered_data <- react_vals$combined_data_filtered_react %>%
+      filter(year %in% input$year_select_plot3 | input$year_select_plot3 == "All")
+    
     output$Plot3 <- renderPlotly({
       renderPlot3fn(filtered_data)
     })
+    
+    # if (input$year_select_plot3 == "All") {
+    #   filtered_data <- react_vals$combined_data_filtered_react
+    # } else {
+    #   filtered_data <- react_vals$combined_data_filtered_react %>%
+    #     filter(year %in% input$year_select_plot3)
+    # }
+    
   })
   
   # Reset plot3 when reset button is pressed
@@ -1200,8 +1349,9 @@ server <- function(input, output, session) {
       mutate(
         term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
         event_type = factor(event_type, levels = c("Ensemble Concert", "Student Activity", "Studio Recital",
-                                                   "Guest", "Faculty Recital", "Student Recital",
-                                                   "Special Events", "Presentation", "Masterclass"),
+                                                    "Guest / Masterclass", "Faculty + Guest",
+                                                    "Faculty Recital", "Student Recital",
+                                                    "Special Events", "Presentation", "Masterclass"),
                             ordered = TRUE)
       )
     
@@ -1259,7 +1409,8 @@ server <- function(input, output, session) {
       mutate(
         term_category = factor(term_category, levels = c("Fall", "Winter", "Spring"), ordered = TRUE),
         event_type = factor(event_type, levels = c("Ensemble Concert", "Student Activity", "Studio Recital",
-                                                   "Guest", "Faculty Recital", "Student Recital",
+                                                   "Guest / Masterclass", "Faculty + Guest",
+                                                   "Faculty Recital", "Student Recital",
                                                    "Special Events", "Presentation", "Masterclass"),
                             ordered = TRUE)
       )
@@ -1290,34 +1441,57 @@ server <- function(input, output, session) {
     renderPlot4fn1(react_vals$combined_data_filtered_react)
   })
   
+  reactive({
+    updateSelectInput(session, "year_select_plot4", selected = "All",
+                      choices = react_vals$year_choices_react)
+  })
+  
   # Update plot when update button is pressed
   observeEvent(input$update_plot4, {
-    if (input$year_select_plot4 == "All") {
-      filtered_data <- react_vals$combined_data_filtered_react
-      # Check if audience toggle is on or off
-      if (input$toggle_music) {
-        output$Plot4 <- renderPlotly({
-          renderPlot4fn1(filtered_data)
-        })
-      } else {
-        output$Plot4 <- renderPlotly({
-          renderPlot4fn2(filtered_data)
-        })
-      }
+    
+    # Filter data based on selected years
+    filtered_data <- react_vals$combined_data_filtered_react %>%
+      filter(year %in% input$year_select_plot4 | input$year_select_plot4 == "All")
+    
+    # Check if music toggle is on or off
+    if (input$toggle_music) {
+      output$Plot4 <- renderPlotly({
+        renderPlot4fn1(filtered_data)
+      })
     } else {
-      filtered_data <- react_vals$combined_data_filtered_react %>%
-        filter(year %in% input$year_select_plot4)
-      # Check if audience toggle is on or off
-      if (input$toggle_music) {
-        output$Plot4 <- renderPlotly({
-          renderPlot4fn1(filtered_data)
-        })
-      } else {
-        output$Plot4 <- renderPlotly({
-          renderPlot4fn2(filtered_data)
-        })
-      }
+      output$Plot4 <- renderPlotly({
+        renderPlot4fn2(filtered_data)
+      })
     }
+    
+    
+    # if (input$year_select_plot4 == "All") {
+    #   filtered_data <- react_vals$combined_data_filtered_react
+    #   # Check if audience toggle is on or off
+    #   if (input$toggle_music) {
+    #     output$Plot4 <- renderPlotly({
+    #       renderPlot4fn1(filtered_data)
+    #     })
+    #   } else {
+    #     output$Plot4 <- renderPlotly({
+    #       renderPlot4fn2(filtered_data)
+    #     })
+    #   }
+    # } else {
+    #   filtered_data <- react_vals$combined_data_filtered_react %>%
+    #     filter(year %in% input$year_select_plot4)
+    #   # Check if audience toggle is on or off
+    #   if (input$toggle_music) {
+    #     output$Plot4 <- renderPlotly({
+    #       renderPlot4fn1(filtered_data)
+    #     })
+    #   } else {
+    #     output$Plot4 <- renderPlotly({
+    #       renderPlot4fn2(filtered_data)
+    #     })
+    #   }
+    # }
+    # 
   })
   
   # Reset plot2 when reset button is pressed
@@ -1331,7 +1505,133 @@ server <- function(input, output, session) {
     })
   })
   
-  ##################### Submit New Term Table #############
+  ############################# Update New Term Data ###########################
+  term_list <- reactiveVal(read_csv("data/term_list.csv"))
+  
+  observeEvent(input$submitNewTerm, {
+    req(input$submitNewTerm)
+    new_term <- input$termID
+    new_start_date <- as.Date(input$termDate)
+    
+    # Check if the term already exists in the term_list
+    existing_term <- term_list() %>% filter(term == new_term)
+    
+    if (nrow(existing_term) > 0) {
+      shinyalert::shinyalert(
+        "Warning", 
+        "This term already exists. Proceeding will overwrite existing data. Continue?", 
+        type = "warning", 
+        showCancelButton = TRUE,
+        callbackR = function(x) {
+          if (x) {
+            # Overwrite existing term
+            updated_term_list <- term_list() %>%
+              filter(term != new_term) %>%
+              bind_rows(data.frame(term = new_term, start_date = new_start_date))
+            term_list(updated_term_list)
+            
+            # Write the updated list to CSV
+            write_csv(updated_term_list, "data/term_list.csv")
+            
+            showPageSpinner()
+            processNewTerm(new_term)
+          } else {
+            hidePageSpinner()
+          }
+        }
+      )
+    } else {
+      # Append new term to term_list
+      updated_term_list <- term_list() %>%
+        bind_rows(data.frame(term = new_term, start_date = new_start_date))
+      term_list(updated_term_list)
+      
+      # Write to CSV
+      write_csv(updated_term_list, "data/term_list.csv")
+      
+      showPageSpinner()
+      processNewTerm(new_term)
+    }
+  })
+  
+  processNewTerm <- function(new_term) {
+    # Fetch new term data from Google Sheets
+    sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit#gid=265403245"
+    new_term_data <- read_sheet(sheet_url, sheet = paste0(new_term, " - Event Data"))
+    
+    # Write the new term data to a CSV file
+    write_csv(new_term_data, paste0(data_dir, "2015-2024 Events Data - ", new_term, " - Event Data.csv"))
+    
+    # Re-run data wrangling function
+    result_list <- dataWranglingfn(term_list())
+    react_vals$combined_data_filtered_react <- result_list$combined_data_filtered
+    react_vals$event_summary_react <- result_list$event_summary
+    react_vals$year_choices_react <- result_list$year_choices
+    react_vals$guest_only_react <- result_list$guest_only
+    
+    hidePageSpinner()
+    
+    shinyalert::shinyalert(
+      "Success!", 
+      "New Term Data Entered.", 
+      type = "success"
+    )
+  }
+  
+  
+  ############################## Delete Existing Terms #########################
+  observeEvent(input$deleteTerm, {
+    req(input$deleteTerm)
+    
+    # Get the term to delete
+    term_to_delete <- input$termID
+    
+    # Check if the term exists in the term_list
+    existing_term <- term_list() %>% filter(term == term_to_delete)
+    
+    if (nrow(existing_term) == 0) {
+      shinyalert::shinyalert(
+        "Error",
+        "The specified term does not exist.",
+        type = "error"
+      )
+    } else {
+      shinyalert::shinyalert(
+        "Confirmation",
+        "Are you sure you want to delete this term?",
+        type = "warning",
+        showCancelButton = TRUE,
+        callbackR = function(x) {
+          if (x) {
+            showPageSpinner()
+            # Remove the term from term_list
+            updated_term_list <- term_list() %>%
+              filter(term != term_to_delete)
+            term_list(updated_term_list)
+            
+            # Write the updated list to CSV
+            write_csv(updated_term_list, "data/term_list.csv")
+            
+            # Re-run data wrangling function
+            result_list <- dataWranglingfn(term_list())
+            react_vals$combined_data_filtered_react <- result_list$combined_data_filtered
+            react_vals$event_summary_react <- result_list$event_summary
+            react_vals$year_choices_react <- result_list$year_choices
+            react_vals$guest_only_react <- result_list$guest_only
+            hidePageSpinner()
+            # Show success message
+            shinyalert::shinyalert(
+              "Deleted",
+              "The term has been successfully deleted.",
+              type = "success"
+            )
+          }
+        }
+      )
+    }
+  })
+  
+  ##################### New Term Table #############
   
   output$term_table <- renderReactable({
     reactable(term_list(), 
@@ -1348,6 +1648,65 @@ server <- function(input, output, session) {
     )
   })
   
+  ############################## Generate Music Guest Info #####################
+  observeEvent(input$MUSC_Guest, {
+    # Read and clean the data
+    music_guest_only <- react_vals$guest_only_react
+    print_guest_dat <- music_guest_only %>% 
+      select(date, what, genre, sponsor, year, term_category) %>% 
+      mutate(what = str_replace_all(what, "GUEST: ", ""))
+    
+    # Function to generate guest information text
+    print_guest_fn <- function(data) {
+      years <- unique(data$year)
+      output_text <- ""
+      
+      for (year in years) {
+        output_text <- paste0(output_text, "\n---------------------------\n", year, "\n")
+        
+        terms <- unique(data$term_category[data$year == year])
+        for (term in terms) {
+          output_text <- paste0(output_text, "\n", term, "\n")
+          
+          term_data <- data[data$year == year & data$term_category == term, ]
+          if (nrow(term_data) == 0) {
+            output_text <- paste0(output_text, "No guests\n")
+          } else {
+            for (i in 1:nrow(term_data)) {
+              event <- term_data$what[i]
+              genre <- term_data$genre[i]
+              sponsor <- term_data$sponsor[i]
+              output_text <- paste0(output_text, event, " | ", genre, " | ", sponsor, "\n")
+            }
+          }
+        }
+      }
+      output_text <- paste0(output_text, "\n---------------------------\n")
+      return(output_text)
+    }
+    
+    # Generate the text
+    musc_guest_info <- print_guest_fn(print_guest_dat)
+    
+    # Attempt to send the text as a custom message
+    tryCatch({
+      session$sendCustomMessage("txt", musc_guest_info)
+      
+      # Success: Show a success alert using shinyalert
+      shinyalert::shinyalert("Success!", "Guest information copied to clipboard.", type = "success"
+                             ,closeOnEsc = TRUE,
+                             closeOnClickOutside = TRUE
+      )
+      
+    }, error = function(e) {
+      # Failure: Show an error alert
+      shinyalert::shinyalert("Error", "Failed to copy guest information.", type = "error"
+                             ,closeOnEsc = TRUE,
+                             closeOnClickOutside = TRUE
+      )
+    })
+  })
+  
   ############################ Data Summary ####################################
   # Function to create the table with dynamic column exclusion
   render_table <- function(data, exclude = NULL) {
@@ -1362,12 +1721,18 @@ server <- function(input, output, session) {
       what = colDef(name = "Event"),
       event_type = colDef(name = "Event Type", 
                           cell = function(value) {
-                            color_map <- c("Guest" = "blue", "Faculty Recital" = "purple", "Student Recital" = "orange", "Studio Recital" = "grey", "Ensemble Concert" = "lightgrey", "Student Activity" = "pink", "Masterclass" = "cyan", "Presentation" = "lightblue", "Special Events" = "lightgreen")
+                            color_map <- c("Guest / Masterclass" = "blue", "Faculty Recital" = "purple", 
+                                           "Faculty + Guest" = "lightcoral",
+                                           "Student Recital" = "orange", "Studio Recital" = "magenta", 
+                                           "Ensemble Concert" = "#42f58d", "Student Activity" = "pink", 
+                                           "Masterclass" = "cyan", "Presentation" = "lightblue", "Special Events" = "lightgreen")
                             color <- color_map[as.character(value)]
                             if (is.na(color)) color <- "lightgrey"
                             tags$span(style = paste0("background-color: ", color, "; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block;"), as.character(value))
                           }),
       department = colDef(name = "Department"),
+      sponsor = colDef(name = "Sponsor"),
+      genre = colDef(name = "Genre"),
       department_type = colDef(name = "Department Type", 
                                cell = function(value) {
                                  color_map <- c("MUSC" = "blue", "ODOA" = "purple", "CSA" = "orange", "Collab" = "maroon", "Others" = "pink")
@@ -1503,102 +1868,54 @@ server <- function(input, output, session) {
   
   # Initial rendering of the table
   output$combined_table <- renderReactable({
-    render_table(react_vals$combined_data_filtered_react, exclude = c("days_committed", "poster", "program", "reception", "term", "department_type", "year", "term_category", "week_of_term"))
+    render_table(react_vals$combined_data_filtered_react, exclude = c("days_committed", "poster", "program", "reception", 
+                                                                      "term", "department_type", "year", "term_category", 
+                                                                      "week_of_term", "sponsor", "genre"))
+  })
+  
+  reactive({
+    updateSelectInput(session, "year_select_tab", selected = "All",
+                      choices = react_vals$year_choices_react)
   })
   
   # Update table based on input$update_tab
   observeEvent(input$update_tab, {
-    # Re-render the table with updated exclusions
-    output$combined_table <- renderReactable({
-      render_table(react_vals$combined_data_filtered_react, exclude = input$exclude_tab_vars)
-    })
+    
+    # Get the selected years from the selectInput
+    selected_years <- input$year_select_tab
+    
+    # Filter the data based on the selected years
+    if ("All" %in% selected_years) {
+      output$combined_table <- renderReactable({
+        render_table(react_vals$combined_data_filtered_react, exclude = input$exclude_tab_vars)
+      })
+    } else {
+      filtered_data <- react_vals$combined_data_filtered_react %>%
+        filter(year %in% selected_years)
+      output$combined_table <- renderReactable({
+        render_table(filtered_data, exclude = input$exclude_tab_vars)
+      })
+    }
   })
   
   # Reset the table to default
   observeEvent(input$reset_tab, {
     # Reset the exclude_vars input to its default state
-    updateSelectInput(session, "exclude_vars", selected = c("days_committed", "poster", "program", "reception", "term", "department_type", "year", "term_category", "week_of_term"))
+    updateSelectInput(session, "exclude_vars", selected = c("days_committed", "poster", "program", "reception", "term", "department_type", 
+                                                            "year", "term_category", "week_of_term", "sponsor", "genre"))
+    
+    # Update the year selectInput to select all years
+    updateSelectInput(session, "year_select_tab", selected = "All")
     
     # Re-render the table with default exclusions
     output$combined_table <- renderReactable({
-      render_table(react_vals$combined_data_filtered_react, exclude = c("days_committed", "poster", "program", "reception", "term", "department_type", "year", "term_category", "week_of_term"))
+      render_table(react_vals$combined_data_filtered_react, exclude = c("days_committed", "poster", "program", "reception", "term", "department_type", 
+                                                                        "year", "term_category", "week_of_term", "sponsor", "genre"))
     })
   })
+
   
-  ############################# Update New Term Data ###########################
-  term_list <- reactiveVal(read_csv("data/term_list.csv"))
-  
-  observeEvent(input$submitNewTerm, {
-    req(input$submitNewTerm)
-    new_term <- input$termID
-    new_start_date <- as.Date(input$termDate)
-    
-    # Check if the term already exists in the term_list
-    existing_term <- term_list() %>% filter(term == new_term)
-    
-    if (nrow(existing_term) > 0) {
-      shinyalert::shinyalert(
-        "Warning", 
-        "This term already exists. Proceeding will overwrite existing data. Continue?", 
-        type = "warning", 
-        showCancelButton = TRUE,
-        callbackR = function(x) {
-          if (x) {
-            # Overwrite existing term
-            updated_term_list <- term_list() %>%
-              filter(term != new_term) %>%
-              bind_rows(data.frame(term = new_term, start_date = new_start_date))
-            term_list(updated_term_list)
-            
-            # Write the updated list to CSV
-            write_csv(updated_term_list, "data/term_list.csv")
-            
-            showPageSpinner()
-            processNewTerm(new_term)
-          } else {
-            hidePageSpinner()
-          }
-        }
-      )
-    } else {
-      # Append new term to term_list
-      updated_term_list <- term_list() %>%
-        bind_rows(data.frame(term = new_term, start_date = new_start_date))
-      term_list(updated_term_list)
-      
-      # Write to CSV
-      write_csv(updated_term_list, "data/term_list.csv")
-      
-      showPageSpinner()
-      processNewTerm(new_term)
-    }
-  })
-  
-  processNewTerm <- function(new_term) {
-    # Fetch new term data from Google Sheets
-    sheet_url <- "https://docs.google.com/spreadsheets/d/1a0wHpBMmUMoeKrTK23nHcYvFpQ2djmcYKmjJqEJWX1I/edit#gid=265403245"
-    new_term_data <- read_sheet(sheet_url, sheet = paste0(new_term, " - Event Data"))
-    
-    # Write the new term data to a CSV file
-    write_csv(new_term_data, paste0(data_dir, "2015-2024 Events Data - ", new_term, " - Event Data.csv"))
-    
-    # Re-run data wrangling function
-    result_list <- dataWranglingfn(term_list())
-    react_vals$combined_data_filtered_react <- result_list$combined_data_filtered
-    react_vals$event_summary_react <- result_list$event_summary
-    react_vals$year_choices_react <- result_list$year_choices
-    
-    hidePageSpinner()
-    
-    shinyalert::shinyalert(
-      "Success!", 
-      "New Term Data Entered.", 
-      type = "success"
-    )
-  }
-  
-  ################SURPRISE################
-  
+    ################SURPRISE################
   observeEvent((input$play1), {
     insertUI(selector = "#play1",
              where = "afterEnd",
