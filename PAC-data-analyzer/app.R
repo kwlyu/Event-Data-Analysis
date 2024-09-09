@@ -140,7 +140,10 @@ term_start_dates <- data.frame(
                          "2023-09-11", "2024-01-03", "2024-03-25"))  # Adjust start dates accordingly
 )
 
-dataWranglingfn <- function() {
+write_csv(term_start_dates, "data/term_list.csv")
+term_list <- read_csv("data/term_list.csv")
+
+dataWranglingfn <- function(term_list) {
   # Create a function to read a file given its code
   read_and_clean_event_file <- function(code) {
     file_path <- paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv")
@@ -159,7 +162,7 @@ dataWranglingfn <- function() {
   }
   
   # Use purrr to read all files and store them in a named list
-  event_data_list <- set_names(map(file_codes, read_and_clean_event_file), file_codes)
+  event_data_list <- set_names(map(term_list$term, read_and_clean_event_file), term_list$term)
   
   combined_data <- reduce(event_data_list, full_join)
   
@@ -290,7 +293,7 @@ dataWranglingfn <- function() {
               year_choices = year_choices))
 }
 
-result_list <- dataWranglingfn()
+result_list <- dataWranglingfn(term_list)
 combined_data_filtered <- result_list$combined_data_filtered
 event_summary <- result_list$event_summary
 year_choices <- result_list$year_choices
@@ -1569,7 +1572,7 @@ server <- function(input, output, session) {
     write_csv(new_term_data, paste0(data_dir, "2015-2024 Events Data - ", code, " - Event Data.csv"))
     
     # Re-run the data wrangling function
-    result_list <- dataWranglingfn()
+    result_list <- dataWranglingfn(term_list)
     combined_data_filtered <- result_list$combined_data_filtered
     event_summary <- result_list$event_summary
     year_choices <- result_list$year_choices
