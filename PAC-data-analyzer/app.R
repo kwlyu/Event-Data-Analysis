@@ -1509,7 +1509,7 @@ server <- function(input, output, session) {
   term_list <- reactiveVal(read_csv("data/term_list.csv"))
   
   observeEvent(input$submitNewTerm, {
-    req(input$submitNewTerm)
+    req(input$submitNewTerm, input$termID)
     new_term <- input$termID
     new_start_date <- as.Date(input$termDate)
     
@@ -1581,7 +1581,7 @@ server <- function(input, output, session) {
   
   ############################## Delete Existing Terms #########################
   observeEvent(input$deleteTerm, {
-    req(input$deleteTerm)
+    req(input$deleteTerm, input$termID)
     
     # Get the term to delete
     term_to_delete <- input$termID
