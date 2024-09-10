@@ -1631,6 +1631,35 @@ server <- function(input, output, session) {
     }
   })
   
+  
+  observeEvent(input$deleteTerm, {
+    if (input$termID == "") {
+      shinyalert(title = "Error!", text = "Please specify which term you want to delete.",
+                 closeOnEsc = TRUE,
+                 closeOnClickOutside = TRUE,
+                 showConfirmButton = TRUE,
+                 type = "error",
+                 confirmButtonText = "OK",
+                 confirmButtonCol = "#eb8634",
+                 animation = TRUE
+      )
+    }
+  })
+  
+  observeEvent(input$submitNewTerm, {
+    if (input$termID == "") {
+      shinyalert(title = "Error!", text = "Please specify which term you want to upload.",
+                 closeOnEsc = TRUE,
+                 closeOnClickOutside = TRUE,
+                 showConfirmButton = TRUE,
+                 type = "error",
+                 confirmButtonText = "OK",
+                 confirmButtonCol = "#eb8634",
+                 animation = TRUE
+      )
+    }
+  })
+  
   ##################### New Term Table #############
   
   output$term_table <- renderReactable({
