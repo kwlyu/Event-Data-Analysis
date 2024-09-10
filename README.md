@@ -6,3 +6,4 @@ This shiny app is built with R. Carleton provides two servers ([maize](https://m
 
 ## Cloning the Repo
 
+We use version control to keep track of changes and eventually collaborate between different students who contribute to this project.To do this, you need to set up version control on either 
