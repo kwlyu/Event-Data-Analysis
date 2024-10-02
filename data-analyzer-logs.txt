@@ -1,0 +1,1500 @@
+2024-10-01T21:21:18.328807+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:21:18.332645+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:21:18.336436+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:18.340256+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:18.344015+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:21:18.347643+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:21:18.351277+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:18.355054+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:18.358788+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:21:18.362598+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:21:18.366235+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:18.370106+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:18.373820+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:21:18.377702+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:18.381365+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:18.385192+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:18.389380+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:21:18.393863+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:18.398121+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:18.402247+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:21:18.406264+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:41.968450+00:00 shinyapps[12654620]: ✔ Reading from "PAC Events Data - raw".
+2024-10-01T21:21:41.972882+00:00 shinyapps[12654620]: ✔ Range ''S16 - Event Data''.
+2024-10-01T21:21:41.977113+00:00 shinyapps[12654620]: Rows: 21 Columns: 19
+2024-10-01T21:21:41.981139+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:41.985214+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:41.990094+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T21:21:41.993847+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T21:21:41.997634+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:21:42.001344+00:00 shinyapps[12654620]: NE...
+2024-10-01T21:21:42.004990+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.009109+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.012988+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.016940+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.021283+00:00 shinyapps[12654620]: Rows: 27 Columns: 19
+2024-10-01T21:21:42.025260+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.029334+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.033333+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T21:21:42.037296+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T21:21:42.041338+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:21:42.045319+00:00 shinyapps[12654620]: NE...
+2024-10-01T21:21:42.049385+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.053483+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.057514+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.061344+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.065701+00:00 shinyapps[12654620]: Rows: 16 Columns: 13
+2024-10-01T21:21:42.069812+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.073866+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.078062+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.082057+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.087110+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:21:42.091346+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.095670+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.099754+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.103775+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.107802+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.111630+00:00 shinyapps[12654620]: Rows: 22 Columns: 13
+2024-10-01T21:21:42.116599+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.121208+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.127065+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.131246+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.135326+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:21:42.139093+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.142843+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.146763+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.151607+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.156291+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.161393+00:00 shinyapps[12654620]: Rows: 23 Columns: 13
+2024-10-01T21:21:42.165430+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.169485+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.173476+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.177408+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.181806+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:21:42.186009+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.191214+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.194904+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.198592+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.202588+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.206493+00:00 shinyapps[12654620]: Rows: 16 Columns: 14
+2024-10-01T21:21:42.210265+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.214675+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.218537+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.222390+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.226586+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:21:42.230475+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.234573+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.238521+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.242455+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.246337+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.250412+00:00 shinyapps[12654620]: Rows: 21 Columns: 14
+2024-10-01T21:21:42.254503+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.258391+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.262087+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.265890+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.269729+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:21:42.273469+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.277272+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.281111+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.285033+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.289344+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.293383+00:00 shinyapps[12654620]: Rows: 35 Columns: 14
+2024-10-01T21:21:42.297328+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.301400+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.305757+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.309585+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.313793+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:21:42.318005+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.322088+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.326378+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.330399+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.334570+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.338695+00:00 shinyapps[12654620]: Rows: 21 Columns: 14
+2024-10-01T21:21:42.342713+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.346771+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.350667+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.354604+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.358610+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:21:42.362798+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.366824+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.371053+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.374883+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.379162+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.383565+00:00 shinyapps[12654620]: Rows: 20 Columns: 16
+2024-10-01T21:21:42.387544+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.391656+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.396065+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.400517+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.404973+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T21:21:42.409277+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.413478+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.417449+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.421723+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.425814+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.430163+00:00 shinyapps[12654620]: Rows: 31 Columns: 16
+2024-10-01T21:21:42.434359+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.438312+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.443078+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.447453+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.451411+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T21:21:42.455315+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:42.459175+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:42.463224+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:42.467256+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:42.471202+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:42.979844+00:00 shinyapps[12654620]: Rows: 23 Columns: 16
+2024-10-01T21:21:42.983877+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:42.987879+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:42.991630+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:42.995550+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:42.999402+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T21:21:43.003522+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:43.007733+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.012116+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.016170+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.020101+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.024002+00:00 shinyapps[12654620]: Rows: 22 Columns: 16
+2024-10-01T21:21:43.027805+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.031772+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.035728+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:43.039657+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:43.043664+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T21:21:43.047720+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:43.051523+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.055516+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.059241+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.063144+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.067300+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T21:21:43.071311+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.075157+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.078843+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T21:21:43.082799+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.086533+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.090192+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.094209+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T21:21:43.098437+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.102238+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.136015+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T21:21:43.141617+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.159426+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.163906+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.168046+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T21:21:43.172529+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.176554+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.180492+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T21:21:43.184521+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.188516+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.192686+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.196861+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T21:21:43.200765+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.204775+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.209086+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T21:21:43.213165+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.217121+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.221643+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.225906+00:00 shinyapps[12654620]: Rows: 11 Columns: 18
+2024-10-01T21:21:43.230083+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.235335+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.240019+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, RECEPTION, SUPPORT 
+2024-10-01T21:21:43.243958+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:21:43.247982+00:00 shinyapps[12654620]: NEEDS, ...
+2024-10-01T21:21:43.251886+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T21:21:43.255701+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:43.259739+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.263756+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.268026+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.272332+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.276557+00:00 shinyapps[12654620]: Rows: 15 Columns: 18
+2024-10-01T21:21:43.280648+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.285020+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.289188+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, RECEPTION, SUPPORT 
+2024-10-01T21:21:43.293551+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:21:43.297677+00:00 shinyapps[12654620]: NEEDS, ...
+2024-10-01T21:21:43.301684+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T21:21:43.305537+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:43.309434+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.313710+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.317934+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.322241+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.326354+00:00 shinyapps[12654620]: Rows: 31 Columns: 18
+2024-10-01T21:21:43.331110+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.335603+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.339751+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:21:43.343778+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:21:43.348069+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T21:21:43.351864+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T21:21:43.355791+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:43.359666+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.363696+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.367433+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.371387+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.375409+00:00 shinyapps[12654620]: Rows: 29 Columns: 19
+2024-10-01T21:21:43.379602+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.383591+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.387720+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:21:43.391845+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:21:43.395929+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T21:21:43.399935+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T21:21:43.404299+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.408564+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.412607+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.416543+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.420774+00:00 shinyapps[12654620]: Rows: 27 Columns: 19
+2024-10-01T21:21:43.424896+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.430293+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.434260+00:00 shinyapps[12654620]: chr  (14): VENUE, DEPARTMENT, WHAT, SUPPORT 
+2024-10-01T21:21:43.438536+00:00 shinyapps[12654620]: LEVEL, POSTER, PROGRAM, PROJECT...
+2024-10-01T21:21:43.442821+00:00 shinyapps[12654620]: dbl   (4): WK, PAC STAFF, AV STAFF, DAYS COMMITTED
+2024-10-01T21:21:43.446759+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.450725+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.454696+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.459052+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.463147+00:00 shinyapps[12654620]: Rows: 41 Columns: 19
+2024-10-01T21:21:43.467896+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.472078+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.476052+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:21:43.480253+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T21:21:43.484311+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T21:21:43.488344+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T21:21:43.492522+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.496490+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.500402+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.504339+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.508608+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T21:21:43.512423+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.516685+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.521252+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:21:43.525524+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T21:21:43.529974+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T21:21:43.534253+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T21:21:43.538602+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.542734+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.546802+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.584322+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.588789+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T21:21:43.592727+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.597367+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.601668+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:21:43.605739+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T21:21:43.609784+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T21:21:43.614083+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T21:21:43.618198+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.622272+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.626657+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.630899+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.635431+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T21:21:43.639941+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.644169+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.648279+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:21:43.652435+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T21:21:43.656411+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T21:21:43.660177+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T21:21:43.664386+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:21:43.668589+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:43.672746+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:43.676664+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:43.967924+00:00 shinyapps[12654620]: Rows: 21 Columns: 19
+2024-10-01T21:21:43.972282+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:43.976241+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:43.980283+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T21:21:43.984393+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T21:21:43.988622+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:21:43.992746+00:00 shinyapps[12654620]: NE...
+2024-10-01T21:21:43.996756+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T21:21:44.000691+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:44.005006+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:44.009138+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:44.013291+00:00 shinyapps[12654620]: Rows: 8 Columns: 19
+2024-10-01T21:21:44.017451+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:44.021737+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:44.025559+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:21:44.029406+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:21:44.033429+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T21:21:44.037673+00:00 shinyapps[12654620]: lgl   (7): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, LIGHTING NEEDS, AUDIENCE...
+2024-10-01T21:21:44.041633+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T21:21:44.045582+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:44.049785+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:44.053615+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:44.057397+00:00 shinyapps[12654620]: Rows: 14 Columns: 13
+2024-10-01T21:21:44.061174+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:44.065382+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:44.069486+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:44.073370+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:44.077459+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:21:44.081963+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:21:44.085853+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T21:21:44.089688+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:44.093459+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:44.097270+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:44.101427+00:00 shinyapps[12654620]: Rows: 26 Columns: 13
+2024-10-01T21:21:44.105462+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:21:44.109845+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:21:44.113624+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:21:44.117384+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:21:44.121134+00:00 shinyapps[12654620]: lgl   (2): WK, AUDIENCE COUNT
+2024-10-01T21:21:44.125186+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T21:21:44.129429+00:00 shinyapps[12654620]: 
+2024-10-01T21:21:44.133606+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:21:44.137675+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:21:44.142447+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.146585+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.150650+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:21:44.154486+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:44.158644+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.162568+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:21:44.166360+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:44.170127+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.176708+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:21:44.180544+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:44.184572+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.188928+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:21:44.193259+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:44.197192+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.201598+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T21:21:44.205855+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T21:21:44.210126+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.214023+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T21:21:44.218107+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T21:21:44.222007+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.225990+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T21:21:44.230228+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T21:21:44.234136+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.238118+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T21:21:44.242322+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T21:21:44.246181+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:21:44.250119+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:21:44.254004+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:21:44.257846+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:21:44.261643+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:21:44.265680+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:21:44.269443+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:21:44.273709+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:21:44.277775+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:21:44.281410+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:21:44.285257+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:21:44.289234+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:21:44.293194+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:21:44.298214+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:21:44.302375+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:21:44.306791+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:21:44.313419+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:21:44.317658+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:21:44.321888+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:21:44.326092+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:21:44.330827+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:21:44.335085+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:21:44.339279+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:21:44.343584+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:21:44.347524+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.351537+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.355382+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T21:21:44.359336+00:00 shinyapps[12654620]: term)`
+2024-10-01T21:21:44.363586+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.367594+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.371415+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T21:21:44.375672+00:00 shinyapps[12654620]: term)`
+2024-10-01T21:21:44.379565+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.383759+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.387882+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T21:21:44.391942+00:00 shinyapps[12654620]: term)`
+2024-10-01T21:21:44.395832+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.399577+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.403536+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:21:44.407611+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:44.411869+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.415926+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.420815+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term)`
+2024-10-01T21:21:44.424863+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.428836+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.432966+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:21:44.436888+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:21:44.441573+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.445924+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.450029+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:21:44.454337+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:21:44.458198+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.462161+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.466078+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:21:44.469915+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:21:44.474032+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.477842+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.481967+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:21:44.485923+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:21:44.489850+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.493765+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.497509+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:21:44.501382+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:44.505620+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:21:44.509504+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:21:44.513427+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:21:44.517535+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:44.521567+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.525759+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:21:44.529673+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:21:44.533800+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:21:44.538839+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:21:44.542750+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:21.967878+00:00 shinyapps[12654620]: Auto-refreshing stale OAuth token.
+2024-10-01T21:36:23.967715+00:00 shinyapps[12654620]: ✔ Reading from "PAC Events Data - raw".
+2024-10-01T21:36:23.971882+00:00 shinyapps[12654620]: ✔ Range ''F15 - Event Data''.
+2024-10-01T21:36:24.968729+00:00 shinyapps[12654620]: Rows: 21 Columns: 19
+2024-10-01T21:36:24.974588+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:24.979385+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:24.983876+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T21:36:24.989488+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T21:36:24.993498+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:36:24.997663+00:00 shinyapps[12654620]: NE...
+2024-10-01T21:36:25.001850+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.006426+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.010303+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.014439+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.018298+00:00 shinyapps[12654620]: Rows: 27 Columns: 19
+2024-10-01T21:36:25.022695+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.026951+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.030826+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T21:36:25.034659+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T21:36:25.040147+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:36:25.044223+00:00 shinyapps[12654620]: NE...
+2024-10-01T21:36:25.049483+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.053573+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.057751+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.061926+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.065958+00:00 shinyapps[12654620]: Rows: 16 Columns: 13
+2024-10-01T21:36:25.070321+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.074428+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.078775+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.082810+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.087015+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:36:25.091128+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.095233+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.099088+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.103580+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.107674+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.111660+00:00 shinyapps[12654620]: Rows: 22 Columns: 13
+2024-10-01T21:36:25.116021+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.119986+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.123915+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.127969+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.132009+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:36:25.136225+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.140293+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.144317+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.148274+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.152172+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.156165+00:00 shinyapps[12654620]: Rows: 23 Columns: 13
+2024-10-01T21:36:25.160295+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.164446+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.168600+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.172628+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.177035+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:36:25.181162+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.185730+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.190771+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.194883+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.199414+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.203530+00:00 shinyapps[12654620]: Rows: 16 Columns: 14
+2024-10-01T21:36:25.207815+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.211690+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.215698+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.219626+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.223848+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:36:25.228266+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.232546+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.236667+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.240689+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.244879+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.249043+00:00 shinyapps[12654620]: Rows: 21 Columns: 14
+2024-10-01T21:36:25.252985+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.257017+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.261019+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.265236+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.270230+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:36:25.274273+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.278291+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.282321+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.286576+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.290546+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.294418+00:00 shinyapps[12654620]: Rows: 35 Columns: 14
+2024-10-01T21:36:25.298506+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.302825+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.306933+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.311753+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.315751+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:36:25.319764+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.323894+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.328097+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.332128+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.336040+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.340032+00:00 shinyapps[12654620]: Rows: 21 Columns: 14
+2024-10-01T21:36:25.344372+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.348236+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.352302+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.356259+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.360274+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:36:25.364118+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.368174+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.372079+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.375870+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.380216+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.384078+00:00 shinyapps[12654620]: Rows: 20 Columns: 16
+2024-10-01T21:36:25.387995+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.392380+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.396243+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.400133+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.404126+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T21:36:25.408171+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.412560+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.416699+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.420578+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.424463+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.428361+00:00 shinyapps[12654620]: Rows: 31 Columns: 16
+2024-10-01T21:36:25.432394+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.436857+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.440702+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.444603+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.448623+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T21:36:25.452604+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.456364+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.460288+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.464465+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.468704+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.472451+00:00 shinyapps[12654620]: Rows: 23 Columns: 16
+2024-10-01T21:36:25.476453+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.480597+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.484859+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.488903+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.493157+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T21:36:25.497407+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.501900+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:25.506886+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:25.510968+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:25.515068+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:25.968127+00:00 shinyapps[12654620]: Rows: 22 Columns: 16
+2024-10-01T21:36:25.973341+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:25.977620+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:25.982820+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:25.986786+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:25.990870+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T21:36:25.995061+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:25.999145+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.003217+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.007510+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.011712+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.015741+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T21:36:26.019916+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.023811+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.027775+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T21:36:26.031510+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.035559+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.039628+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.043673+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T21:36:26.047724+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.051795+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.055689+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T21:36:26.059927+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.063828+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.067986+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.072029+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T21:36:26.076044+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.079964+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.084124+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T21:36:26.088362+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.092322+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.096325+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.100736+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T21:36:26.104775+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.108748+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.112771+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T21:36:26.116779+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.121130+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.125113+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.128993+00:00 shinyapps[12654620]: Rows: 11 Columns: 18
+2024-10-01T21:36:26.132789+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.136808+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.141262+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, RECEPTION, SUPPORT 
+2024-10-01T21:36:26.145137+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:36:26.148995+00:00 shinyapps[12654620]: NEEDS, ...
+2024-10-01T21:36:26.154254+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T21:36:26.158440+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:26.162505+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.166595+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.170803+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.175542+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.179725+00:00 shinyapps[12654620]: Rows: 15 Columns: 18
+2024-10-01T21:36:26.183748+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.187825+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.192362+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, RECEPTION, SUPPORT 
+2024-10-01T21:36:26.196378+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:36:26.201046+00:00 shinyapps[12654620]: NEEDS, ...
+2024-10-01T21:36:26.205088+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T21:36:26.209230+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:26.213164+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.217219+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.220993+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.224755+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.228777+00:00 shinyapps[12654620]: Rows: 31 Columns: 18
+2024-10-01T21:36:26.232644+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.236635+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.240775+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:36:26.245039+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:36:26.250327+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T21:36:26.254304+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T21:36:26.258560+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:26.262501+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.266451+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.270463+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.274450+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.278447+00:00 shinyapps[12654620]: Rows: 29 Columns: 19
+2024-10-01T21:36:26.283031+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.286979+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.291612+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:36:26.295759+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:36:26.300519+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T21:36:26.304552+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T21:36:26.308477+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.312594+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.316584+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.321422+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.325712+00:00 shinyapps[12654620]: Rows: 27 Columns: 19
+2024-10-01T21:36:26.329589+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.333519+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.338102+00:00 shinyapps[12654620]: chr  (14): VENUE, DEPARTMENT, WHAT, SUPPORT 
+2024-10-01T21:36:26.342285+00:00 shinyapps[12654620]: LEVEL, POSTER, PROGRAM, PROJECT...
+2024-10-01T21:36:26.346120+00:00 shinyapps[12654620]: dbl   (4): WK, PAC STAFF, AV STAFF, DAYS COMMITTED
+2024-10-01T21:36:26.351053+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.355373+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.359397+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.363383+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.367179+00:00 shinyapps[12654620]: Rows: 41 Columns: 19
+2024-10-01T21:36:26.371197+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.375449+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.379312+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:36:26.383192+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T21:36:26.387149+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T21:36:26.391805+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T21:36:26.395706+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.400017+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.403965+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.407959+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.412103+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T21:36:26.416175+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.422959+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.427021+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:36:26.430937+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T21:36:26.435081+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T21:36:26.439422+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T21:36:26.443334+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.447258+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.451318+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.455110+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.459271+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T21:36:26.463139+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.466986+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.470747+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:36:26.474822+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T21:36:26.478580+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T21:36:26.482657+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T21:36:26.486726+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:26.490752+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:26.494728+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:26.498787+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:26.968640+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T21:36:26.973461+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:26.977680+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:26.981588+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:36:26.985762+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T21:36:26.989859+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T21:36:26.994870+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T21:36:26.998806+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T21:36:27.002814+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:27.006876+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:27.010963+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:27.014834+00:00 shinyapps[12654620]: Rows: 21 Columns: 19
+2024-10-01T21:36:27.018859+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:27.022760+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:27.026749+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T21:36:27.030662+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T21:36:27.034562+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:36:27.038738+00:00 shinyapps[12654620]: NE...
+2024-10-01T21:36:27.042797+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T21:36:27.046537+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:27.050794+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:27.054879+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:27.059121+00:00 shinyapps[12654620]: Rows: 14 Columns: 13
+2024-10-01T21:36:27.062985+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:27.066732+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:27.070625+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:27.074317+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:27.078131+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T21:36:27.082051+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T21:36:27.085957+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T21:36:27.089943+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:27.093743+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:27.098474+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:27.102875+00:00 shinyapps[12654620]: Rows: 26 Columns: 13
+2024-10-01T21:36:27.106774+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:27.111032+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:27.114792+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T21:36:27.119096+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T21:36:27.123216+00:00 shinyapps[12654620]: lgl   (2): WK, AUDIENCE COUNT
+2024-10-01T21:36:27.127213+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T21:36:27.131350+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:27.135235+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:27.139582+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:27.143772+00:00 shinyapps[12654620]: Rows: 8 Columns: 19
+2024-10-01T21:36:27.147802+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T21:36:27.151894+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T21:36:27.156029+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T21:36:27.159863+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T21:36:27.164060+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T21:36:27.168777+00:00 shinyapps[12654620]: lgl   (7): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, LIGHTING NEEDS, AUDIENCE...
+2024-10-01T21:36:27.172887+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T21:36:27.177074+00:00 shinyapps[12654620]: 
+2024-10-01T21:36:27.181142+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T21:36:27.185663+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T21:36:27.189552+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.193704+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.197944+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:36:27.202014+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:27.206396+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.210530+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:36:27.214866+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:27.220117+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.224310+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:36:27.228689+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:27.234005+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.238094+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:36:27.242226+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:27.246198+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.251091+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T21:36:27.255020+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T21:36:27.258906+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.262848+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T21:36:27.267118+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T21:36:27.271029+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.275573+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T21:36:27.280196+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T21:36:27.284435+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.288554+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T21:36:27.292471+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T21:36:27.296483+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:36:27.300471+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:36:27.304492+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:36:27.309165+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:36:27.313955+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:36:27.318391+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:36:27.322253+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:36:27.326387+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:36:27.330271+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:36:27.334202+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:36:27.338099+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:36:27.342361+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:36:27.346506+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:36:27.350376+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:36:27.354535+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:36:27.358569+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:36:27.362691+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:36:27.366640+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:36:27.372105+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:36:27.376237+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:36:27.380164+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:36:27.384204+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T21:36:27.388668+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T21:36:27.392555+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T21:36:27.396610+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.400736+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.405163+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T21:36:27.409180+00:00 shinyapps[12654620]: term)`
+2024-10-01T21:36:27.413318+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.417760+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.421877+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T21:36:27.426059+00:00 shinyapps[12654620]: term)`
+2024-10-01T21:36:27.430301+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.434770+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.438926+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T21:36:27.442934+00:00 shinyapps[12654620]: term)`
+2024-10-01T21:36:27.447402+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.451517+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.455448+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:36:27.459449+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:27.463562+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.467599+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.471515+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term)`
+2024-10-01T21:36:27.475846+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.480120+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.484447+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:36:27.488219+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:36:27.492067+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.496200+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.500045+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:36:27.504001+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:36:27.508001+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.512280+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.516262+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:36:27.520383+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:36:27.524523+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.528743+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.532794+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T21:36:27.536910+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T21:36:27.541979+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.546559+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.550320+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:36:27.554311+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:27.558401+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.562852+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:36:27.567025+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:27.571110+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T21:36:27.575196+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T21:36:27.579091+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T21:36:27.582872+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T21:36:27.586893+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T21:36:27.590953+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T21:36:27.595177+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:29.967779+00:00 shinyapps[12654620]: Running on host: 485cef5dd31a
+2024-10-01T23:05:29.973839+00:00 shinyapps[12654620]: Running as user: uid=10001(shiny) gid=10001(shiny) groups=10001(shiny)
+2024-10-01T23:05:29.978600+00:00 shinyapps[12654620]: Connect version: 2024.05.0
+2024-10-01T23:05:29.982849+00:00 shinyapps[12654620]: LANG: C.UTF-8
+2024-10-01T23:05:29.986964+00:00 shinyapps[12654620]: Working directory: /srv/connect/apps/data-analyzer
+2024-10-01T23:05:29.991136+00:00 shinyapps[12654620]: Using R 4.3.2
+2024-10-01T23:05:29.995342+00:00 shinyapps[12654620]: R.home(): /opt/R/4.3.2/lib/R
+2024-10-01T23:05:29.999812+00:00 shinyapps[12654620]: Content will use current R environment
+2024-10-01T23:05:30.004015+00:00 shinyapps[12654620]: R_LIBS: (unset)
+2024-10-01T23:05:30.008246+00:00 shinyapps[12654620]: .libPaths(): /usr/lib/R, /opt/R/4.3.2/lib/R/library
+2024-10-01T23:05:30.012525+00:00 shinyapps[12654620]: shiny version: 1.9.1
+2024-10-01T23:05:30.017195+00:00 shinyapps[12654620]: httpuv version: 1.6.15
+2024-10-01T23:05:30.021838+00:00 shinyapps[12654620]: rmarkdown version: 2.27
+2024-10-01T23:05:30.026288+00:00 shinyapps[12654620]: knitr version: 1.48
+2024-10-01T23:05:30.030753+00:00 shinyapps[12654620]: jsonlite version: 1.8.8
+2024-10-01T23:05:30.035280+00:00 shinyapps[12654620]: RJSONIO version: (none)
+2024-10-01T23:05:30.039748+00:00 shinyapps[12654620]: htmltools version: 0.5.8.1
+2024-10-01T23:05:30.044303+00:00 shinyapps[12654620]: reticulate version: (none)
+2024-10-01T23:05:30.048399+00:00 shinyapps[12654620]: Using pandoc: /opt/connect/ext/pandoc/2.16
+2024-10-01T23:05:30.052868+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.057269+00:00 shinyapps[12654620]: Starting R with process ID: '23196'
+2024-10-01T23:05:30.061723+00:00 shinyapps[12654620]: Shiny application starting ...
+2024-10-01T23:05:30.065837+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.070096+00:00 shinyapps[12654620]: Attaching package: ‘shinydashboard’
+2024-10-01T23:05:30.074196+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.078767+00:00 shinyapps[12654620]: The following object is masked from ‘package:graphics’:
+2024-10-01T23:05:30.082863+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.087279+00:00 shinyapps[12654620]:     box
+2024-10-01T23:05:30.091395+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.097028+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.101722+00:00 shinyapps[12654620]: Attaching package: ‘shinydashboardPlus’
+2024-10-01T23:05:30.106196+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.110341+00:00 shinyapps[12654620]: The following objects are masked from ‘package:shinydashboard’:
+2024-10-01T23:05:30.114549+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.118628+00:00 shinyapps[12654620]:     box, dashboardHeader, dashboardPage, dashboardSidebar, messageItem,
+2024-10-01T23:05:30.122608+00:00 shinyapps[12654620]:     notificationItem, taskItem
+2024-10-01T23:05:30.127299+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.131871+00:00 shinyapps[12654620]: The following object is masked from ‘package:graphics’:
+2024-10-01T23:05:30.136439+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.141163+00:00 shinyapps[12654620]:     box
+2024-10-01T23:05:30.145200+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.149357+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.153622+00:00 shinyapps[12654620]: Attaching package: ‘dplyr’
+2024-10-01T23:05:30.157646+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.162081+00:00 shinyapps[12654620]: The following objects are masked from ‘package:stats’:
+2024-10-01T23:05:30.166165+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.170543+00:00 shinyapps[12654620]:     filter, lag
+2024-10-01T23:05:30.174572+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.179140+00:00 shinyapps[12654620]: The following objects are masked from ‘package:base’:
+2024-10-01T23:05:30.183396+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.187332+00:00 shinyapps[12654620]:     intersect, setdiff, setequal, union
+2024-10-01T23:05:30.191432+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:30.968337+00:00 shinyapps[12654620]: ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+2024-10-01T23:05:30.972750+00:00 shinyapps[12654620]: ✔ forcats   1.0.0     ✔ readr     2.1.5
+2024-10-01T23:05:30.977077+00:00 shinyapps[12654620]: ✔ ggplot2   3.5.1     ✔ stringr   1.5.1
+2024-10-01T23:05:30.981516+00:00 shinyapps[12654620]: ✔ lubridate 1.9.3     ✔ tibble    3.2.1
+2024-10-01T23:05:30.985991+00:00 shinyapps[12654620]: ✔ purrr     1.0.2     ✔ tidyr     1.3.1
+2024-10-01T23:05:30.990315+00:00 shinyapps[12654620]: ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+2024-10-01T23:05:30.994801+00:00 shinyapps[12654620]: ✖ dplyr::filter() masks stats::filter()
+2024-10-01T23:05:30.999112+00:00 shinyapps[12654620]: ✖ dplyr::lag()    masks stats::lag()
+2024-10-01T23:05:31.003376+00:00 shinyapps[12654620]: ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+2024-10-01T23:05:31.007612+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.011939+00:00 shinyapps[12654620]: Attaching package: ‘reactablefmtr’
+2024-10-01T23:05:31.016596+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.021128+00:00 shinyapps[12654620]: The following object is masked from ‘package:ggplot2’:
+2024-10-01T23:05:31.025675+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.030169+00:00 shinyapps[12654620]:     margin
+2024-10-01T23:05:31.034502+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.040393+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.045019+00:00 shinyapps[12654620]: Attaching package: ‘shinyjs’
+2024-10-01T23:05:31.049488+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.054297+00:00 shinyapps[12654620]: The following object is masked from ‘package:reactablefmtr’:
+2024-10-01T23:05:31.058947+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.063089+00:00 shinyapps[12654620]:     html
+2024-10-01T23:05:31.067809+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.071908+00:00 shinyapps[12654620]: The following object is masked from ‘package:lubridate’:
+2024-10-01T23:05:31.076018+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.080044+00:00 shinyapps[12654620]:     show
+2024-10-01T23:05:31.084465+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.089043+00:00 shinyapps[12654620]: The following object is masked from ‘package:shiny’:
+2024-10-01T23:05:31.093250+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.097525+00:00 shinyapps[12654620]:     runExample
+2024-10-01T23:05:31.102094+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.106291+00:00 shinyapps[12654620]: The following objects are masked from ‘package:methods’:
+2024-10-01T23:05:31.111333+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.115620+00:00 shinyapps[12654620]:     removeClass, show
+2024-10-01T23:05:31.119898+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:31.124081+00:00 shinyapps[12654620]: Loading required package: viridisLite
+2024-10-01T23:05:31.128801+00:00 shinyapps[12654620]: No renderer backend detected. gganimate will default to writing frames to separate files
+2024-10-01T23:05:31.133474+00:00 shinyapps[12654620]: Consider installing:
+2024-10-01T23:05:31.137904+00:00 shinyapps[12654620]: - the `gifski` package for gif output
+2024-10-01T23:05:31.142433+00:00 shinyapps[12654620]: - the `av` package for video output
+2024-10-01T23:05:31.146882+00:00 shinyapps[12654620]: and restarting the R session
+2024-10-01T23:05:32.973858+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:32.978713+00:00 shinyapps[12654620]: Attaching package: ‘probably’
+2024-10-01T23:05:32.983159+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:32.987602+00:00 shinyapps[12654620]: The following objects are masked from ‘package:base’:
+2024-10-01T23:05:32.991820+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:32.996459+00:00 shinyapps[12654620]:     as.factor, as.ordered
+2024-10-01T23:05:33.001010+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.005499+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.010186+00:00 shinyapps[12654620]: Attaching package: ‘janitor’
+2024-10-01T23:05:33.014690+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.018988+00:00 shinyapps[12654620]: The following objects are masked from ‘package:stats’:
+2024-10-01T23:05:33.023525+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.027909+00:00 shinyapps[12654620]:     chisq.test, fisher.test
+2024-10-01T23:05:33.032094+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.036503+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.040889+00:00 shinyapps[12654620]: Attaching package: ‘shinyalert’
+2024-10-01T23:05:33.045230+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.049291+00:00 shinyapps[12654620]: The following object is masked from ‘package:shinyjs’:
+2024-10-01T23:05:33.053885+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.058603+00:00 shinyapps[12654620]:     runExample
+2024-10-01T23:05:33.062850+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.066981+00:00 shinyapps[12654620]: The following object is masked from ‘package:shiny’:
+2024-10-01T23:05:33.071374+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.075791+00:00 shinyapps[12654620]:     runExample
+2024-10-01T23:05:33.080122+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.084554+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.088788+00:00 shinyapps[12654620]: Attaching package: ‘shinyWidgets’
+2024-10-01T23:05:33.092822+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.096786+00:00 shinyapps[12654620]: The following object is masked from ‘package:shinyjs’:
+2024-10-01T23:05:33.101132+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.105621+00:00 shinyapps[12654620]:     alert
+2024-10-01T23:05:33.110001+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.114202+00:00 shinyapps[12654620]: The following object is masked from ‘package:shinydashboardPlus’:
+2024-10-01T23:05:33.118556+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.123626+00:00 shinyapps[12654620]:     progressBar
+2024-10-01T23:05:33.128115+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.132462+00:00 shinyapps[12654620]: ── Attaching packages ────────────────────────────────────── tidymodels 1.2.0 ──
+2024-10-01T23:05:33.136831+00:00 shinyapps[12654620]: ✔ broom        1.0.6      ✔ rsample      1.2.1 
+2024-10-01T23:05:33.141016+00:00 shinyapps[12654620]: ✔ dials        1.2.1      ✔ tune         1.2.1 
+2024-10-01T23:05:33.145949+00:00 shinyapps[12654620]: ✔ infer        1.0.7      ✔ workflows    1.1.4 
+2024-10-01T23:05:33.150545+00:00 shinyapps[12654620]: ✔ modeldata    1.4.0      ✔ workflowsets 1.1.0 
+2024-10-01T23:05:33.155218+00:00 shinyapps[12654620]: ✔ parsnip      1.2.1      ✔ yardstick    1.3.1 
+2024-10-01T23:05:33.159892+00:00 shinyapps[12654620]: ✔ recipes      1.0.10     
+2024-10-01T23:05:33.164112+00:00 shinyapps[12654620]: ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
+2024-10-01T23:05:33.168741+00:00 shinyapps[12654620]: ✖ scales::discard()       masks purrr::discard()
+2024-10-01T23:05:33.173205+00:00 shinyapps[12654620]: ✖ dplyr::filter()         masks stats::filter()
+2024-10-01T23:05:33.177478+00:00 shinyapps[12654620]: ✖ recipes::fixed()        masks stringr::fixed()
+2024-10-01T23:05:33.181643+00:00 shinyapps[12654620]: ✖ dplyr::lag()            masks stats::lag()
+2024-10-01T23:05:33.186258+00:00 shinyapps[12654620]: ✖ reactablefmtr::margin() masks ggplot2::margin()
+2024-10-01T23:05:33.190654+00:00 shinyapps[12654620]: ✖ infer::observe()        masks shiny::observe()
+2024-10-01T23:05:33.195017+00:00 shinyapps[12654620]: ✖ yardstick::spec()       masks readr::spec()
+2024-10-01T23:05:33.199395+00:00 shinyapps[12654620]: ✖ recipes::step()         masks stats::step()
+2024-10-01T23:05:33.204684+00:00 shinyapps[12654620]: • Use suppressPackageStartupMessages() to eliminate package startup messages
+2024-10-01T23:05:33.209027+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.213813+00:00 shinyapps[12654620]: Attaching package: ‘plotly’
+2024-10-01T23:05:33.218155+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.222522+00:00 shinyapps[12654620]: The following object is masked from ‘package:ggplot2’:
+2024-10-01T23:05:33.226638+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.231338+00:00 shinyapps[12654620]:     last_plot
+2024-10-01T23:05:33.235706+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.239802+00:00 shinyapps[12654620]: The following object is masked from ‘package:stats’:
+2024-10-01T23:05:33.244319+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.248533+00:00 shinyapps[12654620]:     filter
+2024-10-01T23:05:33.252862+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.257795+00:00 shinyapps[12654620]: The following object is masked from ‘package:graphics’:
+2024-10-01T23:05:33.262487+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.267043+00:00 shinyapps[12654620]:     layout
+2024-10-01T23:05:33.271366+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.275753+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.280212+00:00 shinyapps[12654620]: Attaching package: ‘vip’
+2024-10-01T23:05:33.284264+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.288362+00:00 shinyapps[12654620]: The following object is masked from ‘package:utils’:
+2024-10-01T23:05:33.292905+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.298508+00:00 shinyapps[12654620]:     vi
+2024-10-01T23:05:33.302857+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.307420+00:00 shinyapps[12654620]: Loading required package: rpart
+2024-10-01T23:05:33.311752+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.316011+00:00 shinyapps[12654620]: Attaching package: ‘rpart’
+2024-10-01T23:05:33.320178+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.324397+00:00 shinyapps[12654620]: The following object is masked from ‘package:dials’:
+2024-10-01T23:05:33.328665+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.333084+00:00 shinyapps[12654620]:     prune
+2024-10-01T23:05:33.337649+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.342237+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.347259+00:00 shinyapps[12654620]: Attaching package: ‘DT’
+2024-10-01T23:05:33.351404+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.355671+00:00 shinyapps[12654620]: The following objects are masked from ‘package:shiny’:
+2024-10-01T23:05:33.360112+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.364380+00:00 shinyapps[12654620]:     dataTableOutput, renderDataTable
+2024-10-01T23:05:33.368771+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.967753+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.972490+00:00 shinyapps[12654620]: Attaching package: ‘formattable’
+2024-10-01T23:05:33.976772+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.981535+00:00 shinyapps[12654620]: The following object is masked from ‘package:plotly’:
+2024-10-01T23:05:33.985816+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.990005+00:00 shinyapps[12654620]:     style
+2024-10-01T23:05:33.994432+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:33.998822+00:00 shinyapps[12654620]: The following objects are masked from ‘package:scales’:
+2024-10-01T23:05:34.004157+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.008811+00:00 shinyapps[12654620]:     comma, percent, scientific
+2024-10-01T23:05:34.013490+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.018134+00:00 shinyapps[12654620]: The following object is masked from ‘package:patchwork’:
+2024-10-01T23:05:34.022661+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.027766+00:00 shinyapps[12654620]:     area
+2024-10-01T23:05:34.032294+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.036726+00:00 shinyapps[12654620]: Skipping install of 'dataui' from a github remote, the SHA1 (39583c66) has not changed since last install.
+2024-10-01T23:05:34.041413+00:00 shinyapps[12654620]:   Use `force = TRUE` to force installation
+2024-10-01T23:05:34.045844+00:00 shinyapps[12654620]: Rows: 30 Columns: 2
+2024-10-01T23:05:34.050797+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:34.056195+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:34.060343+00:00 shinyapps[12654620]: chr  (1): term
+2024-10-01T23:05:34.065194+00:00 shinyapps[12654620]: date (1): start_date
+2024-10-01T23:05:34.069746+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.074023+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:34.078384+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:34.082509+00:00 shinyapps[12654620]: Rows: 85 Columns: 26
+2024-10-01T23:05:34.086609+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:34.090740+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:34.095109+00:00 shinyapps[12654620]: chr  (21): venue, what, genre, sponsor, department, support_level, audio_nee...
+2024-10-01T23:05:34.099390+00:00 shinyapps[12654620]: dbl   (4): audience_count, days_committed, av_staff, pac_staff
+2024-10-01T23:05:34.103725+00:00 shinyapps[12654620]: date  (1): date
+2024-10-01T23:05:34.107935+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.114134+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:34.119441+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:34.125912+00:00 shinyapps[12654620]: Rows: 21 Columns: 19
+2024-10-01T23:05:34.131493+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:34.135765+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:34.139925+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T23:05:34.144307+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T23:05:34.148567+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T23:05:34.152842+00:00 shinyapps[12654620]: NE...
+2024-10-01T23:05:34.157526+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:34.162034+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.167572+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:34.171739+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:34.176083+00:00 shinyapps[12654620]: Rows: 27 Columns: 19
+2024-10-01T23:05:34.180413+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:34.184996+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:34.189991+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T23:05:34.195107+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T23:05:34.199488+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T23:05:34.203714+00:00 shinyapps[12654620]: NE...
+2024-10-01T23:05:34.208024+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:34.212261+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.216716+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:34.220941+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:34.224929+00:00 shinyapps[12654620]: Rows: 16 Columns: 13
+2024-10-01T23:05:34.229212+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:34.233742+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:34.238217+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:34.242311+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:34.246462+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T23:05:34.250603+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:34.254687+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:34.258795+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:34.263724+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:34.267920+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:34.968362+00:00 shinyapps[12654620]: Rows: 22 Columns: 13
+2024-10-01T23:05:34.972807+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:34.977254+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:34.981601+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:34.986087+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:34.990307+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T23:05:34.994482+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:34.998954+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.003633+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.007868+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.012105+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.016714+00:00 shinyapps[12654620]: Rows: 23 Columns: 13
+2024-10-01T23:05:35.021463+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.026057+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.030876+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.035046+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.039310+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T23:05:35.043955+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.048261+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.052607+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.057113+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.061460+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.065592+00:00 shinyapps[12654620]: Rows: 16 Columns: 14
+2024-10-01T23:05:35.070098+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.074340+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.079050+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.083109+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.087369+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T23:05:35.091769+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.095926+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.100195+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.105326+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.109574+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.113763+00:00 shinyapps[12654620]: Rows: 21 Columns: 14
+2024-10-01T23:05:35.117830+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.122267+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.126729+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.131603+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.135925+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T23:05:35.140238+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.144518+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.148689+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.152989+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.157195+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.161456+00:00 shinyapps[12654620]: Rows: 35 Columns: 14
+2024-10-01T23:05:35.165854+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.170343+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.174777+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.179378+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.184933+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T23:05:35.189126+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.193588+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.197961+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.202171+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.206413+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.210874+00:00 shinyapps[12654620]: Rows: 21 Columns: 14
+2024-10-01T23:05:35.215059+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.219584+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.223880+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.227922+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.232274+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T23:05:35.236690+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.241118+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.245572+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.250311+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.254832+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.258940+00:00 shinyapps[12654620]: Rows: 20 Columns: 16
+2024-10-01T23:05:35.263159+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.267541+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.271844+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.276010+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.280145+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T23:05:35.284234+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.288444+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.292638+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.296935+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.301254+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.305782+00:00 shinyapps[12654620]: Rows: 31 Columns: 16
+2024-10-01T23:05:35.309961+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.314402+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.318739+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.323253+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.327627+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T23:05:35.331837+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.337833+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.342341+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.346794+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.351275+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.356424+00:00 shinyapps[12654620]: Rows: 23 Columns: 16
+2024-10-01T23:05:35.360576+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.365178+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.369520+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.374326+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.405468+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T23:05:35.412382+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.417412+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.423442+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.430935+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.435299+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.440105+00:00 shinyapps[12654620]: Rows: 22 Columns: 16
+2024-10-01T23:05:35.444190+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.448918+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.453177+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.457495+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:35.461844+00:00 shinyapps[12654620]: dbl   (3): AUDIENCE COUNT, AV Staff, PAC Staff
+2024-10-01T23:05:35.466174+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.470607+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.475067+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.480110+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.484450+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.488510+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T23:05:35.492750+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.497850+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.502285+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T23:05:35.506727+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.511516+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.515873+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.520620+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T23:05:35.525097+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.529454+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.534427+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T23:05:35.538853+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.543674+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.548584+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.552983+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T23:05:35.557422+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.562056+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.566544+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T23:05:35.570949+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.575422+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.579950+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.584373+00:00 shinyapps[12654620]: Rows: 0 Columns: 16
+2024-10-01T23:05:35.589001+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.593607+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.597744+00:00 shinyapps[12654620]: chr (16): WK, VENUE, DATE, WHAT, DEPARTMENT, AUDIENCE COUNT, PROGRAM, RECEPT...
+2024-10-01T23:05:35.601980+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.606745+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.611310+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.615605+00:00 shinyapps[12654620]: Rows: 11 Columns: 18
+2024-10-01T23:05:35.620001+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.624456+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.628844+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.633294+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T23:05:35.637576+00:00 shinyapps[12654620]: NEEDS, ...
+2024-10-01T23:05:35.642080+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T23:05:35.646468+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.651257+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.656186+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.660654+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.665442+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.669891+00:00 shinyapps[12654620]: Rows: 15 Columns: 18
+2024-10-01T23:05:35.674564+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.679100+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.684067+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, RECEPTION, SUPPORT 
+2024-10-01T23:05:35.688603+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T23:05:35.693131+00:00 shinyapps[12654620]: NEEDS, ...
+2024-10-01T23:05:35.698011+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T23:05:35.702497+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:35.707000+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:35.711373+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:35.715955+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:35.720664+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:35.968033+00:00 shinyapps[12654620]: Rows: 31 Columns: 18
+2024-10-01T23:05:35.972805+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:35.977608+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:35.981967+00:00 shinyapps[12654620]: chr  (12): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T23:05:35.986264+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T23:05:35.990391+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T23:05:35.994742+00:00 shinyapps[12654620]: dbl   (4): DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T23:05:35.998937+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:36.003221+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:36.007435+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.011647+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.015901+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.020319+00:00 shinyapps[12654620]: Rows: 29 Columns: 19
+2024-10-01T23:05:36.024418+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.028910+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.033107+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T23:05:36.037676+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T23:05:36.042461+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T23:05:36.047226+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV Staff, PAC Staff, AUDIENCE COUNT
+2024-10-01T23:05:36.052235+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:36.056226+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.060581+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.064920+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.069044+00:00 shinyapps[12654620]: Rows: 27 Columns: 19
+2024-10-01T23:05:36.073540+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.077834+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.082502+00:00 shinyapps[12654620]: chr  (14): VENUE, DEPARTMENT, WHAT, SUPPORT 
+2024-10-01T23:05:36.086844+00:00 shinyapps[12654620]: LEVEL, POSTER, PROGRAM, PROJECT...
+2024-10-01T23:05:36.091158+00:00 shinyapps[12654620]: dbl   (4): WK, PAC STAFF, AV STAFF, DAYS COMMITTED
+2024-10-01T23:05:36.096025+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:36.100449+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.104579+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.109041+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.113304+00:00 shinyapps[12654620]: Rows: 41 Columns: 19
+2024-10-01T23:05:36.117478+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.121858+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.126356+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T23:05:36.130601+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T23:05:36.134984+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T23:05:36.139318+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T23:05:36.144440+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:36.149632+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.154347+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.158608+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.163324+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T23:05:36.168735+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.173201+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.177552+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T23:05:36.182033+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T23:05:36.186455+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T23:05:36.191098+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T23:05:36.195316+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:36.200430+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.204739+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.209055+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.213142+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T23:05:36.217839+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.222922+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.227242+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T23:05:36.231664+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T23:05:36.235904+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T23:05:36.243825+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T23:05:36.248504+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:36.253172+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.257475+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.262239+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.267027+00:00 shinyapps[12654620]: Rows: 31 Columns: 19
+2024-10-01T23:05:36.271432+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.275752+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.280826+00:00 shinyapps[12654620]: chr  (13): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T23:05:36.285293+00:00 shinyapps[12654620]: LEVEL, AUDIO 
+2024-10-01T23:05:36.290355+00:00 shinyapps[12654620]: NEEDS, STAGE NEED...
+2024-10-01T23:05:36.294800+00:00 shinyapps[12654620]: dbl   (5): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, AUDIENCE COUNT
+2024-10-01T23:05:36.300075+00:00 shinyapps[12654620]: date  (1): DATE
+2024-10-01T23:05:36.304083+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.308479+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.312907+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.316989+00:00 shinyapps[12654620]: Rows: 21 Columns: 19
+2024-10-01T23:05:36.320971+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.325197+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.329331+00:00 shinyapps[12654620]: chr   (3): VENUE, WHAT, DEPARTMENT
+2024-10-01T23:05:36.333567+00:00 shinyapps[12654620]: lgl  (15): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, SUPPORT 
+2024-10-01T23:05:36.338038+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T23:05:36.342770+00:00 shinyapps[12654620]: NE...
+2024-10-01T23:05:36.347265+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T23:05:36.351486+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.356145+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.361462+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.365856+00:00 shinyapps[12654620]: Rows: 14 Columns: 13
+2024-10-01T23:05:36.370143+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.375024+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.379640+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:36.384738+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:36.388950+00:00 shinyapps[12654620]: dbl   (1): AUDIENCE COUNT
+2024-10-01T23:05:36.393339+00:00 shinyapps[12654620]: lgl   (1): WK
+2024-10-01T23:05:36.397646+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T23:05:36.401896+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.406429+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.410608+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.415016+00:00 shinyapps[12654620]: Rows: 26 Columns: 13
+2024-10-01T23:05:36.419942+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.424461+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.428665+00:00 shinyapps[12654620]: chr  (10): VENUE, WHAT, DEPARTMENT, PROGRAM, RECEPTION, SUPPORT 
+2024-10-01T23:05:36.433684+00:00 shinyapps[12654620]: LEVEL, AUDI...
+2024-10-01T23:05:36.438332+00:00 shinyapps[12654620]: lgl   (2): WK, AUDIENCE COUNT
+2024-10-01T23:05:36.442550+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T23:05:36.446844+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.451118+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.455256+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.459249+00:00 shinyapps[12654620]: Rows: 8 Columns: 19
+2024-10-01T23:05:36.463397+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:36.467514+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:36.471793+00:00 shinyapps[12654620]: chr  (11): VENUE, WHAT, DEPARTMENT, SUPPORT 
+2024-10-01T23:05:36.475883+00:00 shinyapps[12654620]: LEVEL, AUDIO
+2024-10-01T23:05:36.480008+00:00 shinyapps[12654620]: NEEDS, STAGE NEEDS...
+2024-10-01T23:05:36.484141+00:00 shinyapps[12654620]: lgl   (7): WK, DAYS COMMITTED, AV STAFF, PAC STAFF, LIGHTING NEEDS, AUDIENCE...
+2024-10-01T23:05:36.488748+00:00 shinyapps[12654620]: dttm  (1): DATE
+2024-10-01T23:05:36.493222+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:36.497330+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:36.501501+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:05:36.505833+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:36.510337+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:36.514463+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T23:05:36.518568+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:36.523942+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:36.528064+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T23:05:36.532435+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:36.538078+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:36.542984+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T23:05:36.547673+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:36.552184+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:36.556512+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T23:05:36.560549+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:36.564693+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:36.569707+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T23:05:36.574034+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T23:05:36.578381+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:36.582728+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T23:05:36.586948+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T23:05:36.591145+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:36.595430+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T23:05:36.599773+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T23:05:36.604262+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:36.608472+00:00 shinyapps[12654620]: audio_needs, stage_needs, lighting_needs, projection, video_recording,
+2024-10-01T23:05:36.612576+00:00 shinyapps[12654620]: audience_count, program, reception, term)`
+2024-10-01T23:05:36.616745+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T23:05:36.622117+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T23:05:36.626599+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T23:05:36.968348+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T23:05:36.972747+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T23:05:36.976992+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T23:05:36.981437+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T23:05:36.985512+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T23:05:36.990268+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T23:05:36.994533+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T23:05:36.998795+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T23:05:37.002905+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T23:05:37.007009+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T23:05:37.010889+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T23:05:37.014970+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T23:05:37.019320+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T23:05:37.023968+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T23:05:37.028084+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T23:05:37.032387+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T23:05:37.036619+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T23:05:37.040780+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T23:05:37.045163+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, av_staff,
+2024-10-01T23:05:37.049569+00:00 shinyapps[12654620]: pac_staff, support_level, audio_needs, stage_needs, lighting_needs, projection,
+2024-10-01T23:05:37.054167+00:00 shinyapps[12654620]: video_recording, audience_count, program, reception, term)`
+2024-10-01T23:05:37.058457+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.062741+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.066999+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T23:05:37.071186+00:00 shinyapps[12654620]: term)`
+2024-10-01T23:05:37.075569+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.079962+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.083998+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T23:05:37.088294+00:00 shinyapps[12654620]: term)`
+2024-10-01T23:05:37.092591+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.096716+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.100971+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, program, reception,
+2024-10-01T23:05:37.105210+00:00 shinyapps[12654620]: term)`
+2024-10-01T23:05:37.109551+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.113834+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.118213+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T23:05:37.122644+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:37.127119+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.132088+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.136427+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term)`
+2024-10-01T23:05:37.141023+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.146153+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.151284+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T23:05:37.155859+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T23:05:37.160488+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.165123+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.169601+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T23:05:37.173896+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T23:05:37.178219+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.183239+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.187427+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T23:05:37.191755+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T23:05:37.196204+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.200663+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.204879+00:00 shinyapps[12654620]: projection, video_recording, audience_count, poster, program, reception, term,
+2024-10-01T23:05:37.209156+00:00 shinyapps[12654620]: livestream)`
+2024-10-01T23:05:37.213822+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.218092+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.223222+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T23:05:37.227547+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:37.231918+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:37.236174+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T23:05:37.240738+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:37.246072+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, support_level,
+2024-10-01T23:05:37.250635+00:00 shinyapps[12654620]: audio_needs, stage_needs, projection, video_recording, audience_count, program,
+2024-10-01T23:05:37.255061+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:37.259350+00:00 shinyapps[12654620]: Joining with `by = join_by(wk, venue, date, what, department, days_committed,
+2024-10-01T23:05:37.263774+00:00 shinyapps[12654620]: av_staff, pac_staff, support_level, audio_needs, stage_needs, lighting_needs,
+2024-10-01T23:05:37.268441+00:00 shinyapps[12654620]: projection, video_recording, live_stream, audience_count, poster, program,
+2024-10-01T23:05:37.273087+00:00 shinyapps[12654620]: reception, term)`
+2024-10-01T23:05:37.971961+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:37.976572+00:00 shinyapps[12654620]: Listening on http://127.0.0.1:43289
+2024-10-01T23:05:38.968494+00:00 shinyapps[12654620]: Rows: 30 Columns: 2
+2024-10-01T23:05:38.972937+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:05:38.977268+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:05:38.981783+00:00 shinyapps[12654620]: chr  (1): term
+2024-10-01T23:05:38.985997+00:00 shinyapps[12654620]: date (1): start_date
+2024-10-01T23:05:39.967695+00:00 shinyapps[12654620]: 
+2024-10-01T23:05:39.972360+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:05:39.977007+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2024-10-01T23:13:00.968119+00:00 shinyapps[12654620]: Rows: 30 Columns: 2
+2024-10-01T23:13:00.973846+00:00 shinyapps[12654620]: ── Column specification ────────────────────────────────────────────────────────
+2024-10-01T23:13:00.978004+00:00 shinyapps[12654620]: Delimiter: ","
+2024-10-01T23:13:00.982153+00:00 shinyapps[12654620]: chr  (1): term
+2024-10-01T23:13:00.986252+00:00 shinyapps[12654620]: date (1): start_date
+2024-10-01T23:13:00.990157+00:00 shinyapps[12654620]: 
+2024-10-01T23:13:00.994137+00:00 shinyapps[12654620]: ℹ Use `spec()` to retrieve the full column specification for this data.
+2024-10-01T23:13:00.998096+00:00 shinyapps[12654620]: ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
